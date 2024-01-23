@@ -1,6 +1,6 @@
 import React from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
-import Dashboard from "./components/Dashboard/Dashboard.jsx";
+import Dashboard from "./Pages/Dashboard.jsx";
 
 // Initialize a Query Client instance:
 // The Query Client is a powerful data fetching and caching tool provided by React Query.
