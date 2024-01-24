@@ -4,6 +4,7 @@ import { CircularProgress, Grid, Card, Box, Paper, Typography } from '@mui/mater
 import { Bar} from 'react-chartjs-2';
 import 'chart.js/auto';
 import TotalRevenue from '../Components/TotalRevenue.jsx';
+import RecentOrders from '../Components/RecentOrders.jsx';
 
 // Dummy data for orders
 const dummyOrders = [
@@ -127,10 +128,11 @@ const Dashboard = () => {
     <div style={{ padding: '20px' }}>
 
       <Grid container spacing={3}>
-        <Grid item xs={12} md={4}>
+        <Grid item xs={12} md={2}>
           <TotalRevenue />
         </Grid>
         <Grid item xs={12} md={4}>
+          <RecentOrders />
           {/* {renderSummaryCard('Recent Orders', orders, order => order.id)} */}
         </Grid>
         <Grid item xs={12} md={4}>
