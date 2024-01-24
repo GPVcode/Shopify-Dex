@@ -14,7 +14,7 @@ function App() {
     // This makes the Query Client available throughout the app, allowing any component
     // to use React Query's hooks for data fetching and state management.
     <QueryClientProvider client={queryClient}>
-      < Dashboard />
+        < Dashboard />
     </QueryClientProvider>
     );
 }

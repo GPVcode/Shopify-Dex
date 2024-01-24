@@ -1,12 +1,16 @@
 import express from 'express';
 const router = express.Router();
+import { fetchTotalRevenue } from '../utils/shopifyAPI.js';
 
 // DUMMY TOTAL REVENUE
-const totalRevenue = { totalRevenue: 100000 };
 
-router.get('/total', (req, res) => {
-    // Dummy data for total revenue
-    res.json(totalRevenue);
+router.get('/total', async (req, res) => {
+    try{
+        const totalRevenue = await fetchTotalRevenue();
+        res.json({totalRevenue});
+    } catch(error){
+        res.status(500).json({ message: 'Error fetching ttoal revenue.'})
+    }
 });
 
 export default router;

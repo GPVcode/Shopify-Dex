@@ -1,6 +1,6 @@
 import React from 'react'
 import { useQuery } from 'react-query';
-import { CircularProgress, Grid, Paper, Typography } from '@mui/material';
+import { CircularProgress, Grid, Card, Box, Paper, Typography } from '@mui/material';
 import { Bar} from 'react-chartjs-2';
 import 'chart.js/auto';
 import TotalRevenue from '../Components/TotalRevenue.jsx';
@@ -80,20 +80,20 @@ const Dashboard = () => {
     return <div>Error loading data</div>;
   }  
   // Example function to render a bar chart
-  const renderBarChart = (data, label) => {
-    const chartData = {
-      labels: data.map(item => item.name), // Adjust according to your data structure
-      datasets: [{
-        label: label,
-        data: data.map(item => item.value), // Replace with actual value field
-        backgroundColor: 'rgba(54, 162, 235, 0.2)',
-        borderColor: 'rgba(54, 162, 235, 1)',
-        borderWidth: 1,
-      }],
-    };
+  // const renderBarChart = (data, label) => {
+  //   const chartData = {
+  //     labels: data.map(item => item.name), // Adjust according to your data structure
+  //     datasets: [{
+  //       label: label,
+  //       data: data.map(item => item.value), // Replace with actual value field
+  //       backgroundColor: 'rgba(54, 162, 235, 0.2)',
+  //       borderColor: 'rgba(54, 162, 235, 1)',
+  //       borderWidth: 1,
+  //     }],
+  //   };
 
-    return <Bar data={chartData} />;
-  };
+  //   return <Bar data={chartData} />;
+  // };
 
   // Varables hosting orders, products, and customers data.
   const { data: orders } = ordersQuery;
@@ -102,24 +102,26 @@ const Dashboard = () => {
   
   // Assuming your data objects (orders, products, customers) have the necessary fields
   // You would replace these with real data and structure
-  const ordersChartData = orders.map(order => ({ name: order.id, value: order.total }));
-  const productsChartData = products.map(product => ({ name: product.name, value: product.stock }));
-  const customersChartData = customers.map(customer => ({ name: customer.name, value: customer.ordersCount }));
+  // const ordersChartData = orders.map(order => ({ name: order.id, value: order.total }));
+  // const productsChartData = products.map(product => ({ name: product.name, value: product.stock }));
+  // const customersChartData = customers.map(customer => ({ name: customer.name, value: customer.ordersCount }));
   
 
   // Function to render a summary card
-  const renderSummaryCard = (title, data, keyExtractor) => (
-    <Paper style={{ padding: '20px', margin: '10px' }}>
-      <Typography variant="h6">{title}</Typography>
-      <ul>
-        {data.slice(0, 5).map(item => (
-          <li key={keyExtractor(item)}>
-            {item.name} - <strong>{item.status}</strong> - {item.amount}
-          </li> // Adjust according to your data
-        ))}
-      </ul>
-    </Paper>
-  );
+  // const renderSummaryCard = (title, data, keyExtractor) => (
+  //   <Card>
+  //     <Box style={{ padding: '20px', margin: '10px' }}>
+  //     <Typography variant="h6">{title}</Typography>
+  //     <ul>
+  //       {data.slice(0, 5).map(item => (
+  //         <li key={keyExtractor(item)}>
+  //           {item.name} - <strong>{item.status}</strong> - {item.amount}
+  //         </li> // Adjust according to your data
+  //       ))}
+  //     </ul>
+  //     </ Box>
+  //   </Card>
+  // );
 
   return (
     <div style={{ padding: '20px' }}>
@@ -129,18 +131,17 @@ const Dashboard = () => {
           <TotalRevenue />
         </Grid>
         <Grid item xs={12} md={4}>
-          {renderSummaryCard('Recent Orders', orders, order => order.id)}
+          {/* {renderSummaryCard('Recent Orders', orders, order => order.id)} */}
         </Grid>
         <Grid item xs={12} md={4}>
-          {renderSummaryCard('Popular Products', products, product => product.id)}
+          {/* {renderSummaryCard('Popular Products', products, product => product.id)} */}
         </Grid>
         <Grid item xs={12} md={4}>
-          {renderSummaryCard('Recent Customers', customers, customer => customer.id)}
+          {/* {renderSummaryCard('Recent Customers', customers, customer => customer.id)} */}
         </Grid>
       </Grid>
 
-      <Grid container spacing={3}>
-        {/* Existing summary cards */}
+      {/* <Grid container spacing={3}>
         <Grid item xs={12} md={6}>
           <Paper style={{ padding: '20px', margin: '10px' }}>
             <Typography variant="h6">Sales Overview</Typography>
@@ -158,9 +159,8 @@ const Dashboard = () => {
             <Typography variant="h6">Customer Activity</Typography>
             {renderBarChart(customersChartData, 'Orders Count')}
           </Paper>
-        </Grid>
-        {/* Consider adding more charts as needed */}
-      </Grid>
+        </Grid> 
+      </Grid>*/}
     </div>
   )
 }
