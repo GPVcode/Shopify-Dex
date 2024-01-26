@@ -51,10 +51,10 @@ export const fetchRecentOrders = async () => {
                             created_at: "2024-01-22T14:30:22-04:00"
                         },
                         {
-                            id: 789012,
+                            id: 789013,
                             customer: {
                                 first_name: "Jane",
-                                last_name: "Doe"
+                                last_name: "Doe2"
                             },
                             total_price: "200.00",
                             financial_status: "paid",
@@ -81,6 +81,29 @@ export const fetchRecentOrders = async () => {
     }
 };
 
-export const inventoryAlerts = async () => {
 
-};
+
+// Function to fetch inventory alerts
+export const fetchInventoryAlerts = async () => {
+    try {
+        const response = await new Promise((resolve) => {
+            setTimeout(() => {
+            // Dummy data for low-stock inventory items
+            const dummyInventoryData = [
+                { id: '1', productName: 'Classic White T-Shirt', sku: 'CWT-001', stockLevel: 5, lowStockThreshold: 10 },
+                { id: '2', productName: 'Black Denim Jeans', sku: 'BDJ-002', stockLevel: 3, lowStockThreshold: 10 },
+                { id: '3', productName: 'Red Woolen Hat', sku: 'RWH-003', stockLevel: 2, lowStockThreshold: 5 },
+                { id: '4', productName: 'Blue Canvas Shoes', sku: 'BCS-004', stockLevel: 4, lowStockThreshold: 5 },
+                { id: '5', productName: 'Leather Wristwatch', sku: 'LWW-005', stockLevel: 6, lowStockThreshold: 10 }
+                ];
+            resolve(dummyInventoryData);
+            }, 1000);
+        });
+
+        const lowStockItems = response.filter(item => item.stockLevel <= item.lowStockThreshold);
+        return lowStockItems;
+    } catch (error) {
+      console.error('Error fetching inventory alerts:', error);
+      return { error: "Failed to fetch data" };
+      }
+}

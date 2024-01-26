@@ -3,14 +3,14 @@ import { useQuery } from 'react-query';
 import { CircularProgress, Card, Box, Table, TableHead, TableRow, TableCell, TableBody } from '@mui/material';
 import { fetchRecentOrders } from '../Services/api';
 
-function RecentOrders() {
+const RecentOrders = () => {
     const { data, isLoading, isError, error } = useQuery('Recent Orders', fetchRecentOrders);
     if (isLoading){
         return <Box style={{ padding: '20px', margin: '10px' }}>< CircularProgress /></Box>;
     } 
     if (isError) return <Box style={{ padding: '20px', margin: '10px' }}>Error: {error.message}</Box>;
     return (
-        <Card style={{ minHeight: '12rem' }}>
+        <Card style={{ minHeight: '13.5rem' }}>
             <Table>
                 <TableHead>
                     <TableRow>
