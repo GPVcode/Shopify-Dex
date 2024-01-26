@@ -10,7 +10,7 @@ function TotalRevenue() {
     } 
     if (isError) return <Box style={{ padding: '20px', margin: '10px' }}>Error: {error.message}</Box>;
     return (
-        <Card style={{ minHeight: '200px' }}>
+        <Card style={{ minHeight: '12rem' }}>
             <Box style={{ padding: '20px', margin: '10px' }}>
             <Typography variant="h5">Total Revenue</Typography>
             {data && data.totalRevenue != null ? (

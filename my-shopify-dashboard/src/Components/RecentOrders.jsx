@@ -10,7 +10,7 @@ function RecentOrders() {
     } 
     if (isError) return <Box style={{ padding: '20px', margin: '10px' }}>Error: {error.message}</Box>;
     return (
-        <Card style={{ minHeight: '200px' }}>
+        <Card style={{ minHeight: '12rem' }}>
             <Table>
                 <TableHead>
                     <TableRow>

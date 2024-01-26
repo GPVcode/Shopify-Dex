@@ -128,18 +128,20 @@ const Dashboard = () => {
     <div style={{ padding: '20px' }}>
 
       <Grid container spacing={3}>
-        <Grid item xs={12} md={2}>
+        <Grid item xs={12} md={3}>
           <TotalRevenue />
         </Grid>
-        <Grid item xs={12} md={4}>
+        <Grid item xs={12} md={6} style={{ maxHeight: '12 rem', gridRowEnd: 'span 2' }}>
           <RecentOrders />
-          {/* {renderSummaryCard('Recent Orders', orders, order => order.id)} */}
         </Grid>
-        <Grid item xs={12} md={4}>
-          {/* {renderSummaryCard('Popular Products', products, product => product.id)} */}
+        <Grid item xs={12} md={3}>
+          <TotalRevenue />
         </Grid>
-        <Grid item xs={12} md={4}>
-          {/* {renderSummaryCard('Recent Customers', customers, customer => customer.id)} */}
+        <Grid item xs={12} md={3}>
+          <TotalRevenue />
+        </Grid>
+        <Grid item xs={12} md={3}>
+          <TotalRevenue />
         </Grid>
       </Grid>
 

@@ -49,6 +49,16 @@ export const fetchRecentOrders = async () => {
                             total_price: "200.00",
                             financial_status: "paid",
                             created_at: "2024-01-22T14:30:22-04:00"
+                        },
+                        {
+                            id: 789012,
+                            customer: {
+                                first_name: "Jane",
+                                last_name: "Doe"
+                            },
+                            total_price: "200.00",
+                            financial_status: "paid",
+                            created_at: "2024-01-22T14:30:22-04:00"
                         }
                         // Add more orders as needed for testing
                     ]
@@ -71,4 +81,6 @@ export const fetchRecentOrders = async () => {
     }
 };
 
+export const inventoryAlerts = async () => {
 
+};
