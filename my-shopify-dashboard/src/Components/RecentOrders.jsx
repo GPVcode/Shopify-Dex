@@ -1,6 +1,6 @@
 import React from 'react';
 import { useQuery } from 'react-query';
-import { CircularProgress, Card, Box, Table, TableHead, TableRow, TableCell, TableBody } from '@mui/material';
+import { CircularProgress, Card, Box, Table, TableHead, TableRow, TableCell, TableBody, Typography } from '@mui/material';
 import { fetchRecentOrders } from '../Services/api';
 
 const RecentOrders = () => {
@@ -11,6 +11,8 @@ const RecentOrders = () => {
     if (isError) return <Box style={{ padding: '20px', margin: '10px' }}>Error: {error.message}</Box>;
     return (
         <Card style={{ minHeight: '13.5rem' }}>
+            <Box style={{ padding: '20px', margin: '10px' }}>
+            <Typography variant="h5">Recent Orders</Typography>
             <Table>
                 <TableHead>
                     <TableRow>
@@ -31,6 +33,7 @@ const RecentOrders = () => {
                     ))}
                 </TableBody>
             </Table>
+            </Box>
         </Card>
     );
 }
