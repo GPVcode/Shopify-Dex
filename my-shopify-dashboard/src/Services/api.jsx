@@ -107,3 +107,25 @@ export const fetchInventoryAlerts = async () => {
       return { error: "Failed to fetch data" };
       }
 }
+
+export const fetchProducts = async () => {
+    try {
+        const response = await new Promise((resolve) => {
+            setTimeout(() => {
+                // Dummy data for products
+                const dummyProductData = [
+                    { id: '101', name: 'Eco-Friendly Sneakers', stockLevel: 15, sales: 200 },
+                    { id: '102', name: 'Vintage Leather Wallet', stockLevel: 5, sales: 150 },
+                    { id: '103', name: 'Organic Cotton T-Shirt', stockLevel: 20, sales: 300 },
+                    { id: '104', name: 'Classic Aviator Sunglasses', stockLevel: 2, sales: 90 },
+                    { id: '105', name: 'Handmade Clay Pottery', stockLevel: 8, sales: 50 }
+                ];
+                resolve(dummyProductData);
+            }, 1000);
+        });
+        return response;
+    } catch (error) {
+        console.error('Error fetching products:', error);
+        return { error: "Failed to fetch data" };
+    }
+};
