@@ -1,7 +1,8 @@
+import express from 'express';
 import axios from 'axios';
-const SHOPIFY_API_KEY = 'your_api_key';
-const SHOPIFY_API_PASSWORD = 'your_api_password';
-const SHOP_URL = 'your_shop_url';
+
+const { SHOP_URL, SHOPIFY_API_KEY, SHOPIFY_API_PASSWORD } = process.env;
+
 
 export const fetchTotalRevenue = async (req, res, next) => {
     try {
@@ -12,6 +13,10 @@ export const fetchTotalRevenue = async (req, res, next) => {
         // };
 
         // const response = await axios.get(url, { auth });
+        // const orders = response.data.orders;
+
+        // let totalRevenue = orders.reduce((sum, order) => sum + parseFloat(order.total_price), 0);
+        // return totalRevenue;
         // Mimicking Shopify API response
         const response = {
             data: {
@@ -34,6 +39,48 @@ export const fetchTotalRevenue = async (req, res, next) => {
         return totalRevenue;
     } catch (error) {
         console.error('Error fetching total revenue:', error);
+        throw error;
+    }
+};
+
+export const fetchRecentOrders = async () => {
+    try {
+        // const url = `https://${SHOP_URL}/admin/api/2024-01/orders.json?limit=10&order=created_at%20desc`
+        // const auth = {
+        //     username: SHOPIFY_API_KEY,
+        //     password: SHOPIFY_API_PASSWORD
+        // };
+
+        // const response = await axios.get(url, { auth });
+        // return response.data.orders;
+        const response = {
+            data: {
+                orders: [
+                    { 
+                        id: 1001, 
+                        customer: { first_name: "John", last_name: "Doe" }, 
+                        total_price: "150.00", 
+                        financial_status: "Paid"
+                    },
+                    { 
+                        id: 1002, 
+                        customer: { first_name: "Jane", last_name: "Smith" }, 
+                        total_price: "200.00", 
+                        financial_status: "Pending"
+                    },
+                    { 
+                        id: 1003, 
+                        customer: { first_name: "Alice", last_name: "Johnson" }, 
+                        total_price: "350.00", 
+                        financial_status: "Refunded"
+                    },
+                ]
+            }
+        };
+
+        return response.data.orders;
+    } catch(error){
+        console.error('Error fetching recent orders:', error);
         throw error;
     }
 };

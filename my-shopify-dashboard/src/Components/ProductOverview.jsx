@@ -3,7 +3,7 @@ import { useQuery } from 'react-query';
 import { fetchProducts } from '../Services/api'; // Replace './api' with the actual path
 import { CircularProgress, Card, CardContent, Typography, Grid, Box } from '@mui/material';
 
-export const ProductOverview = () => {
+const ProductOverview = () => {
     const { data: products, isLoading, isError } = useQuery('products', fetchProducts);
 
     if (isLoading) {
@@ -33,3 +33,6 @@ export const ProductOverview = () => {
         </Box>
     );
 };
+
+
+export default ProductOverview;

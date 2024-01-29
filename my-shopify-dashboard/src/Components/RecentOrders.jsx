@@ -5,10 +5,16 @@ import { fetchRecentOrders } from '../Services/api';
 
 const RecentOrders = () => {
     const { data, isLoading, isError, error } = useQuery('Recent Orders', fetchRecentOrders);
+    console.log("Whats in here?", data)
+
     if (isLoading){
         return <Box style={{ padding: '20px', margin: '10px' }}>< CircularProgress /></Box>;
     } 
+
     if (isError) return <Box style={{ padding: '20px', margin: '10px' }}>Error: {error.message}</Box>;
+    
+    // Check if data.orders is an array before mapping
+    const orders = Array.isArray(data?.orders) ? data.orders : [];
     return (
         <Card style={{ minHeight: '13.5rem' }}>
             <Box style={{ padding: '20px', margin: '10px' }}>
@@ -23,7 +29,7 @@ const RecentOrders = () => {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {data && data.orders.map(order => (
+                    {data.map(order => (
                         <TableRow key={order.id}>
                             <TableCell>{order.id}</TableCell>
                             <TableCell>{order.customer && order.customer.first_name} {order.customer && order.customer.last_name}</TableCell>

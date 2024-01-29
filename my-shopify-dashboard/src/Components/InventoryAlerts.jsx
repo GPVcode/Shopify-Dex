@@ -18,7 +18,7 @@ const InventoryAlerts = () => {
                     <TableRow>
                       <TableCell>Product Name</TableCell>
                       <TableCell>SKU</TableCell>
-                      <TableCell>Stock Level</TableCell>
+                      <TableCell>Stock</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>

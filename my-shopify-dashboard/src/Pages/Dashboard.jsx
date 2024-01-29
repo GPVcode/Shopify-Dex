@@ -6,7 +6,7 @@ import 'chart.js/auto';
 import TotalRevenue from '../Components/TotalRevenue.jsx';
 import RecentOrders from '../Components/RecentOrders.jsx';
 import InventoryAlerts from '../Components/InventoryAlerts.jsx';
-import { ProductOverview } from '../Components/PrroductOverview.jsx';
+import ProductOverview from '../Components/ProductOverview.jsx';
 
 
 const Dashboard = () => {
