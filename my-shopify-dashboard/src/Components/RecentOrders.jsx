@@ -1,6 +1,23 @@
 import React, { useState } from 'react';
 import { useQuery } from 'react-query';
-import { CircularProgress, Box, Table, TableHead, TableRow, TableCell, TableBody, Typography, TablePagination } from '@mui/material';
+import { 
+    CircularProgress, 
+    Box, 
+    Table, 
+    TableHead, 
+    TableRow, 
+    TableCell, 
+    TableBody, 
+    Typography, 
+    TablePagination
+} from '@mui/material';
+import {
+    CheckCircle,
+    HighlightOff, 
+    Schedule, 
+    Info
+} from '@mui/icons-material';
+import Tooltip from '@mui/material/Tooltip';
 import { fetchRecentOrders } from '../Services/api';
 
 const RecentOrders = () => {
@@ -38,6 +55,19 @@ const RecentOrders = () => {
         return items.map(item => `${item.title} (x${item.quantity})`).join(', ');
     };
 
+    const getStatusIcon = (status) => {
+    switch (status) {
+        case 'Paid':
+            return <CheckCircle style={{ color: 'green' }} />;
+        case 'Refunded':
+            return <HighlightOff style={{ color: 'red' }} />;
+        case 'Pending':
+            return <Schedule style={{ color: 'orange' }} />;
+        default:
+            return <Info />;
+    }
+};
+
 
     // Check if data.orders is an array before mapping
     return (
@@ -60,7 +90,11 @@ const RecentOrders = () => {
                             <TableCell>{order.id}</TableCell>
                             <TableCell>{order.customer.first_name} {order.customer.last_name}</TableCell>
                             <TableCell>${order.total_price}</TableCell>
-                            <TableCell>{order.financial_status}</TableCell>
+                            <TableCell>
+                                <Tooltip title={order.financial_status}>
+                                    {getStatusIcon(order.financial_status)}
+                                </Tooltip>
+                            </TableCell>
                             <TableCell>{order.order_date}</TableCell>
                             <TableCell>{formatItemsOrdered(order.line_items)}</TableCell>
                         </TableRow>
