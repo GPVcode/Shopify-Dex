@@ -1,7 +1,7 @@
 import React from 'react'
 import { fetchInventoryAlerts } from '../Services/api'
 import { useQuery } from 'react-query';
-import { CircularProgress, Card, Box, Table, TableHead, TableRow, TableCell, TableBody, Typography } from '@mui/material';
+import { CircularProgress, Box, Table, TableHead, TableRow, TableCell, TableBody, Typography } from '@mui/material';
 
 const InventoryAlerts = () => {
   const { data, isLoading, isError, error } = useQuery('Inventory Alerts', fetchInventoryAlerts);
@@ -10,7 +10,6 @@ const InventoryAlerts = () => {
   } 
   if (isError) return <Box style={{ padding: '20px', margin: '10px' }}>Error: {error.message}</Box>;
   return (
-      <Card style={{ minHeight: '13.5rem' }}>
         <Box style={{ padding: '20px', margin: '10px' }}>
             <Typography variant="h5">Inventory Alerts</Typography>
             <Table>
@@ -38,7 +37,6 @@ const InventoryAlerts = () => {
                 </TableBody>
             </Table>
             </ Box>
-        </Card>
   )
 }
 

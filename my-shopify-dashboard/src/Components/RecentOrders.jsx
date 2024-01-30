@@ -1,11 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useQuery } from 'react-query';
-import { CircularProgress, Card, Box, Table, TableHead, TableRow, TableCell, TableBody, Typography } from '@mui/material';
+import { CircularProgress, Box, Table, TableHead, TableRow, TableCell, TableBody, Typography, TablePagination } from '@mui/material';
 import { fetchRecentOrders } from '../Services/api';
 
 const RecentOrders = () => {
-    const { data, isLoading, isError, error } = useQuery('Recent Orders', fetchRecentOrders);
-    console.log("Whats in here?", data)
+
+    const [page, setPage] = useState(0); // Zero-based page index
+    const [rowsPerPage, setRowsPerPage] = useState(5);
+
+    const { data, isLoading, isError, error } = useQuery(['Recent Orders', page, rowsPerPage], () => fetchRecentOrders(page + 1, rowsPerPage), {
+        keepPreviousData: true,
+    });
 
     if (isLoading){
         return <Box style={{ padding: '20px', margin: '10px' }}>< CircularProgress /></Box>;
@@ -13,34 +18,64 @@ const RecentOrders = () => {
 
     if (isError) return <Box style={{ padding: '20px', margin: '10px' }}>Error: {error.message}</Box>;
     
+    const handleChangePage = (event, newPage) => {
+        setPage(newPage);
+    };
+
+    const handleChangeRowsPerPage = event => {
+        setRowsPerPage(parseInt(event.target.value, 10));
+        setPage(0);
+    };
+    
+    // Helper function to format items ordered
+    const formatItemsOrdered = (items) => {
+        if (!items) {
+            // Return an empty string or a default value if items is undefined or null
+            return '';
+        }
+        console.log("WHAT'S IN THE item? ", items)
+
+        return items.map(item => `${item.title} (x${item.quantity})`).join(', ');
+    };
+
+
     // Check if data.orders is an array before mapping
-    const orders = Array.isArray(data?.orders) ? data.orders : [];
     return (
-        <Card style={{ minHeight: '13.5rem' }}>
             <Box style={{ padding: '20px', margin: '10px' }}>
-            <Typography variant="h5">Recent Orders</Typography>
-            <Table>
-                <TableHead>
-                    <TableRow>
+                <Typography variant="h5">Recent Orders</Typography>
+                <Table>
+                    <TableHead>
+                        <TableRow>
                         <TableCell>Order ID</TableCell>
                         <TableCell>Customer</TableCell>
                         <TableCell>Total Price</TableCell>
-                        <TableCell>Status</TableCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {data.map(order => (
+                        <TableCell>Payment Status</TableCell>
+                        <TableCell>Order Date</TableCell>
+                        <TableCell>Items Ordered</TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                    {data.orders && data.orders.map(order => (
                         <TableRow key={order.id}>
                             <TableCell>{order.id}</TableCell>
-                            <TableCell>{order.customer && order.customer.first_name} {order.customer && order.customer.last_name}</TableCell>
+                            <TableCell>{order.customer.first_name} {order.customer.last_name}</TableCell>
                             <TableCell>${order.total_price}</TableCell>
                             <TableCell>{order.financial_status}</TableCell>
+                            <TableCell>{order.order_date}</TableCell>
+                            <TableCell>{formatItemsOrdered(order.line_items)}</TableCell>
                         </TableRow>
                     ))}
-                </TableBody>
-            </Table>
+                    </TableBody>
+                </Table>
+                <TablePagination
+                    component="div"
+                    count={data.total}
+                    page={page}
+                    rowsPerPage={rowsPerPage}
+                    onRowsPerPageChange={handleChangeRowsPerPage}
+                    onPageChange={handleChangePage}
+                />
             </Box>
-        </Card>
     );
 }
 

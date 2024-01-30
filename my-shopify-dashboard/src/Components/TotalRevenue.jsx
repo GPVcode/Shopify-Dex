@@ -1,6 +1,6 @@
 import React from 'react';
 import { useQuery } from 'react-query';
-import { CircularProgress, Card, Box, Typography } from '@mui/material';
+import { CircularProgress, Box, Typography } from '@mui/material';
 import { fetchTotalRevenue } from '../Services/api';
 
 function TotalRevenue() {
@@ -10,7 +10,6 @@ function TotalRevenue() {
     } 
     if (isError) return <Box style={{ padding: '20px', margin: '10px' }}>Error: {error.message}</Box>;
     return (
-        <Card style={{ minHeight: '13.5rem' }}>
             <Box style={{ padding: '20px', margin: '10px' }}>
             <Typography variant="h5">Total Revenue</Typography>
             {data && data.totalRevenue != null ? (
@@ -20,10 +19,7 @@ function TotalRevenue() {
             ) : (
                 <Typography variant='subtitle1'>No Revenue Data Available</Typography>
             )}
-            </Box>
-        </Card>
-        
-
+            </Box>        
     );
 }
 

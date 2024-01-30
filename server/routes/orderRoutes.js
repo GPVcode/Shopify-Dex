@@ -1,8 +1,9 @@
 import express from 'express';
 const router = express.Router();
-import { fetchTotalRevenue, fetchRecentOrders } from '../utils/shopifyAPI.js';
+import { fetchTotalRevenue, fetchRecentOrders, fetchAllOrdersCount } from '../utils/shopifyAPI.js';
 
 router.get('/total-revenue', async (req, res) => {
+
     try{
         const totalRevenue = await fetchTotalRevenue();
         res.json({ totalRevenue });
@@ -12,9 +13,18 @@ router.get('/total-revenue', async (req, res) => {
 });
 
 router.get('/recent-orders', async (req, res) => {
+
     try{
-        const orders = await fetchRecentOrders();
-        res.json({ orders });
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit) || 5;
+
+        const orders = await fetchRecentOrders(page, limit);
+
+        const totalOrdersCount = await fetchAllOrdersCount(); 
+        res.json({ 
+            orders: orders,
+            total: totalOrdersCount
+        });
     } catch(error){
         res.status(500).json({ message: 'Error fetching recent orders.'})
     }

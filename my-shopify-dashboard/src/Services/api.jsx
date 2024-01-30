@@ -3,11 +3,9 @@ import axios from 'axios';
 const API_URL = `http://localhost:5000/api`
 
 export const fetchTotalRevenue = async () => {
-    
     try {
         // be courteous to user, use timeout.
         const response = await axios.get(`${API_URL}/total-revenue`, { timeout: 5000 });
-
         // GPV, validate your data
         if (response.data && typeof response.data.totalRevenue === 'number') {
             return response.data;
@@ -15,22 +13,29 @@ export const fetchTotalRevenue = async () => {
             console.error("Invalid data format received:", response.data);
             return { error: "Invalid data format" };
         }
-
     } catch (error) {
         console.error('Error feteching total revenue:', error);
         return { error: "Failed to fetch data" };
     }
-
 };
 
-export const fetchRecentOrders = async () => {
+export const fetchRecentOrders = async (page = 1, limit = 5) => {
     try {
-        const response = await axios.get(`${API_URL}/recent-orders`, { timeout: 5000 });
-        console.log("2222FRONTTT:", response.data.orders)
+        const response = await axios.get(`${API_URL}/recent-orders`, { 
+            params: {
+                page: page,
+                limit: limit,
+            },
+            timeout: 5000
+        });
 
         if (response.data && Array.isArray(response.data.orders)) {
-            console.log("HELOOOOOOOO: ", response.data.orders)
-            return response.data.orders;
+            return {
+                orders: response.data.orders,
+                total: response.data.total, // Assuming backend returns the total number of orders
+                page,
+                limit
+            };
         } else {
             console.error("Invalid data format received:", response.data);
             return { error: "Invalid data format" };
