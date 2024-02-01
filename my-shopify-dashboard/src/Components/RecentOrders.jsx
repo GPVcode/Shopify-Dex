@@ -56,17 +56,23 @@ const RecentOrders = () => {
     };
 
     const getStatusIcon = (status) => {
-    switch (status) {
-        case 'Paid':
-            return <CheckCircle style={{ color: 'green' }} />;
-        case 'Refunded':
-            return <HighlightOff style={{ color: 'red' }} />;
-        case 'Pending':
-            return <Schedule style={{ color: 'orange' }} />;
-        default:
-            return <Info />;
-    }
-};
+        switch (status) {
+            case 'Paid':
+                return <CheckCircle style={{ color: 'green' }} />;
+            case 'Refunded':
+                return <HighlightOff style={{ color: 'red' }} />;
+            case 'Pending':
+                return <Schedule style={{ color: 'orange' }} />;
+            default:
+                return <Info />;
+        }
+    };
+
+    const cellStyle = {
+        textAlign: 'center',
+        alignItems: 'center',
+        justifyContent: 'center'
+    };
 
 
     // Check if data.orders is an array before mapping
@@ -76,27 +82,27 @@ const RecentOrders = () => {
                 <Table>
                     <TableHead>
                         <TableRow>
-                        <TableCell>Order ID</TableCell>
-                        <TableCell>Customer</TableCell>
-                        <TableCell>Total Price</TableCell>
-                        <TableCell>Payment Status</TableCell>
-                        <TableCell>Order Date</TableCell>
-                        <TableCell>Items Ordered</TableCell>
+                        <TableCell style={cellStyle}>Order ID</TableCell>
+                        <TableCell style={cellStyle}>Customer</TableCell>
+                        <TableCell style={cellStyle}>Total Price</TableCell>
+                        <TableCell style={cellStyle}>Order Date</TableCell>
+                        <TableCell style={cellStyle}>Items Ordered</TableCell>
+                        <TableCell style={cellStyle}>Payment Status</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
                     {data.orders && data.orders.map(order => (
                         <TableRow key={order.id}>
-                            <TableCell>{order.id}</TableCell>
-                            <TableCell>{order.customer.first_name} {order.customer.last_name}</TableCell>
-                            <TableCell>${order.total_price}</TableCell>
-                            <TableCell>
+                            <TableCell style={cellStyle}>{order.id}</TableCell>
+                            <TableCell style={cellStyle}>{order.customer.first_name} {order.customer.last_name}</TableCell>
+                            <TableCell style={cellStyle}>${order.total_price}</TableCell>            
+                            <TableCell style={cellStyle}>{order.order_date}</TableCell>
+                            <TableCell style={cellStyle}>{formatItemsOrdered(order.line_items)}</TableCell>
+                            <TableCell style={cellStyle}>
                                 <Tooltip title={order.financial_status}>
                                     {getStatusIcon(order.financial_status)}
                                 </Tooltip>
                             </TableCell>
-                            <TableCell>{order.order_date}</TableCell>
-                            <TableCell>{formatItemsOrdered(order.line_items)}</TableCell>
                         </TableRow>
                     ))}
                     </TableBody>

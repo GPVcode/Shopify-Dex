@@ -4,7 +4,7 @@ import axios from 'axios';
 const { SHOP_URL, SHOPIFY_API_KEY, SHOPIFY_API_PASSWORD } = process.env;
 
 // Mimicking Shopify API response
-const response = {
+const ordersResponse = {
     orders: [
         {
             id: 1011,
@@ -225,6 +225,79 @@ const response = {
         }
     ]
 };
+const inventoryAlertsResponse = {
+    inventory: [
+      {
+        product_id: 3011,
+        title: "Widget X",
+        sku: "WX-001",
+        stock: 10,
+        reorder_level: 15,
+        supplier_name: "Widgets Co",
+        last_ordered_date: "2024-01-12",
+        lead_time_days: 7,
+        projected_runout_date: "2024-02-01",
+        variant_title: "Standard",
+        trend_indicator: "stable"
+      },
+      {
+        product_id: 3012,
+        title: "Widget Y",
+        sku: "WY-002",
+        stock: 5,
+        reorder_level: 10,
+        supplier_name: "Widgets Co",
+        last_ordered_date: "2024-01-11",
+        lead_time_days: 5,
+        projected_runout_date: "2024-01-30",
+        variant_title: "Deluxe",
+        trend_indicator: "decreasing"
+      },
+      {
+        product_id: 3013,
+        title: "Widget Z",
+        sku: "WZ-003",
+        stock: 2,
+        reorder_level: 8,
+        supplier_name: "Widgets Co",
+        last_ordered_date: "2024-01-10",
+        lead_time_days: 10,
+        projected_runout_date: "2024-01-25",
+        variant_title: "Advanced",
+        trend_indicator: "critical"
+      },
+      {
+        product_id: 3017,
+        title: "Widget C",
+        sku: "WC-004",
+        stock: 20,
+        reorder_level: 10,
+        supplier_name: "Eco Widgets Ltd",
+        last_ordered_date: "2024-01-14",
+        lead_time_days: 4,
+        projected_runout_date: "2024-02-10",
+        variant_title: "Eco-Friendly",
+        trend_indicator: "stable"
+      },
+      {
+        product_id: 3022,
+        title: "Widget H",
+        sku: "WH-005",
+        stock: 25,
+        reorder_level: 15,
+        supplier_name: "High-Tech Widgets Inc",
+        last_ordered_date: "2024-01-18",
+        lead_time_days: 7,
+        projected_runout_date: "2024-02-15",
+        variant_title: "Standard",
+        trend_indicator: "increasing"
+      }
+    ],
+    user_preferences: {
+      visible_columns: ["title", "sku", "stock", "reorder_level", "supplier_name", "last_ordered_date", "lead_time_days", "projected_runout_date", "trend_indicator"]
+    }
+  };
+  
 
 export const fetchTotalRevenue = async (req, res, next) => {
     try {
@@ -234,12 +307,12 @@ export const fetchTotalRevenue = async (req, res, next) => {
         //     password: SHOPIFY_API_PASSWORD
         // };
 
-        // const response = await axios.get(url, { auth });
-        // const orders = response.data.orders;
+        // const ordersResponse = await axios.get(url, { auth });
+        // const orders = ordersResponse.data.orders;
 
         // let totalRevenue = orders.reduce((sum, order) => sum + parseFloat(order.total_price), 0);
         // return totalRevenue;
-        const orders = response.orders;
+        const orders = ordersResponse.orders;
         let totalRevenue = 0;
         orders.forEach(order => {
             totalRevenue += parseFloat(order.total_price);
@@ -260,29 +333,13 @@ export const fetchRecentOrders = async (page, limit) => {
         //     password: SHOPIFY_API_PASSWORD
         // };
 
-        // const response = await axios.get(url, { auth });
-        // return response.data.orders;
-        // const response = {
-        //     data: {
-        //         orders: [
-        //             { id: 1011, customer: { first_name: "Alice", last_name: "Brown" }, total_price: "120.00", financial_status: "Paid", order_date: "2024-01-10", items_ordered: [{ name: "Widget X", quantity: 1 }] },
-        //             { id: 1012, customer: { first_name: "Bob", last_name: "Davis" }, total_price: "250.00", financial_status: "Pending", order_date: "2024-01-11", items_ordered: [{ name: "Widget Y", quantity: 2 }] },
-        //             { id: 1013, customer: { first_name: "Carol", last_name: "Evans" }, total_price: "180.00", financial_status: "Paid", order_date: "2024-01-12", items_ordered: [{ name: "Widget Z", quantity: 3 }] },
-        //             { id: 1014, customer: { first_name: "David", last_name: "Green" }, total_price: "90.00", financial_status: "Refunded", order_date: "2024-01-13", items_ordered: [{ name: "Widget A", quantity: 1 }] },
-        //             { id: 1015, customer: { first_name: "Eve", last_name: "Harris" }, total_price: "200.00", financial_status: "Paid", order_date: "2024-01-14", items_ordered: [{ name: "Widget B", quantity: 2 }] },
-        //             { id: 1016, customer: { first_name: "Frank", last_name: "Ivy" }, total_price: "300.00", financial_status: "Pending", order_date: "2024-01-15", items_ordered: [{ name: "Widget C", quantity: 3 }] },
-        //             { id: 1017, customer: { first_name: "Grace", last_name: "Jones" }, total_price: "150.00", financial_status: "Paid", order_date: "2024-01-16", items_ordered: [{ name: "Widget D", quantity: 1 }] },
-        //             { id: 1018, customer: { first_name: "Henry", last_name: "Klein" }, total_price: "280.00", financial_status: "Refunded", order_date: "2024-01-17", items_ordered: [{ name: "Widget E", quantity: 2 }] },
-        //             { id: 1019, customer: { first_name: "Ivy", last_name: "Lopez" }, total_price: "310.00", financial_status: "Paid", order_date: "2024-01-18", items_ordered: [{ name: "Widget F", quantity: 3 }] },
-        //             { id: 1020, customer: { first_name: "Jack", last_name: "Moore" }, total_price: "85.00", financial_status: "Pending", order_date: "2024-01-19", items_ordered: [{ name: "Widget G", quantity: 1 }] }
-        //         ]
-        //     }
-        // };
+        // const ordersResponse = await axios.get(url, { auth });
+        // return ordersResponse.data.orders;
 
         const startIndex = (page - 1) * limit;
         const endIndex = page * limit;
         
-        const paginatedOrders = response.orders.slice(startIndex, endIndex)
+        const paginatedOrders = ordersResponse.orders.slice(startIndex, endIndex)
         return paginatedOrders;
     } catch(error){
         console.error('Error fetching recent orders:', error);
@@ -292,7 +349,7 @@ export const fetchRecentOrders = async (page, limit) => {
 
 export const fetchAllOrdersCount = async () => {
     try {
-        return response.orders.length;
+        return ordersResponse.orders.length;
     } catch (error){
         console.error('Error fetching total order count:', error);
         throw error;
