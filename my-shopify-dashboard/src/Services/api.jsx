@@ -51,22 +51,31 @@ export const fetchRecentOrders = async (page = 1, limit = 5) => {
 // Function to fetch inventory alerts
 export const fetchInventoryAlerts = async () => {
     try {
-        const response = await new Promise((resolve) => {
-            setTimeout(() => {
-            // Dummy data for low-stock inventory items
-            const dummyInventoryData = [
-                { id: '1', productName: 'Classic White T-Shirt', sku: 'CWT-001', stockLevel: 5, lowStockThreshold: 10 },
-                { id: '2', productName: 'Black Denim Jeans', sku: 'BDJ-002', stockLevel: 3, lowStockThreshold: 10 },
-                { id: '3', productName: 'Red Woolen Hat', sku: 'RWH-003', stockLevel: 2, lowStockThreshold: 5 },
-                { id: '4', productName: 'Blue Canvas Shoes', sku: 'BCS-004', stockLevel: 4, lowStockThreshold: 5 },
-                { id: '5', productName: 'Leather Wristwatch', sku: 'LWW-005', stockLevel: 6, lowStockThreshold: 10 }
-                ];
-            resolve(dummyInventoryData);
-            }, 1000);
-        });
+        const response = await axios.get(`${API_URL}/inventory-alerts`, { timeout: 5000 }); // 5000ms timeout
 
-        const lowStockItems = response.filter(item => item.stockLevel <= item.lowStockThreshold);
-        return lowStockItems;
+        // Basic Data Validation
+        if (!Array.isArray(response.data)) {
+            throw new Error("Invalid data format received");
+        }
+
+        const validatedData = response.data.filter(item => 
+            item.hasOwnProperty('product_id') &&
+            item.hasOwnProperty('title') &&
+            item.hasOwnProperty('sku') &&
+            item.hasOwnProperty('stock') &&
+            item.hasOwnProperty('reorder_level') &&
+            item.hasOwnProperty('supplier_name') &&
+            item.hasOwnProperty('last_ordered_date') &&
+            item.hasOwnProperty('lead_time_days') &&
+            item.hasOwnProperty('projected_runout_date') &&
+            item.hasOwnProperty('variant_title') &&
+            item.hasOwnProperty('trend_indicator')
+        );
+
+
+        console.log("HEERRROROOO!! ", validatedData)
+
+        return validatedData;
     } catch (error) {
       console.error('Error fetching inventory alerts:', error);
       return { error: "Failed to fetch data" };

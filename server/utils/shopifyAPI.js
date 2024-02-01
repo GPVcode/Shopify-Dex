@@ -348,10 +348,35 @@ export const fetchRecentOrders = async (page, limit) => {
 };
 
 export const fetchAllOrdersCount = async () => {
+
     try {
         return ordersResponse.orders.length;
     } catch (error){
         console.error('Error fetching total order count:', error);
         throw error;
     }
-}
+};
+
+// Simulate fetching inventory data (assuming you'll replace it with actual Shopify API calls)
+export const fetchInventoryAlerts = async () => {
+
+    try {
+        // Placeholder for Shopify API call
+        // const url = `https://${process.env.SHOP_URL}/admin/api/2024-01/products.json`;
+        // const auth = {
+        //     username: process.env.SHOPIFY_API_KEY,
+        //     password: process.env.SHOPIFY_API_PASSWORD
+        // };
+        // const response = await axios.get(url, { auth });
+        // const products = response.data.products;
+
+        // Simulate filtering for low-stock items based on the reorder level
+        const lowStockItems = inventoryAlertsResponse.inventory.filter(item => item.stock <= item.reorder_level);
+
+        // Return filtered products
+        return lowStockItems;
+    } catch (error) {
+        console.error('Error fetching inventory alerts:', error);
+        throw error;
+    }
+};

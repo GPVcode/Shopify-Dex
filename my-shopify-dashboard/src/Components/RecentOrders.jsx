@@ -23,7 +23,7 @@ import { fetchRecentOrders } from '../Services/api';
 const RecentOrders = () => {
 
     const [page, setPage] = useState(0); // Zero-based page index
-    const [rowsPerPage, setRowsPerPage] = useState(5);
+    const [rowsPerPage, setRowsPerPage] = useState(10);
 
     const { data, isLoading, isError, error } = useQuery(['Recent Orders', page, rowsPerPage], () => fetchRecentOrders(page + 1, rowsPerPage), {
         keepPreviousData: true,
@@ -50,7 +50,6 @@ const RecentOrders = () => {
             // Return an empty string or a default value if items is undefined or null
             return '';
         }
-        console.log("WHAT'S IN THE item? ", items)
 
         return items.map(item => `${item.title} (x${item.quantity})`).join(', ');
     };
