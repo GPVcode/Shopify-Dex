@@ -9,6 +9,7 @@ import {
     TableCell, 
     TableBody, 
     Typography, 
+    TableFooter,
     TablePagination
 } from '@mui/material';
 import {
@@ -23,7 +24,7 @@ import { fetchRecentOrders } from '../Services/api';
 const RecentOrders = () => {
 
     const [page, setPage] = useState(0); // Zero-based page index
-    const [rowsPerPage, setRowsPerPage] = useState(10);
+    const [rowsPerPage, setRowsPerPage] = useState(5);
 
     const { data, isLoading, isError, error } = useQuery(['Recent Orders', page, rowsPerPage], () => fetchRecentOrders(page + 1, rowsPerPage), {
         keepPreviousData: true,
@@ -40,7 +41,7 @@ const RecentOrders = () => {
     };
 
     const handleChangeRowsPerPage = event => {
-        setRowsPerPage(parseInt(event.target.value, 10));
+        setRowsPerPage(parseInt(event.target.value, 5));
         setPage(0);
     };
     
@@ -86,7 +87,7 @@ const RecentOrders = () => {
                         <TableCell style={cellStyle}>Total Price</TableCell>
                         <TableCell style={cellStyle}>Order Date</TableCell>
                         <TableCell style={cellStyle}>Items Ordered</TableCell>
-                        <TableCell style={cellStyle}>Payment Status</TableCell>
+                         <TableCell style={cellStyle}>Payment Status</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -105,15 +106,20 @@ const RecentOrders = () => {
                         </TableRow>
                     ))}
                     </TableBody>
+                    <TableFooter>
+                        <TableRow>
+                        <TablePagination
+                            rowsPerPageOptions={[5, 10, 25]}
+                            count={data.total}
+                            page={page}
+                            rowsPerPage={rowsPerPage}
+                            onPageChange={handleChangePage}
+                            onRowsPerPageChange={handleChangeRowsPerPage}
+                        />
+                        </TableRow>
+                    </TableFooter>
                 </Table>
-                <TablePagination
-                    component="div"
-                    count={data.total}
-                    page={page}
-                    rowsPerPage={rowsPerPage}
-                    onRowsPerPageChange={handleChangeRowsPerPage}
-                    onPageChange={handleChangePage}
-                />
+                
             </Box>
     );
 }

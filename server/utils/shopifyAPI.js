@@ -225,78 +225,95 @@ const ordersResponse = {
         }
     ]
 };
-const inventoryAlertsResponse = {
-    inventory: [
+const inventoryResponse = {
+    "inventory": [
       {
-        product_id: 3011,
-        title: "Widget X",
-        sku: "WX-001",
-        stock: 10,
-        reorder_level: 15,
-        supplier_name: "Widgets Co",
-        last_ordered_date: "2024-01-12",
-        lead_time_days: 7,
-        projected_runout_date: "2024-02-01",
-        variant_title: "Standard",
-        trend_indicator: "stable"
+        "product_id": 3011,
+        "title": "Widget X",
+        "sku": "WX-001",
+        "stock": 10,
+        "reorder_level": 15,
+        "supplier_name": "Widgets Co",
+        "last_ordered_date": "2024-01-12",
+        "lead_time_days": 7,
+        "projected_runout_date": "2024-02-01",
+        "variant_title": "Standard",
+        "sales_velocity": "2",
+        "profit_margin": "30%"
       },
       {
-        product_id: 3012,
-        title: "Widget Y",
-        sku: "WY-002",
-        stock: 5,
-        reorder_level: 10,
-        supplier_name: "Widgets Co",
-        last_ordered_date: "2024-01-11",
-        lead_time_days: 5,
-        projected_runout_date: "2024-01-30",
-        variant_title: "Deluxe",
-        trend_indicator: "decreasing"
+        "product_id": 3012,
+        "title": "Widget Y",
+        "sku": "WY-002",
+        "stock": 5,
+        "reorder_level": 10,
+        "supplier_name": "Widgets Co",
+        "last_ordered_date": "2024-01-11",
+        "lead_time_days": 5,
+        "projected_runout_date": "2024-01-30",
+        "variant_title": "Deluxe",
+        "sales_velocity": "1.5",
+        "profit_margin": "25%"
       },
       {
-        product_id: 3013,
-        title: "Widget Z",
-        sku: "WZ-003",
-        stock: 2,
-        reorder_level: 8,
-        supplier_name: "Widgets Co",
-        last_ordered_date: "2024-01-10",
-        lead_time_days: 10,
-        projected_runout_date: "2024-01-25",
-        variant_title: "Advanced",
-        trend_indicator: "critical"
+        "product_id": 3013,
+        "title": "Widget Z",
+        "sku": "WZ-003",
+        "stock": 2,
+        "reorder_level": 8,
+        "supplier_name": "Widgets Co",
+        "last_ordered_date": "2024-01-10",
+        "lead_time_days": 10,
+        "projected_runout_date": "2024-01-25",
+        "variant_title": "Advanced",
+        "sales_velocity": "0.5",
+        "profit_margin": "40%"
       },
       {
-        product_id: 3017,
-        title: "Widget C",
-        sku: "WC-004",
-        stock: 20,
-        reorder_level: 10,
-        supplier_name: "Eco Widgets Ltd",
-        last_ordered_date: "2024-01-14",
-        lead_time_days: 4,
-        projected_runout_date: "2024-02-10",
-        variant_title: "Eco-Friendly",
-        trend_indicator: "stable"
+        "product_id": 3017,
+        "title": "Widget C",
+        "sku": "WC-004",
+        "stock": 20,
+        "reorder_level": 10,
+        "supplier_name": "Eco Widgets Ltd",
+        "last_ordered_date": "2024-01-14",
+        "lead_time_days": 4,
+        "projected_runout_date": "2024-02-10",
+        "variant_title": "Eco-Friendly",
+        "sales_velocity": "3",
+        "profit_margin": "20%"
       },
       {
-        product_id: 3022,
-        title: "Widget H",
-        sku: "WH-005",
-        stock: 25,
-        reorder_level: 15,
-        supplier_name: "High-Tech Widgets Inc",
-        last_ordered_date: "2024-01-18",
-        lead_time_days: 7,
-        projected_runout_date: "2024-02-15",
-        variant_title: "Standard",
-        trend_indicator: "increasing"
+        "product_id": 3022,
+        "title": "Widget H",
+        "sku": "WH-005",
+        "stock": 25,
+        "reorder_level": 15,
+        "supplier_name": "High-Tech Widgets Inc",
+        "last_ordered_date": "2024-01-18",
+        "lead_time_days": 7,
+        "projected_runout_date": "2024-02-15",
+        "variant_title": "Standard",
+        "sales_velocity": "2.5",
+        "profit_margin": "35%"
       }
     ],
-    user_preferences: {
-      visible_columns: ["title", "sku", "stock", "reorder_level", "supplier_name", "last_ordered_date", "lead_time_days", "projected_runout_date", "trend_indicator"]
+    "user_preferences": {
+      "visible_columns": [
+        "title",
+        "sku",
+        "stock",
+        "reorder_level",
+        "supplier_name",
+        "last_ordered_date",
+        "lead_time_days",
+        "projected_runout_date",
+        "sales_velocity",
+        "profit_margin"
+      ]
     }
-  };
+} 
+
   
 
 export const fetchTotalRevenue = async (req, res, next) => {
@@ -358,7 +375,7 @@ export const fetchAllOrdersCount = async () => {
 };
 
 // Simulate fetching inventory data (assuming you'll replace it with actual Shopify API calls)
-export const fetchInventoryAlerts = async () => {
+export const fetchInventoryAlerts = async (page = 1, limit = 5) => {
 
     try {
         // Placeholder for Shopify API call
@@ -371,12 +388,60 @@ export const fetchInventoryAlerts = async () => {
         // const products = response.data.products;
 
         // Simulate filtering for low-stock items based on the reorder level
-        const lowStockItems = inventoryAlertsResponse.inventory.filter(item => item.stock <= item.reorder_level);
+        const startIndex = (page - 1) * limit;
+        const endIndex = page * limit;
+        const lowStockItems = inventoryResponse.inventory
+            .filter(item => item.stock <= item.reorder_level)
+            .slice(startIndex, endIndex);
 
-        // Return filtered products
-        return lowStockItems;
+        // Simulate total count for headers (e.g., for 'X-Total-Count' response header)
+        const total = inventoryResponse.inventory.filter(item => item.stock <= item.reorder_level).length;
+
+        // Return filtered and paginated products along with total count.
+        return {
+            items: lowStockItems,
+            total,
+            page,
+            limit,
+        };
     } catch (error) {
         console.error('Error fetching inventory alerts:', error);
+        throw error;// Simulate total count for headers (e.g., for 'X-Total-Count' response header)        
+    }
+};
+
+export const fetchProductsOverview = async (queryParameters) => {
+    try {
+        const { page = 1, limit = 5 } = queryParameters;
+        const startIndex = (page - 1) * limit;
+        const endIndex = page * limit;
+
+        // Assuming inventoryResponse is updated to include sales_velocity and profit_margin
+        const detailedProducts = inventoryResponse.inventory.slice(startIndex, endIndex).map(item => ({
+            product_id: item.product_id,
+            title: item.title,
+            sku: item.sku,
+            stock: item.stock,
+            reorder_level: item.reorder_level,
+            supplier_name: item.supplier_name,
+            last_ordered_date: item.last_ordered_date,
+            lead_time_days: item.lead_time_days,
+            projected_runout_date: item.projected_runout_date,
+            sales_velocity: item.sales_velocity,
+            profit_margin: item.profit_margin,
+        }));
+
+        // Adjusted to focus on detailed product data without trend aggregation
+        const total = inventoryResponse.inventory.length;
+
+        return {
+            detailedProducts,
+            total,
+            page,
+            limit,
+        };
+    } catch (error) {
+        console.error('Error fetching products overview:', error);
         throw error;
     }
 };

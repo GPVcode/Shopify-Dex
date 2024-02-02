@@ -14,7 +14,7 @@ app.use(cors());
 
 // Routes
 app.use('/api', revenueRoutes);
-app.use('/api', productRoutes)
+app.use('/api/products', productRoutes)
 app.listen(port, () => {
     console.log(`Listening on port: ${port}`)
 });

@@ -1,43 +1,80 @@
-import React from 'react';
-import { FormGroup, FormControlLabel, Checkbox } from '@mui/material';
+import React, { useState } from 'react';
+import { Button, Dialog, DialogTitle, DialogContent, DialogActions, FormControl, InputLabel, Select, Checkbox, MenuItem, ListItemText, OutlinedInput, IconButton } from '@mui/material';
+import SettingsIcon from '@mui/icons-material/Settings';
+
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+  PaperProps: {
+    style: {
+      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+      width: 250,
+    },
+  },
+};
 
 const ColumnPreferences = ({ availableColumns, userPreferences, setUserPreferences }) => {
-  
-    const handleChange = (event) => {
-        const { name, checked } = event.target;
-    
-        setUserPreferences((prevPreferences) => {
-            // Get the current list of visible columns
-            const currentColumns = prevPreferences.visible_columns;
-    
-            let updatedColumns;
-            if (checked) {
-                // If the checkbox is checked, add the column name to the list
-                updatedColumns = [...currentColumns, name];
-            } else {
-                // If the checkbox is unchecked, remove the column name from the list
-                updatedColumns = currentColumns.filter(columnName => columnName !== name);
-            }
-    
-            // Return the updated preferences
-            return {
-                ...prevPreferences,
-                visible_columns: updatedColumns
-            };
-        });
-    };
-    
+  const [open, setOpen] = useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleChange = (event) => {
+    const {
+      target: { value },
+    } = event;
+    setUserPreferences((prevPreferences) => ({
+      ...prevPreferences,
+      visible_columns: typeof value === 'string' ? value.split(',') : value,
+    }));
+  };
 
   return (
-    <FormGroup>
-      {availableColumns.map(column => (
-        <FormControlLabel
-          key={column.id}
-          control={<Checkbox checked={userPreferences.visible_columns.includes(column.id)} onChange={handleChange} name={column.id} />}
-          label={column.label}
-        />
-      ))}
-    </FormGroup>
+    <div>
+      <IconButton 
+        variant="outlined" 
+        color="primary" 
+        onClick={() => handleClickOpen()}
+        size="small"
+      >
+        <SettingsIcon  />
+      </IconButton>
+      
+      <Dialog open={open} onClose={handleClose}>
+        <DialogTitle>Choose Columns</DialogTitle>
+        <DialogContent>
+          <FormControl sx={{ m: 1, width: 300 }}>
+            <InputLabel id="column-checkbox-label">Columns</InputLabel>
+            <Select
+              labelId="column-checkbox-label"
+              id="column-checkbox"
+              multiple
+              value={userPreferences.visible_columns}
+              onChange={handleChange}
+              input={<OutlinedInput label="Column Preferences" />}
+              renderValue={(selected) => selected.map(id => availableColumns.find(column => column.id === id).label).join(', ')}
+              MenuProps={MenuProps}
+            >
+              {availableColumns.map((column) => (
+                <MenuItem key={column.id} value={column.id}>
+                  <Checkbox checked={userPreferences.visible_columns.includes(column.id)} />
+                  <ListItemText primary={column.label} />
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose}>Cancel</Button>
+          <Button onClick={handleClose}>OK</Button>
+        </DialogActions>
+      </Dialog>
+    </div>
   );
 };
 
