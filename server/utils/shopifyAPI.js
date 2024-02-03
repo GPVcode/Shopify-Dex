@@ -190,7 +190,7 @@ const ordersResponse = {
             email: "ivy@example.com",
             total_price: "500.00",
             financial_status: "Paid",
-            order_date: "2024-01-18",
+            order_date: "2024-02-18",
             customer: { first_name: "Ivy", last_name: "Lopez" },
             line_items: [
                 {
@@ -209,7 +209,7 @@ const ordersResponse = {
             email: "jack@example.com",
             total_price: "340.00",
             financial_status: "Pending",
-            order_date: "2024-01-19",
+            order_date: "2024-03-19",
             customer: { first_name: "Jack", last_name: "Moore" },
             line_items: [
                 {
@@ -330,15 +330,25 @@ export const fetchTotalRevenue = async (req, res, next) => {
         // let totalRevenue = orders.reduce((sum, order) => sum + parseFloat(order.total_price), 0);
         // return totalRevenue;
         const orders = ordersResponse.orders;
-        let totalRevenue = 0;
-        orders.forEach(order => {
-            totalRevenue += parseFloat(order.total_price);
-        });
 
-        return totalRevenue;
+        let monthlyRevenue = orders.reduce((acc, order) => {
+            const month = new Date(order.order_date).getMonth() + 1; // JavaScript months are 0-based.
+            const year = new Date(order.order_date).getFullYear();
+            const monthYear = `${year}-${month.toString().padStart(2, '0')}`;
+
+            if (order.financial_status === "Paid") { // Consider only paid orders
+                acc[monthYear] = (acc[monthYear] || 0) + parseFloat(order.total_price);
+            }
+            
+            return acc;
+        }, {});
+
+        const totalRevenue = Object.values(monthlyRevenue).reduce((sum, revenue) => sum + revenue, 0);
+
+        return { totalRevenue, monthlyRevenue };
     } catch (error) {
-        console.error('Error fetching total revenue:', error);
-        throw error;
+        console.error('Error fetching monthly revenue:', error);
+        res.status(500).json({ message: 'Error fetching monthly revenue.' });
     }
 };
 

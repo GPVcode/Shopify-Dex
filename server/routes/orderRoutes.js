@@ -5,8 +5,11 @@ import { fetchTotalRevenue, fetchRecentOrders, fetchAllOrdersCount } from '../ut
 router.get('/total-revenue', async (req, res) => {
 
     try{
-        const totalRevenue = await fetchTotalRevenue();
-        res.json({ totalRevenue });
+        const { totalRevenue, monthlyRevenue } = await fetchTotalRevenue();
+        console.log("REVVVV: ", totalRevenue)
+        console.log("MUNNNTH: ", monthlyRevenue)
+
+        res.json({ totalRevenue, monthlyRevenue });
     } catch(error){
         res.status(500).json({ message: 'Error fetching total revenue.'})
     }
