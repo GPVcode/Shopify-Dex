@@ -137,6 +137,11 @@ const InventoryAlerts = () => {
                         page={page}
                         onPageChange={handleChangePage}
                         onRowsPerPageChange={handleChangeRowsPerPage}
+                        sx={{
+                          '.MuiTablePagination-selectLabel, .MuiTablePagination-displayedRows, .MuiTablePagination-select, .MuiTablePagination-actions': {
+                            fontSize: '0.68rem',
+                          },
+                        }}
                       />
                     </TableRow>
                     

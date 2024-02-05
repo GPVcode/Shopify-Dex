@@ -13,28 +13,27 @@ const Dashboard = () => {
     <div style={{ padding: '20px' }}>
       <Grid container spacing={3}>
         <Grid item xs={12} md={3}>
-          <Card style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+          <Card style={{ height: '100%', maxHeight: '500px', display: 'flex', flexDirection: 'column', overflow: 'auto' }}>
             <TotalRevenue />
           </Card>
         </Grid>
         <Grid item xs={12} md={6}>
-          <Card style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+          <Card style={{ height: '100%', maxHeight: '500px', display: 'flex', flexDirection: 'column', overflow: 'auto' }}>
             <RecentOrders />
           </Card>
         </Grid>
         <Grid item xs={12} md={3}>
-          <Card style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+          <Card style={{ height: '100%', maxHeight: '500px', display: 'flex', flexDirection: 'column', overflow: 'auto' }}>
             <InventoryAlerts />
           </Card>
         </Grid>
         <Grid item xs={12} md={6}>
-          <Card style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+          <Card style={{ height: '100%', maxHeight: '500px', display: 'flex', flexDirection: 'column', overflow: 'auto' }}>
             <ProductOverview />
           </Card>
         </Grid>
         <Grid item xs={12} md={3}>
-          <Card style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-            <TotalRevenue />
+          <Card style={{height: '100%',  maxHeight: '500px', display: 'flex', flexDirection: 'column', overflow: 'auto' }}>
           </Card>
         </Grid>
       </Grid>

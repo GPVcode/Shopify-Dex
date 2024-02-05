@@ -36,6 +36,16 @@ const RecentOrders = () => {
 
     if (isError) return <Box style={{ padding: '20px', margin: '10px' }}>Error: {error.message}</Box>;
     
+
+    const formatDate = (dateString) => {
+        const date = new Date(dateString);
+        return date.toLocaleDateString('en-US', { // You can adjust the locale and options
+            month: 'short', // "Jan", "Feb", etc.
+            day: '2-digit', // "01", "02", etc.
+            year: 'numeric', // "2024"
+        });
+    };
+
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
     };
@@ -48,7 +58,6 @@ const RecentOrders = () => {
     // Helper function to format items ordered
     const formatItemsOrdered = (items) => {
         if (!items) {
-            // Return an empty string or a default value if items is undefined or null
             return '';
         }
 
@@ -77,7 +86,27 @@ const RecentOrders = () => {
 
     // Check if data.orders is an array before mapping
     return (
-            <Box style={{ padding: '20px', margin: '10px' }}>
+            <Box 
+                style={{ padding: '20px', margin: '10px' }}
+                sx={{
+                    overflowY: 'auto',
+                    maxHeight: '500px', // Example max height
+                    '&::-webkit-scrollbar': {
+                      width: '10px',
+                    },
+                    '&::-webkit-scrollbar-track': {
+                      boxShadow: 'inset 0 0 5px grey',
+                      borderRadius: '10px',
+                    },
+                    '&::-webkit-scrollbar-thumb': {
+                      background: 'darkgrey',
+                      borderRadius: '10px',
+                    },
+                    '&::-webkit-scrollbar-thumb:hover': {
+                      background: '#3f9068',
+                    },
+                  }}
+            >
                 <Typography variant="h5">Recent Orders</Typography>
                 <Table>
                     <TableHead>
@@ -96,7 +125,7 @@ const RecentOrders = () => {
                             <TableCell style={cellStyle}>{order.id}</TableCell>
                             <TableCell style={cellStyle}>{order.customer.first_name} {order.customer.last_name}</TableCell>
                             <TableCell style={cellStyle}>${order.total_price}</TableCell>            
-                            <TableCell style={cellStyle}>{order.order_date}</TableCell>
+                            <TableCell style={cellStyle}>{formatDate(order.order_date)}</TableCell>
                             <TableCell style={cellStyle}>{formatItemsOrdered(order.line_items)}</TableCell>
                             <TableCell style={cellStyle}>
                                 <Tooltip title={order.financial_status}>
@@ -115,6 +144,11 @@ const RecentOrders = () => {
                             rowsPerPage={rowsPerPage}
                             onPageChange={handleChangePage}
                             onRowsPerPageChange={handleChangeRowsPerPage}
+                            sx={{
+                                '.MuiTablePagination-selectLabel, .MuiTablePagination-displayedRows, .MuiTablePagination-select, .MuiTablePagination-actions': {
+                                  fontSize: '0.68rem',
+                                },
+                            }}
                         />
                         </TableRow>
                     </TableFooter>

@@ -29,8 +29,8 @@ const ordersResponse = {
             id: 1012,
             email: "bob@example.com",
             total_price: "450.00",
-            financial_status: "Pending",
-            order_date: "2024-01-11",
+            financial_status: "Paid",
+            order_date: "2024-01-20",
             customer: { first_name: "Bob", last_name: "Davis" },
             line_items: [
                 {
@@ -58,7 +58,7 @@ const ordersResponse = {
             email: "carol@example.com",
             total_price: "180.00",
             financial_status: "Refunded",
-            order_date: "2024-01-12",
+            order_date: "2024-02-05",
             customer: { first_name: "Carol", last_name: "Evans" },
             line_items: [
                 {
@@ -77,7 +77,7 @@ const ordersResponse = {
             email: "david@example.com",
             total_price: "210.00",
             financial_status: "Paid",
-            order_date: "2024-01-13",
+            order_date: "2024-02-15",
             customer: { first_name: "David", last_name: "Green" },
             line_items: [
                 {
@@ -104,8 +104,8 @@ const ordersResponse = {
             id: 1015,
             email: "eve@example.com",
             total_price: "300.00",
-            financial_status: "Pending",
-            order_date: "2024-01-14",
+            financial_status: "Paid",
+            order_date: "2024-03-10",
             customer: { first_name: "Eve", last_name: "Harris" },
             line_items: [
                 {
@@ -124,7 +124,7 @@ const ordersResponse = {
             email: "frank@example.com",
             total_price: "150.00",
             financial_status: "Paid",
-            order_date: "2024-01-15",
+            order_date: "2024-03-20",
             customer: { first_name: "Frank", last_name: "Ivy" },
             line_items: [
                 {
@@ -143,7 +143,7 @@ const ordersResponse = {
             email: "grace@example.com",
             total_price: "400.00",
             financial_status: "Paid",
-            order_date: "2024-01-16",
+            order_date: "2024-02-16",
             customer: { first_name: "Grace", last_name: "Jones" },
             line_items: [
                 {
@@ -189,7 +189,7 @@ const ordersResponse = {
             id: 1019,
             email: "ivy@example.com",
             total_price: "500.00",
-            financial_status: "Paid",
+            financial_status: "Pending",
             order_date: "2024-02-18",
             customer: { first_name: "Ivy", last_name: "Lopez" },
             line_items: [
@@ -208,7 +208,7 @@ const ordersResponse = {
             id: 1020,
             email: "jack@example.com",
             total_price: "340.00",
-            financial_status: "Pending",
+            financial_status: "Paid",
             order_date: "2024-03-19",
             customer: { first_name: "Jack", last_name: "Moore" },
             line_items: [

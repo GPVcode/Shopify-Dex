@@ -6,6 +6,8 @@ export const fetchTotalRevenue = async () => {
     try {
         // be courteous to user, use timeout.
         const response = await axios.get(`${API_URL}/total-revenue`, { timeout: 5000 });
+
+        console.log("YESSS! ", response)
         // GPV, validate your data
         if (response.data && typeof response.data.totalRevenue === 'number') {
             return response.data;
@@ -57,6 +59,8 @@ export const fetchInventoryAlerts = async (page = 1, limit = 5) => {
         if (!response.data || !Array.isArray(response.data.items)) {
             throw new Error("Invalid pagination data format received");
         }
+
+        console.log("fetchInventoryAlerts: ", response)
 
         return {
             items: response.data.items, 
