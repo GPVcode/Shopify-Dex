@@ -6,8 +6,6 @@ export const fetchTotalRevenue = async () => {
     try {
         // be courteous to user, use timeout.
         const response = await axios.get(`${API_URL}/total-revenue`, { timeout: 5000 });
-
-        console.log("YESSS! ", response)
         // GPV, validate your data
         if (response.data && typeof response.data.totalRevenue === 'number') {
             return response.data;
@@ -48,8 +46,6 @@ export const fetchRecentOrders = async (page = 1, limit = 5) => {
     }
 };
 
-
-
 // Function to fetch inventory alerts
 export const fetchInventoryAlerts = async (page = 1, limit = 5) => {
     try {
@@ -59,8 +55,6 @@ export const fetchInventoryAlerts = async (page = 1, limit = 5) => {
         if (!response.data || !Array.isArray(response.data.items)) {
             throw new Error("Invalid pagination data format received");
         }
-
-        console.log("fetchInventoryAlerts: ", response)
 
         return {
             items: response.data.items, 
@@ -93,9 +87,6 @@ export const fetchProductsOverview = async (page = 1, limit = 5) => {
             throw new Error('Missing or invalid fields in response data');
         }
 
-        // Log the response for debugging
-        console.log("Fetched products overview: ", response.data);
-
         // Return the validated data
         return { detailedProducts, total, currentPage, currentLimit };
     } catch (error) {
@@ -116,5 +107,17 @@ export const fetchProductsOverview = async (page = 1, limit = 5) => {
             console.error('Error setting up request:', error.message);
             throw new Error(error.message);
         }
+    }
+};
+
+// Define the function to fetch traffic sources from the backend
+export const fetchTrafficSources = async () => {
+    try {
+        const response = await axios.get(`${API_URL}/traffic-sources`);
+
+        return response.data.traffic_sources;
+    } catch (error) {
+        console.error('There was a problem fetching the traffic sources:', error);
+        throw error; // Or handle this more gracefully in your UI
     }
 };

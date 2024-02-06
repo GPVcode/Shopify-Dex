@@ -23,6 +23,15 @@ const getTrendIndicatorIcon = (trendIndicator) => {
   }
 };
 
+// Function to calculate the trend_indicator
+const calculateTrendIndicator = (stock, reorderLevel) => {
+  if (stock < reorderLevel) return 'critical';
+  if (stock === reorderLevel) return 'stable';
+  const percentageAboveReorderLevel = (stock - reorderLevel) / reorderLevel;
+  if (percentageAboveReorderLevel <= 0.1) return 'decreasing';
+  return 'increasing';
+};
+
 const handleOrderClick = (product) => {
   console.log('Ordering process for:', product);
 };
@@ -59,9 +68,15 @@ const InventoryAlerts = () => {
   } 
   if (isError) return <Box style={{ padding: '20px', margin: '10px' }}>Error: {error.message}</Box>;
   
-  // Assuming inventory is part of the data
+  // Assuming inventory is part of the data. This is for UX (give empty instead of error in event there is no data)
   const inventory = data?.items || [];
   const totalCount = data?.total || 0;
+
+  // Calculate trend_indicator for each inventory item
+  const inventoryWithTrend = inventory.map(item => ({
+    ...item,
+    trend_indicator: calculateTrendIndicator(item.stock, item.reorder_level),
+  }));
 
   // Define the columns for preferences
   const availableColumns = [
@@ -104,7 +119,7 @@ const InventoryAlerts = () => {
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                  {inventory.map((item, index) => (
+                  {inventoryWithTrend.map((item, index) => (
                     <TableRow key={index}>
                       {availableColumns.map(column => (
                         userPreferences.visible_columns.includes(column.id) &&

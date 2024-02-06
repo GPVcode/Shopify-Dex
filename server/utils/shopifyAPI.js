@@ -313,8 +313,26 @@ const inventoryResponse = {
       ]
     }
 } 
-
-  
+const trafficDataResponse = {
+    "traffic_sources": [
+      {
+        "source": "Web",
+        "visits": 1200
+      },
+      {
+        "source": "Mobile",
+        "visits": 800
+      },
+      {
+        "source": "Social",
+        "visits": 600
+      },
+      {
+        "source": "Email",
+        "visits": 400
+      }
+    ]
+  };
 
 export const fetchTotalRevenue = async (req, res, next) => {
     try {
@@ -336,7 +354,7 @@ export const fetchTotalRevenue = async (req, res, next) => {
             const year = new Date(order.order_date).getFullYear();
             const monthYear = `${year}-${month.toString().padStart(2, '0')}`;
 
-            if (order.financial_status === "Paid") { // Consider only paid orders
+            if (order.financial_status === "Paid") { 
                 acc[monthYear] = (acc[monthYear] || 0) + parseFloat(order.total_price);
             }
             
@@ -384,7 +402,6 @@ export const fetchAllOrdersCount = async () => {
     }
 };
 
-// Simulate fetching inventory data (assuming you'll replace it with actual Shopify API calls)
 export const fetchInventoryAlerts = async (page = 1, limit = 5) => {
 
     try {
@@ -455,3 +472,13 @@ export const fetchProductsOverview = async (queryParameters) => {
         throw error;
     }
 };
+
+export const fetchTrafficSources = async () => {
+    try {
+      const response = trafficDataResponse;
+      return response;
+    } catch (error) {
+      console.error('There was a problem fetching the traffic sources:', error);
+    }
+};
+  

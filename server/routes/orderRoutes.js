@@ -1,13 +1,11 @@
 import express from 'express';
 const router = express.Router();
-import { fetchTotalRevenue, fetchRecentOrders, fetchAllOrdersCount } from '../utils/shopifyAPI.js';
+import { fetchTotalRevenue, fetchRecentOrders, fetchAllOrdersCount, fetchTrafficSources } from '../utils/shopifyAPI.js';
 
 router.get('/total-revenue', async (req, res) => {
 
     try{
         const { totalRevenue, monthlyRevenue } = await fetchTotalRevenue();
-        console.log("REVVVV: ", totalRevenue)
-        console.log("MUNNNTH: ", monthlyRevenue)
 
         res.json({ totalRevenue, monthlyRevenue });
     } catch(error){
@@ -30,6 +28,17 @@ router.get('/recent-orders', async (req, res) => {
         });
     } catch(error){
         res.status(500).json({ message: 'Error fetching recent orders.'})
+    }
+});
+
+router.get('/traffic-sources', async (req, res) => {
+
+    try{
+        const trafficSources = await fetchTrafficSources();
+        console.log("HAAAA: ", trafficSources)
+        res.json( trafficSources );
+    } catch(error){
+        res.status(500).json({ message: 'Error fetching total revenue.'})
     }
 });
 

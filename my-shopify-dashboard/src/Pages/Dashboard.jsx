@@ -5,7 +5,7 @@ import TotalRevenue from '../Components/TotalRevenue.jsx';
 import RecentOrders from '../Components/RecentOrders.jsx';
 import InventoryAlerts from '../Components/InventoryAlerts.jsx';
 import ProductOverview from '../Components/ProductOverview.jsx';
-
+import TrafficSourcesPieChart from '../Components/TrafficSources.jsx';
 
 const Dashboard = () => {
 
@@ -34,6 +34,7 @@ const Dashboard = () => {
         </Grid>
         <Grid item xs={12} md={3}>
           <Card style={{height: '100%',  maxHeight: '500px', display: 'flex', flexDirection: 'column', overflow: 'auto' }}>
+          <TrafficSourcesPieChart />
           </Card>
         </Grid>
       </Grid>
