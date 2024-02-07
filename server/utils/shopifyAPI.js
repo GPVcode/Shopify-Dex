@@ -697,3 +697,49 @@ export const fetchCustomerInsights = async ({ page = 1, limit = 5 }) => {
       throw error;
     }
 };
+
+export const fetchProductPerformance = async () => {
+  try {
+      const productSales = {};
+
+      // Aggregate sales volume and revenue from orders
+      ordersResponse.orders.forEach(order => {
+          order.line_items.forEach(item => {
+            // if its the first time seeing the product, set up tracker for salesVolumen, revenue, returns and returned revenue keys
+              if (!productSales[item.variant_id]) {
+                  productSales[item.variant_id] = { salesVolume: 0, revenue: 0, returns: 0, returnedRevenue: 0 };
+              }
+              //  add product sold to total count and calculate revenue
+              productSales[item.variant_id].salesVolume += item.quantity;
+              productSales[item.variant_id].revenue += item.quantity * parseFloat(item.price);
+              // handle refunds quantitu and returne revenue
+              if (order.financial_status === "Refunded") {
+                  productSales[item.variant_id].returns += item.quantity;
+                  productSales[item.variant_id].returnedRevenue += item.quantity * parseFloat(item.price);
+              }
+          });
+      });
+
+      // Merge with inventory data for profit margins and calculate return rates
+      const productsPerformance = inventoryResponse.inventory.map(product => {
+          const salesInfo = productSales[product.product_id] || {};
+          const returnRate = salesInfo.returns ? (salesInfo.returns / salesInfo.salesVolume) * 100 : 0;
+          const profitMargin = ((salesInfo.revenue - salesInfo.returnedRevenue) * parseFloat(product.profit_margin) / 100).toFixed(2);
+          return {
+              productId: product.product_id,
+              title: product.title,
+              salesVolume: salesInfo.salesVolume || 0,
+              revenue: (salesInfo.revenue - salesInfo.returnedRevenue).toFixed(2),
+              profitMargin: `${profitMargin}%`,
+              returnRate: `${returnRate.toFixed(2)}%`
+          };
+      });
+
+      return productsPerformance;
+  } catch (error) {
+      console.error('Error fetching product performance:', error);
+      throw error;
+  }
+};
+
+fetchProductPerformance();

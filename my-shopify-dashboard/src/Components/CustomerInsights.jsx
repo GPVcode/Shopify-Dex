@@ -66,9 +66,9 @@ const CustomerInsights = () => {
             <Table>
                 <TableHead>
                     <TableRow>
+                        <TableCell>Status</TableCell>
                         <TableCell>Customer Name</TableCell>
                         <TableCell>Email</TableCell>
-                        <TableCell>Status</TableCell>
                         <TableCell>Orders Count</TableCell>
                         <TableCell>Total Spent</TableCell>
                     </TableRow>
@@ -76,9 +76,9 @@ const CustomerInsights = () => {
                 <TableBody>
                 {data?.customers.map(customer => (
                     <TableRow key={customer.id}>
+                        <TableCell>{customer.customer_status}</TableCell>
                         <TableCell>{customer.first_name} {customer.last_name}</TableCell>
                         <TableCell>{customer.email}</TableCell>
-                        <TableCell>{customer.customer_status}</TableCell>
                         <TableCell>{customer.orders_count}</TableCell>
                         <TableCell>${customer.total_spent}</TableCell>
                     </TableRow>

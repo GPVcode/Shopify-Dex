@@ -147,3 +147,21 @@ export const fetchCustomerInsights = async (page = 1, limit = 5) => {
         return { error: "Failed to fetch data" };
     }
 };
+
+export const fetchProductPerformance = async () => {
+    try {
+        const response = await axios.get(`${API_URL}/product-performance`, { timeout: 5000 });
+        console.log("HELLOOOO: ", response)
+        if (response.data && Array.isArray(response.data)) {
+            return response.data;
+        } else {
+            console.error("Invalid data format received:", response.data);
+            return { error: "Invalid data format" };
+        }
+    } catch (error) {
+        console.error('Error fetching product performance:', error);
+        return { error: "Failed to fetch data" };
+    }
+};
+
+fetchProductPerformance();

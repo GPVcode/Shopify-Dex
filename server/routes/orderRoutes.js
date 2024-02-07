@@ -1,6 +1,12 @@
 import express from 'express';
 const router = express.Router();
-import { fetchTotalRevenue, fetchRecentOrders, fetchAllOrdersCount, fetchTrafficSources } from '../utils/shopifyAPI.js';
+import { 
+    fetchTotalRevenue, 
+    fetchRecentOrders, 
+    fetchAllOrdersCount, 
+    fetchTrafficSources,
+    fetchProductPerformance
+} from '../utils/shopifyAPI.js';
 
 router.get('/total-revenue', async (req, res) => {
     try{
@@ -36,5 +42,13 @@ router.get('/traffic-sources', async (req, res) => {
     }
 });
 
-
+router.get('/product-performance', async (req, res) => {
+    try {
+        const productPerformanceData = await fetchProductPerformance();
+        res.json(productPerformanceData);
+    } catch (error) {
+        console.error('Failed to fetch product performance:', error);
+        res.status(500).json({ message: 'Error fetching product performance.' });
+    }
+});
 export default router;
