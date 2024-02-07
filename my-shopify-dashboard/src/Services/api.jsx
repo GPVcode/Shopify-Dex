@@ -121,3 +121,29 @@ export const fetchTrafficSources = async () => {
         throw error; // Or handle this more gracefully in your UI
     }
 };
+
+export const fetchCustomerInsights = async (page = 1, limit = 5) => {
+    try {
+        const response = await axios.get(`${API_URL}/customers/customer-insights`, {
+            params: { page, limit },
+            timeout: 5000,
+        });
+
+        // Basic Data Validation
+        if (response.data && typeof response.data === 'object' && Array.isArray(response.data.customers)) {
+            return {
+                customers: response.data.customers,
+                total: response.data.total,
+                page: response.data.page,
+                limit: response.data.limit,
+                totalPages: response.data.totalPages
+            };
+        } else {
+            console.error("Invalid data format received:", response.data);
+            return { error: "Invalid data format" };
+        }
+    } catch (error) {
+        console.error('There was a problem fetching customer insights:', error);
+        return { error: "Failed to fetch data" };
+    }
+};

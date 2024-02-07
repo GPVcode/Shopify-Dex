@@ -312,7 +312,7 @@ const inventoryResponse = {
         "profit_margin"
       ]
     }
-} 
+};
 const trafficDataResponse = {
     "traffic_sources": [
       {
@@ -332,7 +332,206 @@ const trafficDataResponse = {
         "visits": 400
       }
     ]
-  };
+};
+const customersResponse = {
+  "customers": [
+    {
+      "id": 1001,
+      "email": "john.doe@example.com",
+      "first_name": "John",
+      "last_name": "Doe",
+      "created_at": "2024-01-01T12:00:00Z",
+      "orders_count": 2,
+      "total_spent": "200.00",
+      "city": "Anytown",
+      "province": "California",
+      "country": "United States",
+      "customer_status": "Returning"
+    },
+    {
+      "id": 1002,
+      "email": "jane.doe@example.com",
+      "first_name": "Jane",
+      "last_name": "Doe",
+      "created_at": "2024-03-15T12:00:00Z",
+      "orders_count": 1,
+      "total_spent": "100.00",
+      "city": "Anytown",
+      "province": "California",
+      "country": "United States",
+      "customer_status": "New"
+    },
+    {
+      "id": 1003,
+      "email": "alice.johnson@example.com",
+      "first_name": "Alice",
+      "last_name": "Johnson",
+      "created_at": "2024-02-20T12:00:00Z",
+      "orders_count": 3,
+      "total_spent": "450.00",
+      "city": "Springfield",
+      "province": "Illinois",
+      "country": "United States",
+      "customer_status": "Returning"
+    },
+    {
+      "id": 1004,
+      "email": "bob.smith@example.com",
+      "first_name": "Bob",
+      "last_name": "Smith",
+      "created_at": "2024-02-11T12:00:00Z",
+      "orders_count": 4,
+      "total_spent": "600.00",
+      "city": "Centerville",
+      "province": "Iowa",
+      "country": "United States",
+      "customer_status": "High-Value"
+    },
+    {
+      "id": 1005,
+      "email": "carol.williams@example.com",
+      "first_name": "Carol",
+      "last_name": "Williams",
+      "created_at": "2023-12-25T12:00:00Z",
+      "orders_count": 1,
+      "total_spent": "150.00",
+      "city": "Smalltown",
+      "province": "Texas",
+      "country": "United States",
+      "customer_status": "New"
+    },
+    {
+      "id": 1006,
+      "email": "david.brown@example.com",
+      "first_name": "David",
+      "last_name": "Brown",
+      "created_at": "2024-01-10T12:00:00Z",
+      "orders_count": 5,
+      "total_spent": "1200.00",
+      "city": "Laketown",
+      "province": "Minnesota",
+      "country": "United States",
+      "customer_status": "High-Value"
+    },
+    {
+      "id": 1007,
+      "email": "eve.davis@example.com",
+      "first_name": "Eve",
+      "last_name": "Davis",
+      "created_at": "2024-03-01T12:00:00Z",
+      "orders_count": 2,
+      "total_spent": "300.00",
+      "city": "Hill Valley",
+      "province": "California",
+      "country": "United States",
+      "customer_status": "Returning"
+    },
+    {
+      "id": 1008,
+      "email": "frank.miller@example.com",
+      "first_name": "Frank",
+      "last_name": "Miller",
+      "created_at": "2024-01-20T12:00:00Z",
+      "orders_count": 3,
+      "total_spent": "750.00",
+      "city": "Metropolis",
+      "province": "New York",
+      "country": "United States",
+      "customer_status": "High-Value"
+    },
+    {
+      "id": 1009,
+      "email": "grace.wilson@example.com",
+      "first_name": "Grace",
+      "last_name": "Wilson",
+      "created_at": "2024-03-10T12:00:00Z",
+      "orders_count": 1,
+      "total_spent": "90.00",
+      "city": "Gotham",
+      "province": "New Jersey",
+      "country": "United States",
+      "customer_status": "New"
+    },
+    {
+      "id": 1010,
+      "email": "henry.king@example.com",
+      "first_name": "Henry",
+      "last_name": "King",
+      "created_at": "2024-01-05T12:00:00Z",
+      "orders_count": 1,
+      "total_spent": "60.00",
+      "city": "Riverdale",
+      "province": "Oregon",
+      "country": "United States",
+      "customer_status": "New"
+    },
+    {
+      "id": 1011,
+      "email": "isabel.young@example.com",
+      "first_name": "Isabel",
+      "last_name": "Young",
+      "created_at": "2024-02-28T12:00:00Z",
+      "orders_count": 2,
+      "total_spent": "320.00",
+      "city": "Star City",
+      "province": "Washington",
+      "country": "United States",
+      "customer_status": "Returning"
+    },
+    {
+      "id": 1012,
+      "email": "jacob.moore@example.com",
+      "first_name": "Jacob",
+      "last_name": "Moore",
+      "created_at": "2023-11-15T12:00:00Z",
+      "orders_count": 3,
+      "total_spent": "470.00",
+      "city": "Central City",
+      "province": "Missouri",
+      "country": "United States",
+      "customer_status": "Returning"
+    },
+    {
+      "id": 1013,
+      "email": "karen.hall@example.com",
+      "first_name": "Karen",
+      "last_name": "Hall",
+      "created_at": "2024-03-20T12:00:00Z",
+      "orders_count": 4,
+      "total_spent": "880.00",
+      "city": "National City",
+      "province": "Kansas",
+      "country": "United States",
+      "customer_status": "High-Value"
+    },
+    {
+      "id": 1014,
+      "email": "louis.carter@example.com",
+      "first_name": "Louis",
+      "last_name": "Carter",
+      "created_at": "2024-01-25T12:00:00Z",
+      "orders_count": 1,
+      "total_spent": "110.00",
+      "city": "Emerald City",
+      "province": "Nevada",
+      "country": "United States",
+      "customer_status": "New"
+    },
+    {
+      "id": 1015,
+      "email": "megan.brown@example.com",
+      "first_name": "Megan",
+      "last_name": "Brown",
+      "created_at": "2024-03-05T12:00:00Z",
+      "orders_count": 2,
+      "total_spent": "210.00",
+      "city": "Blüdhaven",
+      "province": "New Jersey",
+      "country": "United States",
+      "customer_status": "Returning"
+    }
+  ]
+};
 
 export const fetchTotalRevenue = async (req, res, next) => {
     try {
@@ -349,7 +548,7 @@ export const fetchTotalRevenue = async (req, res, next) => {
         // return totalRevenue;
         const orders = ordersResponse.orders;
 
-        let monthlyRevenue = orders.reduce((acc, order) => {
+        const monthlyRevenue = orders.reduce((acc, order) => {
             const month = new Date(order.order_date).getMonth() + 1; // JavaScript months are 0-based.
             const year = new Date(order.order_date).getFullYear();
             const monthYear = `${year}-${month.toString().padStart(2, '0')}`;
@@ -366,7 +565,7 @@ export const fetchTotalRevenue = async (req, res, next) => {
         return { totalRevenue, monthlyRevenue };
     } catch (error) {
         console.error('Error fetching monthly revenue:', error);
-        res.status(500).json({ message: 'Error fetching monthly revenue.' });
+        throw error;
     }
 };
 
@@ -382,7 +581,7 @@ export const fetchRecentOrders = async (page, limit) => {
         // return ordersResponse.data.orders;
 
         const startIndex = (page - 1) * limit;
-        const endIndex = page * limit;
+        const endIndex = startIndex + limit;
         
         const paginatedOrders = ordersResponse.orders.slice(startIndex, endIndex)
         return paginatedOrders;
@@ -416,15 +615,13 @@ export const fetchInventoryAlerts = async (page = 1, limit = 5) => {
 
         // Simulate filtering for low-stock items based on the reorder level
         const startIndex = (page - 1) * limit;
-        const endIndex = page * limit;
+        const endIndex = startIndex + limit;
         const lowStockItems = inventoryResponse.inventory
             .filter(item => item.stock <= item.reorder_level)
             .slice(startIndex, endIndex);
 
-        // Simulate total count for headers (e.g., for 'X-Total-Count' response header)
         const total = inventoryResponse.inventory.filter(item => item.stock <= item.reorder_level).length;
 
-        // Return filtered and paginated products along with total count.
         return {
             items: lowStockItems,
             total,
@@ -437,13 +634,11 @@ export const fetchInventoryAlerts = async (page = 1, limit = 5) => {
     }
 };
 
-export const fetchProductsOverview = async (queryParameters) => {
+export const fetchProductsOverview = async ({ page = 1, limit = 5 }) => {
     try {
-        const { page = 1, limit = 5 } = queryParameters;
         const startIndex = (page - 1) * limit;
-        const endIndex = page * limit;
+        const endIndex = startIndex + limit;
 
-        // Assuming inventoryResponse is updated to include sales_velocity and profit_margin
         const detailedProducts = inventoryResponse.inventory.slice(startIndex, endIndex).map(item => ({
             product_id: item.product_id,
             title: item.title,
@@ -458,7 +653,6 @@ export const fetchProductsOverview = async (queryParameters) => {
             profit_margin: item.profit_margin,
         }));
 
-        // Adjusted to focus on detailed product data without trend aggregation
         const total = inventoryResponse.inventory.length;
 
         return {
@@ -479,6 +673,27 @@ export const fetchTrafficSources = async () => {
       return response;
     } catch (error) {
       console.error('There was a problem fetching the traffic sources:', error);
+      throw error;
     }
 };
-  
+
+export const fetchCustomerInsights = async ({ page = 1, limit = 5 }) => {
+    try {
+        const startIndex = (page - 1) * limit;
+        const endIndex = startIndex + limit;
+
+        const totalCustomers = customersResponse.customers.length;
+        const paginatedCustomers = customersResponse.customers.slice(startIndex, endIndex);
+
+        return {
+            total: totalCustomers,
+            customers: paginatedCustomers,
+            page,
+            limit,
+            totalPages: Math.ceil(totalCustomers / limit)
+        };
+    } catch(error) {
+      console.error('There was a problem fetching customer insights:', error);
+      throw error;
+    }
+};

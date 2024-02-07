@@ -90,7 +90,7 @@ const RecentOrders = () => {
                 style={{ padding: '20px', margin: '10px' }}
                 sx={{
                     overflowY: 'auto',
-                    maxHeight: '500px', // Example max height
+                    maxHeight: '500px',
                     '&::-webkit-scrollbar': {
                       width: '10px',
                     },

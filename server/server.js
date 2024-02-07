@@ -2,8 +2,9 @@ import express, { json } from 'express';
 import cors from 'cors';
 import axios from 'axios';
 import qs from 'qs';
-import revenueRoutes from './routes/orderRoutes.js'
-import productRoutes from './routes/productRoutes.js'
+import revenueRoutes from './routes/orderRoutes.js';
+import productRoutes from './routes/productRoutes.js';
+import customerRoutes from './routes/customerRoutes.js';
 
 const app = express();
 const port = 5000;
@@ -15,6 +16,8 @@ app.use(cors());
 // Routes
 app.use('/api', revenueRoutes);
 app.use('/api/products', productRoutes)
+app.use('/api/customers', customerRoutes);
+
 app.listen(port, () => {
     console.log(`Listening on port: ${port}`)
 });
