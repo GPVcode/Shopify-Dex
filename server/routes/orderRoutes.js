@@ -10,8 +10,8 @@ import {
 
 router.get('/total-revenue', async (req, res) => {
     try{
-        const { totalRevenue, monthlyRevenue } = await fetchTotalRevenue();
-        res.json({ totalRevenue, monthlyRevenue });
+        const { totalRevenue, monthlyRevenue, dailyRevenue } = await fetchTotalRevenue();
+        res.json({ totalRevenue, monthlyRevenue, dailyRevenue });
     } catch(error){
         res.status(500).json({ message: 'Error fetching total revenue.'})
     }

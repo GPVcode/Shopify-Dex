@@ -534,39 +534,41 @@ const customersResponse = {
 };
 
 export const fetchTotalRevenue = async (req, res, next) => {
-    try {
-        // const url = `https://${SHOP_URL}/admin/api/2024-01/orders.json`;
-        // const auth = {
-        //     username: SHOPIFY_API_KEY,
-        //     password: SHOPIFY_API_PASSWORD
-        // };
+  try {
+      const orders = ordersResponse.orders;
 
-        // const ordersResponse = await axios.get(url, { auth });
-        // const orders = ordersResponse.data.orders;
+      const monthlyRevenue = {};
+      const dailyRevenue = {};
 
-        // let totalRevenue = orders.reduce((sum, order) => sum + parseFloat(order.total_price), 0);
-        // return totalRevenue;
-        const orders = ordersResponse.orders;
+      orders.forEach(order => {
+          if (order.financial_status === "Paid") {
+              const date = new Date(order.order_date);
+              const month = date.getMonth() + 1; // JavaScript months are 0-based.
+              const year = date.getFullYear();
+              const day = date.getDate();
+              const monthYearKey = `${year}-${month.toString().padStart(2, '0')}`;
+              const dailyKey = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
 
-        const monthlyRevenue = orders.reduce((acc, order) => {
-            const month = new Date(order.order_date).getMonth() + 1; // JavaScript months are 0-based.
-            const year = new Date(order.order_date).getFullYear();
-            const monthYear = `${year}-${month.toString().padStart(2, '0')}`;
+              // Accumulate monthly revenue
+              monthlyRevenue[monthYearKey] = (monthlyRevenue[monthYearKey] || 0) + parseFloat(order.total_price);
 
-            if (order.financial_status === "Paid") { 
-                acc[monthYear] = (acc[monthYear] || 0) + parseFloat(order.total_price);
-            }
-            
-            return acc;
-        }, {});
+              // Accumulate daily revenue
+              dailyRevenue[dailyKey] = (dailyRevenue[dailyKey] || 0) + parseFloat(order.total_price);
+          }
+      });
 
-        const totalRevenue = Object.values(monthlyRevenue).reduce((sum, revenue) => sum + revenue, 0);
+      const totalRevenue = Object.values(monthlyRevenue).reduce((sum, revenue) => sum + revenue, 0);
+      // Prepare and return the response with yearly (total), monthly, and daily revenue
+     return {
+          totalRevenue,
+          monthlyRevenue,
+          dailyRevenue
+      };
 
-        return { totalRevenue, monthlyRevenue };
-    } catch (error) {
-        console.error('Error fetching monthly revenue:', error);
-        throw error;
-    }
+  } catch (error) {
+      console.error('Error fetching revenue data:', error);
+      res.status(500).json({ message: 'Error fetching total revenue.' });
+  }
 };
 
 export const fetchRecentOrders = async (page, limit) => {

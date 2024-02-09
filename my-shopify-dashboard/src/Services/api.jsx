@@ -6,6 +6,7 @@ export const fetchTotalRevenue = async () => {
     try {
         // be courteous to user, use timeout.
         const response = await axios.get(`${API_URL}/total-revenue`, { timeout: 5000 });
+       console.log("TotalRevenueResponse: ", response)
         // GPV, validate your data
         if (response.data && typeof response.data.totalRevenue === 'number') {
             return response.data;
@@ -151,7 +152,6 @@ export const fetchCustomerInsights = async (page = 1, limit = 5) => {
 export const fetchProductPerformance = async () => {
     try {
         const response = await axios.get(`${API_URL}/product-performance`, { timeout: 5000 });
-        console.log("HELLOOOO: ", response)
         if (response.data && Array.isArray(response.data)) {
             return response.data;
         } else {
