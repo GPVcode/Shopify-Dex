@@ -18,9 +18,21 @@ function TotalRevenue() {
         setSelectedDay(event.target.value);
     };
 
-    // Generate a list of unique months and days for the selectors
     const months = data ? Object.keys(data.monthlyRevenue || {}) : [];
     const days = data ? Object.keys(data.dailyRevenue || {}) : [];
+
+    const revenueFigure = React.useMemo(() => {
+        switch (view) {
+            case 'total':
+                return data ? data.totalRevenue.toLocaleString() : '0';
+            case 'monthly':
+                return data && selectedMonth ? data.monthlyRevenue[selectedMonth].toLocaleString() : '0';
+            case 'daily':
+                return data && selectedDay ? (data.dailyRevenue[selectedDay] || 0).toLocaleString() : '0';
+            default:
+                return '0';
+        }
+    }, [data, view, selectedMonth, selectedDay]);
 
     const revenueData = React.useMemo(() => {
         switch (view) {
@@ -30,15 +42,12 @@ function TotalRevenue() {
                     revenue: data.monthlyRevenue[month]
                 }));
             case 'monthly':
-                // Filter daily revenue data for the selected month
-                const monthlyData = days.filter(day => day.includes(selectedMonth))
+                return days.filter(day => day.includes(selectedMonth))
                     .map(day => ({
                         time: day,
                         revenue: data.dailyRevenue[day]
                     }));
-                return monthlyData;
             case 'daily':
-                // Just a single data point for the selected day, but we need an array for the chart
                 return [{
                     time: selectedDay,
                     revenue: data.dailyRevenue[selectedDay] || 0
@@ -58,10 +67,16 @@ function TotalRevenue() {
     return (
         <Box style={{ padding: '20px', margin: '10px' }}>
             <Typography variant="h5">Total Revenue</Typography>
-            <ButtonGroup variant="contained" aria-label="outlined primary button group" style={{ marginBottom: '20px' }}>
-                <Button onClick={() => setView('total')}>Total</Button>
-                <Button onClick={() => setView('monthly')}>Monthly</Button>
-                <Button onClick={() => setView('daily')}>Daily</Button>
+            <ButtonGroup 
+                variant="text" 
+                aria-label="Basic button group" 
+                style={{ 
+                    marginTop: '15px' 
+                }}
+            >
+                <Button  onClick={() => setView('total')}>Total</Button>
+                <Button  onClick={() => setView('monthly')}>Monthly</Button>
+                <Button  onClick={() => setView('daily')}>Daily</Button>
             </ButtonGroup>
             {view === 'monthly' && (
                 <Select value={selectedMonth} onChange={handleMonthChange} displayEmpty>
@@ -77,6 +92,9 @@ function TotalRevenue() {
                     ))}
                 </Select>
             )}
+            <Typography variant="h4" sx={{ marginTop: '30px', marginBottom: '30px', fontWeight: 'bold' }}>
+                ${revenueFigure}
+            </Typography>
             <ResponsiveContainer width="100%" height={300}>
                 <LineChart data={revenueData} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
                     <CartesianGrid strokeDasharray="4 4" />
