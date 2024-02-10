@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useQuery } from 'react-query';
-import { CircularProgress, Box, Typography, ButtonGroup, Button, Select, MenuItem } from '@mui/material';
+import { CircularProgress, Box, Typography, ButtonGroup, Button, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { fetchTotalRevenue } from '../Services/api';
 
@@ -8,54 +8,54 @@ function TotalRevenue() {
     const { data, isLoading, isError, error } = useQuery('Total Revenue', fetchTotalRevenue);
     const [view, setView] = useState('total'); // 'total', 'monthly', or 'daily'
     const [selectedMonth, setSelectedMonth] = useState('');
-    const [selectedDay, setSelectedDay] = useState(new Date().toISOString().split('T')[0]); // Default to current day
+
+    const today = new Date().toISOString().split('T')[0]; // Get today's date in YYYY-MM-DD format
 
     const handleMonthChange = (event) => {
         setSelectedMonth(event.target.value);
     };
 
-    const handleDayChange = (event) => {
-        setSelectedDay(event.target.value);
-    };
-
     const months = data ? Object.keys(data.monthlyRevenue || {}) : [];
-    const days = data ? Object.keys(data.dailyRevenue || {}) : [];
 
-    const revenueFigure = React.useMemo(() => {
+    const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+    const formattedMonths = useMemo(() => months.map(month => {
+        const [year, monthIndex] = month.split('-');
+        return `${monthNames[parseInt(monthIndex, 10) - 1]} ${year}`;
+    }), [months]);
+
+    const revenueFigure = useMemo(() => {
         switch (view) {
             case 'total':
                 return data ? data.totalRevenue.toLocaleString() : '0';
             case 'monthly':
-                return data && selectedMonth ? data.monthlyRevenue[selectedMonth].toLocaleString() : '0';
+                return data && selectedMonth ? data.monthlyRevenue[Object.keys(data.monthlyRevenue)[formattedMonths.indexOf(selectedMonth)]].toLocaleString() : '0';
             case 'daily':
-                return data && selectedDay ? (data.dailyRevenue[selectedDay] || 0).toLocaleString() : '0';
+                return data && data.dailyRevenue && data.dailyRevenue[today] ? data.dailyRevenue[today].toLocaleString() : '0';
             default:
                 return '0';
         }
-    }, [data, view, selectedMonth, selectedDay]);
+    }, [data, view, selectedMonth, today, formattedMonths]);
 
-    const revenueData = React.useMemo(() => {
+    const revenueData = useMemo(() => {
         switch (view) {
             case 'total':
                 return months.map(month => ({
-                    time: month,
+                    time: monthNames[parseInt(month.split('-')[1], 10) - 1],
                     revenue: data.monthlyRevenue[month]
                 }));
             case 'monthly':
-                return days.filter(day => day.includes(selectedMonth))
-                    .map(day => ({
-                        time: day,
-                        revenue: data.dailyRevenue[day]
+                return Object.entries(data.dailyRevenue || {}).filter(([day]) => day.includes(selectedMonth))
+                    .map(([day, revenue]) => ({
+                        time: `${new Date(day).getDate()}`, // Just the day for the monthly view
+                        revenue
                     }));
             case 'daily':
-                return [{
-                    time: selectedDay,
-                    revenue: data.dailyRevenue[selectedDay] || 0
-                }];
+                return []; // No chart data needed for 'daily'
             default:
                 return [];
         }
-    }, [data, view, selectedMonth, selectedDay]);
+    }, [data, view, selectedMonth, today, formattedMonths, monthNames]);
 
     if (isLoading) {
         return <Box style={{ padding: '20px', margin: '10px' }}><CircularProgress /></Box>;
@@ -65,45 +65,64 @@ function TotalRevenue() {
     }
 
     return (
-        <Box style={{ padding: '20px', margin: '10px' }}>
+        <Box 
+            sx={{
+                padding: '20px',
+                margin: '10px',
+                overflowY: 'auto',
+                maxHeight: '500px',
+                '&::-webkit-scrollbar': {
+                width: '10px',
+                },
+                '&::-webkit-scrollbar-track': {
+                boxShadow: 'inset 0 0 5px grey',
+                borderRadius: '10px',
+                },
+                '&::-webkit-scrollbar-thumb': {
+                background: 'darkgrey',
+                borderRadius: '10px',
+                },
+                '&::-webkit-scrollbar-thumb:hover': {
+                background: '#3f9068',
+                },
+            }}
+        >
             <Typography variant="h5">Total Revenue</Typography>
-            <ButtonGroup 
-                variant="text" 
-                aria-label="Basic button group" 
-                style={{ 
-                    marginTop: '15px' 
-                }}
-            >
-                <Button  onClick={() => setView('total')}>Total</Button>
-                <Button  onClick={() => setView('monthly')}>Monthly</Button>
-                <Button  onClick={() => setView('daily')}>Daily</Button>
+            <ButtonGroup variant="contained" aria-label="outlined primary button group" style={{ marginBottom: '20px' }}>
+                <Button onClick={() => setView('total')}>Total</Button>
+                <Button onClick={() => setView('monthly')}>Monthly</Button>
+                <Button onClick={() => setView('daily')}>Today</Button>
             </ButtonGroup>
             {view === 'monthly' && (
-                <Select value={selectedMonth} onChange={handleMonthChange} displayEmpty>
-                    {months.map(month => (
-                        <MenuItem key={month} value={month}>{month}</MenuItem>
-                    ))}
-                </Select>
+                <Box display="flex" justifyContent="left" marginBottom="20px">
+                    <FormControl variant="outlined" size="small" style={{ minWidth: 120 }}>
+                        <InputLabel>Month</InputLabel>
+                        <Select
+                            value={selectedMonth}
+                            onChange={handleMonthChange}
+                            label="Month"
+                        >
+                            {formattedMonths.map((formattedMonth, index) => (
+                                <MenuItem key={months[index]} value={formattedMonth}>{formattedMonth}</MenuItem>
+                            ))}
+                        </Select>
+                    </FormControl>
+                </Box>
             )}
-            {view === 'daily' && (
-                <Select value={selectedDay} onChange={handleDayChange} displayEmpty>
-                    {days.map(day => (
-                        <MenuItem key={day} value={day}>{day}</MenuItem>
-                    ))}
-                </Select>
-            )}
-            <Typography variant="h4" sx={{ marginTop: '30px', marginBottom: '30px', fontWeight: 'bold' }}>
+            <Typography variant="h4" sx={{ marginBottom: '30px', fontWeight: 'bold' }}>
                 ${revenueFigure}
             </Typography>
-            <ResponsiveContainer width="100%" height={300}>
-                <LineChart data={revenueData} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
-                    <CartesianGrid strokeDasharray="4 4" />
-                    <XAxis fontSize='0.71rem' dataKey="time" />
-                    <YAxis fontSize='0.71rem' />
-                    <Tooltip />
-                    <Line type="monotone" dataKey="revenue" stroke="#8884d8" activeDot={{ r: 8 }} />
-                </LineChart>
-            </ResponsiveContainer>
+            {view !== 'daily' && (
+                <ResponsiveContainer width="100%" height={300}>
+                    <LineChart data={revenueData} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
+                        <CartesianGrid strokeDasharray="4 4" />
+                        <XAxis fontSize='0.71rem' dataKey="time" />
+                        <YAxis fontSize='0.71rem' />
+                        <Tooltip />
+                        <Line type="monotone" dataKey="revenue" stroke="#8884d8" activeDot={{ r: 8 }} />
+                    </LineChart>
+                </ResponsiveContainer>
+            )}
         </Box>        
     );
 }
