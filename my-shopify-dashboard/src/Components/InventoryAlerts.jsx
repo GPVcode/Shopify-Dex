@@ -100,9 +100,8 @@ const InventoryAlerts = () => {
 
   return (
         <Box 
+          style={{ padding: '20px', margin: '10px' }}
           sx={{
-            padding: '20px', 
-            margin: '10px',
             overflowY: 'auto',
             maxHeight: '500px',
             '&::-webkit-scrollbar': {
@@ -129,9 +128,8 @@ const InventoryAlerts = () => {
                 setUserPreferences={setUserPreferences} 
               />
             </div>
-            <Box sx={{ overflowX: 'auto' }}>
-            <TableContainer component={Paper}>
-              <Table stickyHeader>
+            
+              <Table>
                   <TableHead>
                     <TableRow>
                       {availableColumns.map(column => (
@@ -163,14 +161,12 @@ const InventoryAlerts = () => {
                   ))}
                   </TableBody>
                   <TableFooter>
-                    
                     <TableRow>
-                  
                       <TablePagination
                         rowsPerPageOptions={[5, 10, 25]}
                         count={totalCount}
-                        rowsPerPage={rowsPerPage}
                         page={page}
+                        rowsPerPage={rowsPerPage}
                         onPageChange={handleChangePage}
                         onRowsPerPageChange={handleChangeRowsPerPage}
                         sx={{
@@ -179,14 +175,10 @@ const InventoryAlerts = () => {
                           },
                         }}
                       />
-                    </TableRow>
-                    
+                    </TableRow>         
                   </TableFooter>
-                  
               </Table>
-            </TableContainer>
-            </Box>
-        </ Box>
+        </Box>
   )
 }
 

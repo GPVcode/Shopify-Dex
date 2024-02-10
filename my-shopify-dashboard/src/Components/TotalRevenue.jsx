@@ -8,6 +8,7 @@ function TotalRevenue() {
     const { data, isLoading, isError, error } = useQuery('Total Revenue', fetchTotalRevenue);
     const [view, setView] = useState('total'); // 'total', 'monthly', or 'daily'
     const [selectedMonth, setSelectedMonth] = useState('');
+    
 
     const today = new Date().toISOString().split('T')[0]; // Get today's date in YYYY-MM-DD format
 
@@ -45,17 +46,29 @@ function TotalRevenue() {
                     revenue: data.monthlyRevenue[month]
                 }));
             case 'monthly':
-                return Object.entries(data.dailyRevenue || {}).filter(([day]) => day.includes(selectedMonth))
-                    .map(([day, revenue]) => ({
-                        time: `${new Date(day).getDate()}`, // Just the day for the monthly view
-                        revenue
-                    }));
+                if (!selectedMonth || !data.dailyRevenue) {
+                    return [];
+                }
+                // Extract the year and month from the selectedMonth
+                // Assuming selectedMonth is in "MMM YYYY" format (e.g., "Feb 2024")
+                const [selectedMonthName, selectedYear] = selectedMonth.split(' ');
+                const monthIndex = monthNames.findIndex(month => month === selectedMonthName) + 1;
+                const monthPrefix = `${selectedYear}-${monthIndex.toString().padStart(2, '0')}`;
+    
+                // Filter and map dailyRevenue entries for the selected month
+                return Object.entries(data.dailyRevenue).filter(([date]) => 
+                    date.startsWith(monthPrefix)
+                ).map(([date, revenue]) => ({
+                    time: date.substring(8), // Get the day part of the date string
+                    revenue
+                }));
             case 'daily':
                 return []; // No chart data needed for 'daily'
             default:
                 return [];
         }
     }, [data, view, selectedMonth, today, formattedMonths, monthNames]);
+
 
     if (isLoading) {
         return <Box style={{ padding: '20px', margin: '10px' }}><CircularProgress /></Box>;
@@ -87,8 +100,15 @@ function TotalRevenue() {
                 },
             }}
         >
-            <Typography variant="h5">Total Revenue</Typography>
-            <ButtonGroup variant="contained" aria-label="outlined primary button group" style={{ marginBottom: '20px' }}>
+            <Typography variant="h5">Revenue</Typography>
+            <ButtonGroup 
+                size="sm" 
+                aria-label="outlined button group"
+                style={{ 
+                    marginTop: 15,
+                    marginBottom: 15
+                }}
+            >
                 <Button onClick={() => setView('total')}>Total</Button>
                 <Button onClick={() => setView('monthly')}>Monthly</Button>
                 <Button onClick={() => setView('daily')}>Today</Button>
