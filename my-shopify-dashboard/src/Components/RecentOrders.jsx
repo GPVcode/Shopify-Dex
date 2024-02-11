@@ -107,7 +107,10 @@ const RecentOrders = () => {
                     },
                   }}
             >
-                <Typography variant="h5">Recent Orders</Typography>
+                <Typography 
+                    variant="h5"
+                    style={{ marginBottom: '20px' }}
+                >Recent Orders</Typography>
                 <Table>
                     <TableHead>
                         <TableRow>
@@ -116,7 +119,7 @@ const RecentOrders = () => {
                         <TableCell style={cellStyle}>Total Price</TableCell>
                         <TableCell style={cellStyle}>Order Date</TableCell>
                         <TableCell style={cellStyle}>Items Ordered</TableCell>
-                         <TableCell style={cellStyle}>Payment Status</TableCell>
+                        <TableCell style={cellStyle}>Payment Status</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>

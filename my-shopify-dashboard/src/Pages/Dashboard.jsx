@@ -14,34 +14,34 @@ const Dashboard = () => {
   return (
     <div style={{ padding: '20px' }}>
       <Grid container spacing={3}>
-        <Grid item xs={12} md={4}>
+        <Grid item xs={12} sm={12} md={12} lg={4}>
           <Card style={{ height: '100%', maxHeight: '500px', display: 'flex', flexDirection: 'column', overflow: 'auto' }}>
             <TotalRevenue />
           </Card>
         </Grid>
-        <Grid item xs={12} md={5}>
+        <Grid item xs={12} sm={12} md={12} lg={4}>
           <Card style={{ height: '100%', maxHeight: '500px', display: 'flex', flexDirection: 'column', overflow: 'auto' }}>
-            <RecentOrders />
+            <ProductPerformance />
           </Card>
         </Grid>
-        <Grid item xs={12} md={3}>
+        <Grid item xs={12} sm={12} md={12} lg={4}>
           <Card style={{ height: '100%', maxHeight: '500px', display: 'flex', flexDirection: 'column', overflow: 'auto' }}>
             <InventoryAlerts />
           </Card>
         </Grid>
-        <Grid item xs={12} md={4}>
+        <Grid item xs={12} sm={12} md={12} lg={6}>
           <Card style={{height: '100%',  maxHeight: '500px', display: 'flex', flexDirection: 'column', overflow: 'auto' }}>
-          <ProductPerformance />
+            <RecentOrders />
           </Card>
         </Grid>
-        <Grid item xs={12} md={5}>
+        <Grid item xs={12} sm={12} md={12} lg={6}>
           <Card style={{ height: '100%', maxHeight: '500px', display: 'flex', flexDirection: 'column', overflow: 'auto' }}>
             <CustomerInsights />
           </Card>
         </Grid>
-        <Grid item xs={12} md={3}>
+        <Grid item xs={12} sm={12} md={12} lg={4}>
           <Card style={{height: '100%',  maxHeight: '500px', display: 'flex', flexDirection: 'column', overflow: 'auto' }}>
-          <TrafficSourcesPieChart />
+            <TrafficSourcesPieChart />
           </Card>
         </Grid>
       </Grid>

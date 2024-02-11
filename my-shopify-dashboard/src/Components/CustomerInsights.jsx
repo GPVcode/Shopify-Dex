@@ -62,15 +62,18 @@ const CustomerInsights = () => {
                 },
             }}
         >
-            <Typography variant="h5">Customer Insights</Typography>
-            <Table>
+            <Typography 
+                variant="h5"
+                style={{ marginBottom: '20px' }}
+            >Customer Insights</Typography>
+            <Table size="small">
                 <TableHead>
                     <TableRow>
                         <TableCell>Status</TableCell>
-                        <TableCell>Customer Name</TableCell>
+                        <TableCell>Customer</TableCell>
                         <TableCell>Email</TableCell>
-                        <TableCell>Orders Count</TableCell>
-                        <TableCell>Total Spent</TableCell>
+                        <TableCell>Orders</TableCell>
+                        <TableCell>Total</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>

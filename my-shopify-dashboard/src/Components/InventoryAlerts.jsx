@@ -95,33 +95,38 @@ const InventoryAlerts = () => {
   const cellStyle = {
     textAlign: 'center',
     alignItems: 'center',
-    justifyContent: 'center'
-};
+    justifyContent: 'center',
+  };
 
   return (
         <Box 
-          style={{ padding: '20px', margin: '10px' }}
           sx={{
+            padding: '20px', 
+            margin: '10px',
             overflowY: 'auto',
             maxHeight: '500px',
             '&::-webkit-scrollbar': {
-              width: '10px',
+            width: '10px',
             },
             '&::-webkit-scrollbar-track': {
-              boxShadow: 'inset 0 0 5px grey',
-              borderRadius: '10px',
+            boxShadow: 'inset 0 0 5px grey',
+            borderRadius: '10px',
             },
             '&::-webkit-scrollbar-thumb': {
-              background: 'darkgrey',
-              borderRadius: '10px',
+            background: 'darkgrey',
+            borderRadius: '10px',
             },
             '&::-webkit-scrollbar-thumb:hover': {
-              background: '#3f9068',
+            background: '#3f9068',
             },
-          }}
+        }}
         >
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <Typography variant="h5">Inventory Alerts</Typography>
+              <Typography 
+                variant="h5"
+                style={{ marginBottom: '20px' }}
+              >Inventory Alerts
+              </Typography>
               <ColumnPreferences 
                 availableColumns={availableColumns} 
                 userPreferences={userPreferences} 
@@ -129,7 +134,7 @@ const InventoryAlerts = () => {
               />
             </div>
             
-              <Table>
+            <Table size="small">
                   <TableHead>
                     <TableRow>
                       {availableColumns.map(column => (
@@ -161,22 +166,22 @@ const InventoryAlerts = () => {
                   ))}
                   </TableBody>
                   <TableFooter>
-                    <TableRow>
-                      <TablePagination
-                        rowsPerPageOptions={[5, 10, 25]}
-                        count={totalCount}
-                        page={page}
-                        rowsPerPage={rowsPerPage}
-                        onPageChange={handleChangePage}
-                        onRowsPerPageChange={handleChangeRowsPerPage}
-                        sx={{
-                          '.MuiTablePagination-selectLabel, .MuiTablePagination-displayedRows, .MuiTablePagination-select, .MuiTablePagination-actions': {
-                            fontSize: '0.68rem',
-                          },
-                        }}
-                      />
-                    </TableRow>         
-                  </TableFooter>
+                        <TableRow>
+                        <TablePagination
+                            rowsPerPageOptions={[5, 10, 25]}
+                            count={totalCount}
+                            page={page}
+                            rowsPerPage={rowsPerPage}
+                            onPageChange={handleChangePage}
+                            onRowsPerPageChange={handleChangeRowsPerPage}
+                            sx={{
+                                '.MuiTablePagination-selectLabel, .MuiTablePagination-displayedRows, .MuiTablePagination-select, .MuiTablePagination-actions': {
+                                  fontSize: '0.68rem',
+                                },
+                            }}
+                        />
+                        </TableRow>
+                    </TableFooter>
               </Table>
         </Box>
   )

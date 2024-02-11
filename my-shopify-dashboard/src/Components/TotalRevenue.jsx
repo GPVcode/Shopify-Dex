@@ -100,7 +100,10 @@ function TotalRevenue() {
                 },
             }}
         >
-            <Typography variant="h5">Revenue</Typography>
+            <Typography 
+                variant="h5"
+                style={{ marginBottom: '20px' }}
+            >Revenue</Typography>
             <ButtonGroup 
                 size="sm" 
                 aria-label="outlined button group"

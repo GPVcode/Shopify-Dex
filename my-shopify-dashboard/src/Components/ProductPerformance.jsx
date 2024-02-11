@@ -54,14 +54,18 @@ const ProductPerformance = () => {
                 },
             }}
         >
-            <Typography variant="h5" style={{ marginBottom: '20px' }}>Product Performance</Typography>
-            <Table aria-label="product performance table">
+            <Typography 
+                variant="h5" 
+                style={{ marginBottom: '20px' }}
+            >Product Performance
+            </Typography>
+            <Table size="small">
                 <TableHead>
                     <TableRow>
                         <TableCell>Product</TableCell>
-                        <TableCell align="right">Sales Volume</TableCell>
+                        <TableCell align="right">Volume</TableCell>
                         <TableCell align="right">Revenue</TableCell>
-                        <TableCell align="right">Profit Margin</TableCell>
+                        {/* <TableCell align="right">Profit Margin</TableCell> */}
                         <TableCell align="right">Return Rate</TableCell>
                     </TableRow>
                 </TableHead>
@@ -73,7 +77,7 @@ const ProductPerformance = () => {
                             </TableCell>
                             <TableCell align="right">{product.salesVolume}</TableCell>
                             <TableCell align="right">${product.revenue}</TableCell>
-                            <TableCell align="right">{product.profitMargin}</TableCell>
+                            {/* <TableCell align="right">{product.profitMargin}</TableCell> */}
                             <TableCell align="right">{product.returnRate}</TableCell>
                         </TableRow>
                     ))}
