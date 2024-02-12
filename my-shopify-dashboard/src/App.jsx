@@ -28,7 +28,7 @@ const darkTheme = createTheme({
         main: '#0d182a', // A shade of blue for primary buttons and icons
       },
       secondary: {
-        main: '#00B4D8', // A contrasting secondary color
+        main: '#00B4D8', // A contrasting secondary color test
       },
       text: {
         primary: '#ececec', // Light grey for primary text for better readability
