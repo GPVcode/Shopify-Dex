@@ -77,7 +77,7 @@ const ProductsOverviewComponent = () => {
                         <TableCell sx={cellStyle}>Title</TableCell>
                         <TableCell sx={cellStyle}>Stock</TableCell>
                         <TableCell sx={cellStyle}>Sales Velocity</TableCell>
-                        <TableCell sx={cellStyle}>Profit Margin</TableCell>
+                        <TableCell sx={cellStyle}>Profit %</TableCell>
                         <TableCell sx={cellStyle}>Reorder Level</TableCell>
                         <TableCell sx={cellStyle}>Lead Time</TableCell>
                     </TableRow>

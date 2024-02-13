@@ -80,7 +80,7 @@ const InventoryAlerts = () => {
 
   // Define the columns for preferences
   const availableColumns = [
-    { id: 'title', label: 'Product Name' },
+    { id: 'title', label: 'Product' },
     { id: 'sku', label: 'SKU' },
     { id: 'stock', label: 'Stock' },
     { id: 'reorder_level', label: 'Reorder Level' },
@@ -130,7 +130,7 @@ const InventoryAlerts = () => {
               <ColumnPreferences 
                 availableColumns={availableColumns} 
                 userPreferences={userPreferences} 
-                setUserPreferences={setUserPreferences} 
+                setUserPreferences={setUserPreferences}
               />
             </div>
             
@@ -151,12 +151,12 @@ const InventoryAlerts = () => {
                           {column.id === 'action' ? 
                             <IconButton 
                               variant="outlined" 
-                              color="primary" 
+                              color="info" 
                               onClick={() => handleOrderClick(item)}
                               size="small"
                             >
                               <AddShoppingCartIcon  />
-                            </IconButton>
+                              </IconButton>
                             :
                             column.id === 'trend_indicator' ? getTrendIndicatorIcon(item[column.id]) : item[column.id]
                           }

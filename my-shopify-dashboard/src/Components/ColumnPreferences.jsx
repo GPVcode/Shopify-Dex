@@ -38,7 +38,7 @@ const ColumnPreferences = ({ availableColumns, userPreferences, setUserPreferenc
     <div>
       <IconButton 
         variant="outlined" 
-        color="primary" 
+        color="info" 
         onClick={() => handleClickOpen()}
         size="small"
       >
@@ -62,7 +62,9 @@ const ColumnPreferences = ({ availableColumns, userPreferences, setUserPreferenc
             >
               {availableColumns.map((column) => (
                 <MenuItem key={column.id} value={column.id}>
-                  <Checkbox checked={userPreferences.visible_columns.includes(column.id)} />
+                  <Checkbox 
+                    checked={userPreferences.visible_columns.includes(column.id)}
+                  />
                   <ListItemText primary={column.label} />
                 </MenuItem>
               ))}

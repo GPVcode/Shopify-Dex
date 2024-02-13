@@ -65,8 +65,8 @@ const ProductPerformance = () => {
                         <TableCell>Product</TableCell>
                         <TableCell align="right">Volume</TableCell>
                         <TableCell align="right">Revenue</TableCell>
-                        {/* <TableCell align="right">Profit Margin</TableCell> */}
-                        <TableCell align="right">Return Rate</TableCell>
+                        {/* <TableCell align="right">Profit %</TableCell> */}
+                        {/* <TableCell align="right">Return Rate</TableCell> */}
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -78,7 +78,7 @@ const ProductPerformance = () => {
                             <TableCell align="right">{product.salesVolume}</TableCell>
                             <TableCell align="right">${product.revenue}</TableCell>
                             {/* <TableCell align="right">{product.profitMargin}</TableCell> */}
-                            <TableCell align="right">{product.returnRate}</TableCell>
+                            {/* <TableCell align="right">{product.returnRate}</TableCell> */}
                         </TableRow>
                     ))}
                 </TableBody>
