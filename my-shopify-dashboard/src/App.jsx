@@ -1,27 +1,29 @@
 import React, { useState } from 'react';
+import { Routes, Route, useNavigate } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import Dashboard from './Pages/Dashboard';
-import { ThemeProvider, createTheme, CssBaseline } from '@mui/material';
-import AppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import Drawer from '@mui/material/Drawer';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import IconButton from '@mui/material/IconButton';
+import Products from './Pages/Products';
+import { 
+  ThemeProvider, 
+  CssBaseline, 
+  AppBar, 
+  Toolbar, 
+  Typography,
+  Drawer, 
+  List, ListItemButton,ListItemIcon, ListItemText, 
+  IconButton,
+  Box, 
+  Hidden } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import DashboardIcon from '@mui/icons-material/Dashboard';
-import Box from '@mui/material/Box';
-import Hidden from '@mui/material/Hidden';
-import { darkTheme } from './Styles/theme'
-// Create a dark theme.
+import StorefrontIcon from '@mui/icons-material/Storefront'; 
+import { darkTheme } from './Styles/theme';
 
 const queryClient = new QueryClient();
 
 function App() {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const navigate = useNavigate();
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -33,13 +35,18 @@ function App() {
         MUI Application
       </Typography>
       <List>
-        <ListItem key="Dashboard">
+        <ListItemButton key="Dashboard" onClick={() => navigate('/')}>
           <ListItemIcon>
             <DashboardIcon />
           </ListItemIcon>
           <ListItemText primary="Dashboard" />
-        </ListItem>
-        {/* Add more navigation items here */}
+        </ListItemButton>
+        <ListItemButton key="Products" onClick={() => navigate('/products')}>
+        <ListItemIcon>
+            <StorefrontIcon />
+          </ListItemIcon>
+          <ListItemText primary="Products" />
+        </ListItemButton>
       </List>
     </Box>
   );
@@ -100,8 +107,12 @@ function App() {
             component="main"
             sx={{ flexGrow: 1, p: 3, width: { sm: `calc(100% - 240px)` } }}
           >
-            <Toolbar /> {/* Necessary for content to be below AppBar */}
-            <Dashboard />
+            <Toolbar /> {/* Acts as a space bar */}
+            <Routes>
+              <Route path="/" element={<Dashboard />} />
+              <Route path="/products" element={<Products />} />
+              {/* Define other routes as needed */}
+            </Routes>
           </Box>
         </Box>
       </ThemeProvider>

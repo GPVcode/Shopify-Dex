@@ -20,6 +20,8 @@ import {
 } from '@mui/icons-material';
 import Tooltip from '@mui/material/Tooltip';
 import { fetchRecentOrders } from '../Services/api';
+import { formatDistanceToNow } from 'date-fns';
+
 
 const RecentOrders = () => {
 
@@ -37,14 +39,14 @@ const RecentOrders = () => {
     if (isError) return <Box style={{ padding: '20px', margin: '10px' }}>Error: {error.message}</Box>;
     
 
-    const formatDate = (dateString) => {
-        const date = new Date(dateString);
-        return date.toLocaleDateString('en-US', { // You can adjust the locale and options
-            month: 'short', // "Jan", "Feb", etc.
-            day: '2-digit', // "01", "02", etc.
-            year: 'numeric', // "2024"
-        });
-    };
+    // const formatDate = (dateString) => {
+    //     const date = new Date(dateString);
+    //     return date.toLocaleDateString('en-US', { // You can adjust the locale and options
+    //         month: 'short', // "Jan", "Feb", etc.
+    //         day: '2-digit', // "01", "02", etc.
+    //         year: 'numeric', // "2024"
+    //     });
+    // };
 
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
@@ -127,8 +129,10 @@ const RecentOrders = () => {
                         <TableRow key={order.id}>
                             <TableCell style={cellStyle}>{order.id}</TableCell>
                             <TableCell style={cellStyle}>{order.customer.first_name} {order.customer.last_name}</TableCell>
-                            <TableCell style={cellStyle}>${order.total_price}</TableCell>            
-                            <TableCell style={cellStyle}>{formatDate(order.order_date)}</TableCell>
+                            <TableCell style={cellStyle}>${order.total_price}</TableCell>    
+                            <TableCell>        
+                                {formatDistanceToNow(new Date(order.order_date), { addSuffix: true })}
+                            </ TableCell>
                             <TableCell style={cellStyle}>{formatItemsOrdered(order.line_items)}</TableCell>
                             <TableCell style={cellStyle}>
                                 <Tooltip title={order.financial_status}>

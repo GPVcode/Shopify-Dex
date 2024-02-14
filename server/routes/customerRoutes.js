@@ -1,9 +1,13 @@
 import express from 'express';
 const router = express.Router();
-import { fetchCustomerInsights } from '../utils/shopifyAPI.js';
+import { 
+    fetchCustomerInsights,
+    fetchUserEngagementMetrics 
+} from '../utils/shopifyAPI.js';
 
 router.get('/customer-insights', async (req, res) => {
     try {
+
         const queryParameters = {
             page: parseInt(req.query.page) || 1,
             limit: parseInt(req.query.limit) || 5
@@ -17,4 +21,16 @@ router.get('/customer-insights', async (req, res) => {
     }
 });
 
+router.get('/user-engagement-metrics', async (req, res) => {
+    try{
+        const data = await fetchUserEngagementMetrics();
+        console.log("USERRRR1111")
+        console.log("USERRRR: ", data)
+        res.json(data);
+
+    } catch (error){
+        res.status(500).json({ message: error.message });
+
+    }
+})
 export default router;

@@ -533,6 +533,42 @@ const customersResponse = {
   ]
 };
 
+const userEngagementMetricsData = {
+  data: [
+      {
+          month: "January",
+          sessionDuration: 5.2,
+          pagesPerSession: 3.5,
+          bounceRate: 40,
+          activeUsers: 1200
+      },
+      {
+          month: "February",
+          sessionDuration: 6.1,
+          pagesPerSession: 4.0,
+          bounceRate: 35,
+          activeUsers: 1250
+      },
+      {
+          month: "March",
+          sessionDuration: 5.8,
+          pagesPerSession: 3.8,
+          bounceRate: 38,
+          activeUsers: 1300
+      },
+      {
+          month: "April",
+          sessionDuration: 6.5,
+          pagesPerSession: 4.2,
+          bounceRate: 32,
+          activeUsers: 1350
+      }
+  ],
+  status: "success",
+  message: "User engagement metrics fetched successfully."
+};
+
+
 export const fetchTotalRevenue = async (req, res, next) => {
   try {
       const orders = ordersResponse.orders;
@@ -744,4 +780,13 @@ export const fetchProductPerformance = async () => {
   }
 };
 
-fetchProductPerformance();
+export const fetchUserEngagementMetrics = async () => {
+  try {
+      // Simulate an asynchronous operation, e.g., database call or external API call
+      // For demonstration, we directly return the static data
+      return userEngagementMetricsData;
+  } catch (error) {
+      console.error('Error fetching user engagement metrics:', error);
+      res.status(500).json({ message: 'Error fetching user engagement metrics.' });
+  }
+};

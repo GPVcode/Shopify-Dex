@@ -6,7 +6,6 @@ export const fetchTotalRevenue = async () => {
     try {
         // be courteous to user, use timeout.
         const response = await axios.get(`${API_URL}/total-revenue`, { timeout: 5000 });
-       console.log("TotalRevenueResponse: ", response)
         // GPV, validate your data
         if (response.data && typeof response.data.totalRevenue === 'number') {
             return response.data;
@@ -119,7 +118,7 @@ export const fetchTrafficSources = async () => {
         return response.data.traffic_sources;
     } catch (error) {
         console.error('There was a problem fetching the traffic sources:', error);
-        throw error; // Or handle this more gracefully in your UI
+        throw error; // Or handle this more gracefully in UI
     }
 };
 
@@ -130,7 +129,6 @@ export const fetchCustomerInsights = async (page = 1, limit = 5) => {
             timeout: 5000,
         });
 
-        // Basic Data Validation
         if (response.data && typeof response.data === 'object' && Array.isArray(response.data.customers)) {
             return {
                 customers: response.data.customers,
@@ -164,4 +162,22 @@ export const fetchProductPerformance = async () => {
     }
 };
 
-fetchProductPerformance();
+export const fetchUserEngagementMetrics = async () => {
+    try {
+        const response = await axios.get(`${API_URL}/customers/user-engagement-metrics`, { timeout: 5000 });
+        if (response.data && typeof response.data === 'object' && Array.isArray(response.data.data)) {
+            return {
+                data: response.data.data,
+                status: response.data.status,
+                message: response.data.message,
+            };
+        } else {
+            console.error("Invalid data format received:", response.data);
+            return { error: "Invalid data format" };
+        }
+    } catch (error) {
+        console.error('Error fetching user engagement metrics:', error);
+        return { error: "Failed to fetch data" };
+    }
+};
+
