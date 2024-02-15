@@ -19,9 +19,13 @@ const CustomerInsights = () => {
     const [rowsPerPage, setRowsPerPage] = useState(5);
 
     // Adjust query key and fetch function accordingly
-    const { data, isLoading, isError, error } = useQuery(['CustomerInsights', page, rowsPerPage], () => fetchCustomerInsights(page + 1, rowsPerPage), {
-        keepPreviousData: true,
-    });
+    const { data, isLoading, isError, error } = useQuery(
+        ['CustomerInsights', page, rowsPerPage], 
+        () => fetchCustomerInsights(page + 1, rowsPerPage), 
+        {
+            keepPreviousData: true,
+        }
+    );
 
     if (isLoading) {
         return <Box style={{ padding: '20px', margin: '10px' }}><CircularProgress /></Box>;

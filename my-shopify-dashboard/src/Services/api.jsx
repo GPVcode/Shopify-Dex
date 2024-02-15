@@ -79,23 +79,17 @@ export const fetchProductsOverview = async (page = 1, limit = 5) => {
             throw new Error('Invalid response data');
         }
 
-        // Adjusting to the updated data structure
         const { detailedProducts, total, page: currentPage, limit: currentLimit } = response.data;
 
-        // Further validation checks can be added here
         if (!Array.isArray(detailedProducts)) {
             throw new Error('Missing or invalid fields in response data');
         }
-
-        // Return the validated data
         return { detailedProducts, total, currentPage, currentLimit };
     } catch (error) {
         if (error.code === 'ECONNABORTED') {
             console.error('Fetch products overview timeout');
             throw new Error('Request timed out');
         } else if (error.response) {
-            // The request was made and the server responded with a status code
-            // that falls out of the range of 2xx
             console.error('Server responded with an error:', error.response.status, error.response.data);
             throw new Error(`Server error: ${error.response.status}`);
         } else if (error.request) {
@@ -128,6 +122,8 @@ export const fetchCustomerInsights = async (page = 1, limit = 5) => {
             params: { page, limit },
             timeout: 5000,
         });
+
+        console.log("Cust Insights: ", response)
 
         if (response.data && typeof response.data === 'object' && Array.isArray(response.data.customers)) {
             return {
@@ -187,6 +183,9 @@ export const fetchProductsList = async (page = 1, limit = 10) => {
             params: { page, limit },
             timeout: 5000
         });
+
+        console.log("Products List: ", response)
+
 
         if (response.data && typeof response.data === 'object') {
             if (Array.isArray(response.data.products) && typeof response.data.totalProducts === 'number' && typeof response.data.totalPages === 'number') {
