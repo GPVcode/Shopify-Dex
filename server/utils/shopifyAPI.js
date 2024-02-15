@@ -226,93 +226,118 @@ const ordersResponse = {
     ]
 };
 const inventoryResponse = {
-    "inventory": [
-      {
-        "product_id": 3011,
-        "title": "Widget X",
-        "sku": "WX-001",
-        "stock": 10,
-        "reorder_level": 15,
-        "supplier_name": "Widgets Co",
-        "last_ordered_date": "2024-01-12",
-        "lead_time_days": 7,
-        "projected_runout_date": "2024-02-01",
-        "variant_title": "Standard",
-        "sales_velocity": "2",
-        "profit_margin": "30%"
-      },
-      {
-        "product_id": 3012,
-        "title": "Widget Y",
-        "sku": "WY-002",
-        "stock": 5,
-        "reorder_level": 10,
-        "supplier_name": "Widgets Co",
-        "last_ordered_date": "2024-01-11",
-        "lead_time_days": 5,
-        "projected_runout_date": "2024-01-30",
-        "variant_title": "Deluxe",
-        "sales_velocity": "1.5",
-        "profit_margin": "25%"
-      },
-      {
-        "product_id": 3013,
-        "title": "Widget Z",
-        "sku": "WZ-003",
-        "stock": 2,
-        "reorder_level": 8,
-        "supplier_name": "Widgets Co",
-        "last_ordered_date": "2024-01-10",
-        "lead_time_days": 10,
-        "projected_runout_date": "2024-01-25",
-        "variant_title": "Advanced",
-        "sales_velocity": "0.5",
-        "profit_margin": "40%"
-      },
-      {
-        "product_id": 3017,
-        "title": "Widget C",
-        "sku": "WC-004",
-        "stock": 20,
-        "reorder_level": 10,
-        "supplier_name": "Eco Widgets Ltd",
-        "last_ordered_date": "2024-01-14",
-        "lead_time_days": 4,
-        "projected_runout_date": "2024-02-10",
-        "variant_title": "Eco-Friendly",
-        "sales_velocity": "3",
-        "profit_margin": "20%"
-      },
-      {
-        "product_id": 3022,
-        "title": "Widget H",
-        "sku": "WH-005",
-        "stock": 25,
-        "reorder_level": 15,
-        "supplier_name": "High-Tech Widgets Inc",
-        "last_ordered_date": "2024-01-18",
-        "lead_time_days": 7,
-        "projected_runout_date": "2024-02-15",
-        "variant_title": "Standard",
-        "sales_velocity": "2.5",
-        "profit_margin": "35%"
-      }
-    ],
-    "user_preferences": {
-      "visible_columns": [
-        "title",
-        "sku",
-        "stock",
-        "reorder_level",
-        "supplier_name",
-        "last_ordered_date",
-        "lead_time_days",
-        "projected_runout_date",
-        "sales_velocity",
-        "profit_margin"
-      ]
+  "inventory": [
+    {
+      "product_id": 3011,
+      "title": "Widget X",
+      "sku": "WX-001",
+      "stock": 10,
+      "reorder_level": 15,
+      "supplier_name": "Widgets Co",
+      "last_ordered_date": "2024-01-12",
+      "lead_time_days": 7,
+      "projected_runout_date": "2024-02-01",
+      "variant_title": "Standard",
+      "sales_velocity": "2",
+      "profit_margin": "30%",
+      "image_url": "https://example.com/path/to/widget-x-image.jpg",
+      "price": "29.99",
+      "category": "Electronics",
+      "description": "A versatile widget designed for a wide range of applications."
+    },
+    {
+      "product_id": 3012,
+      "title": "Widget Y",
+      "sku": "WY-002",
+      "stock": 5,
+      "reorder_level": 10,
+      "supplier_name": "Widgets Co",
+      "last_ordered_date": "2024-01-11",
+      "lead_time_days": 5,
+      "projected_runout_date": "2024-01-30",
+      "variant_title": "Deluxe",
+      "sales_velocity": "1.5",
+      "profit_margin": "25%",
+      "image_url": "https://example.com/path/to/widget-y-image.jpg",
+      "price": "39.99",
+      "category": "Gadgets",
+      "description": "Deluxe version of Widget X with enhanced features."
+    },
+    {
+      "product_id": 3013,
+      "title": "Widget Z",
+      "sku": "WZ-003",
+      "stock": 2,
+      "reorder_level": 8,
+      "supplier_name": "Widgets Co",
+      "last_ordered_date": "2024-01-10",
+      "lead_time_days": 10,
+      "projected_runout_date": "2024-01-25",
+      "variant_title": "Advanced",
+      "sales_velocity": "0.5",
+      "profit_margin": "40%",
+      "image_url": "https://example.com/path/to/widget-z-image.jpg",
+      "price": "49.99",
+      "category": "Advanced Electronics",
+      "description": "The most advanced widget with state-of-the-art technology."
+    },
+    {
+      "product_id": 3017,
+      "title": "Widget C",
+      "sku": "WC-004",
+      "stock": 20,
+      "reorder_level": 10,
+      "supplier_name": "Eco Widgets Ltd",
+      "last_ordered_date": "2024-01-14",
+      "lead_time_days": 4,
+      "projected_runout_date": "2024-02-10",
+      "variant_title": "Eco-Friendly",
+      "sales_velocity": "3",
+      "profit_margin": "20%",
+      "image_url": "https://example.com/path/to/widget-c-image.jpg",
+      "price": "34.99",
+      "category": "Eco-Friendly Gadgets",
+      "description": "Environmentally friendly widget, made from recycled materials."
+    },
+    {
+      "product_id": 3022,
+      "title": "Widget H",
+      "sku": "WH-005",
+      "stock": 25,
+      "reorder_level": 15,
+      "supplier_name": "High-Tech Widgets Inc",
+      "last_ordered_date": "2024-01-18",
+      "lead_time_days": 7,
+      "projected_runout_date": "2024-02-15",
+      "variant_title": "Standard",
+      "sales_velocity": "2.5",
+      "profit_margin": "35%",
+      "image_url": "https://example.com/path/to/widget-h-image.jpg",
+      "price": "59.99",
+      "category": "High-Tech Gadgets",
+      "description": "A high-tech widget designed for the tech-savvy consumer."
     }
-};
+  ],
+  "user_preferences": {
+    "visible_columns": [
+      "title",
+      "sku",
+      "stock",
+      "reorder_level",
+      "supplier_name",
+      "last_ordered_date",
+      "lead_time_days",
+      "projected_runout_date",
+      "sales_velocity",
+      "profit_margin",
+      "image_url",
+      "price",
+      "category",
+      "description"
+    ]
+  }
+}
+
 const trafficDataResponse = {
     "traffic_sources": [
       {
@@ -782,11 +807,38 @@ export const fetchProductPerformance = async () => {
 
 export const fetchUserEngagementMetrics = async () => {
   try {
-      // Simulate an asynchronous operation, e.g., database call or external API call
-      // For demonstration, we directly return the static data
       return userEngagementMetricsData;
   } catch (error) {
       console.error('Error fetching user engagement metrics:', error);
       res.status(500).json({ message: 'Error fetching user engagement metrics.' });
   }
 };
+
+// In shopifyAPI.js or a similar utilities file
+
+export const fetchProductsList = async ({ page = 1, limit = 10 }) => {
+  try {
+      const startIndex = (page - 1) * limit;
+      const endIndex = startIndex + limit;
+
+      // Assuming inventoryResponse is available in this context
+      const products = inventoryResponse.inventory.slice(startIndex, endIndex);
+      const totalProducts = inventoryResponse.inventory.length;
+      const totalPages = Math.ceil(totalProducts / limit);
+
+      return {
+              products,
+              totalProducts,
+              totalPages,
+              page,
+              limit,
+        };
+  } catch (error) {
+      console.error('Error fetching products list:', error);
+      return {
+          success: false,
+          error: 'Failed to fetch products list due to an internal error.',
+      };
+  }
+};
+

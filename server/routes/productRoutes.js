@@ -1,6 +1,6 @@
 import express from 'express';
 const router = express.Router();
-import { fetchInventoryAlerts, fetchProductsOverview } from '../utils/shopifyAPI.js';
+import { fetchInventoryAlerts, fetchProductsOverview, fetchProductsList } from '../utils/shopifyAPI.js';
 
 // Route for fetching inventory alerts
 router.get('/inventory-alerts', async (req, res) => {
@@ -30,6 +30,23 @@ router.get('/overview', async (req, res) => {
         res.json(productsData);
     } catch (error) {
         console.error('Failed to fetch products overview:', error);
+        res.status(500).send('Internal Server Error');
+    }
+});
+
+router.get('/products-list', async (req, res) => {
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+
+    try {
+        const productsData = await fetchProductsList({ page, limit });
+
+        console.log("PRODUCTS DATA: ", productsData)
+        // Return paginated products list along with pagination info
+        res.json(productsData);
+
+    } catch (error) {
+        console.error('Failed to fetch products list:', error);
         res.status(500).send('Internal Server Error');
     }
 });

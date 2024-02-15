@@ -181,3 +181,34 @@ export const fetchUserEngagementMetrics = async () => {
     }
 };
 
+export const fetchProductsList = async (page = 1, limit = 10) => {
+    try {
+        const response = await axios.get(`${API_URL}/products/products-list`, {
+            params: { page, limit },
+            timeout: 5000
+        });
+
+        if (response.data && typeof response.data === 'object') {
+            if (Array.isArray(response.data.products) && typeof response.data.totalProducts === 'number' && typeof response.data.totalPages === 'number') {
+                return response.data;
+            } else {
+                console.error("Invalid data format received:", response.data);
+                return { error: "Invalid data format" };
+            }
+        } else {
+            console.error("Invalid response structure:", response);
+            return { error: "Invalid response structure" };
+        }
+    } catch (error) {
+        console.error('Error fetching products list:', error);
+        if (error.code === 'ECONNABORTED') {
+            console.error('Request timeout');
+            return { error: "Request timed out" };
+        } else if (error.response) {
+            console.error('Server error:', error.response.status);
+            return { error: `Server responded with status: ${error.response.status}` };
+        } else {
+            return { error: "Failed to fetch data" };
+        }
+    }
+};

@@ -24,8 +24,6 @@ router.get('/customer-insights', async (req, res) => {
 router.get('/user-engagement-metrics', async (req, res) => {
     try{
         const data = await fetchUserEngagementMetrics();
-        console.log("USERRRR1111")
-        console.log("USERRRR: ", data)
         res.json(data);
 
     } catch (error){
