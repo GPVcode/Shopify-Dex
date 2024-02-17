@@ -31,17 +31,21 @@ function App() {
 
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
-      <Typography variant="h6" sx={{ my: 2 }}>
-        MUI Application
-      </Typography>
+      <Toolbar />
       <List>
-        <ListItemButton key="Dashboard" onClick={() => navigate('/')}>
+        <ListItemButton key="Dashboard" onClick={(event) => {
+          event.stopPropagation();
+          navigate('/')
+        }}>
           <ListItemIcon>
             <DashboardIcon />
           </ListItemIcon>
           <ListItemText primary="Dashboard" />
         </ListItemButton>
-        <ListItemButton key="Products" onClick={() => navigate('/products')}>
+        <ListItemButton key="Products" onClick={(event) => { 
+          event.stopPropagation();
+          navigate('/products')
+        }}>
         <ListItemIcon>
             <StorefrontIcon />
           </ListItemIcon>
@@ -63,38 +67,38 @@ function App() {
                 aria-label="open drawer"
                 edge="start"
                 onClick={handleDrawerToggle}
-                sx={{ mr: 2, display: { sm: 'none' } }}
+                sx={{ mr: 2, display: { md: 'none' } }}
               >
                 <MenuIcon />
               </IconButton>
               <Typography variant="h6" noWrap component="div">
-                Dashboard
+                Shopidex
               </Typography>
             </Toolbar>
           </AppBar>
           <Box
             component="nav"
-            sx={{ width: { sm: 240 }, flexShrink: { sm: 0 } }}
+            sx={{ width: { md: 240 }, flexShrink: { md: 0 } }}
           >
-            <Hidden smUp implementation="css">
+            <Hidden mdUp implementation="css">
               <Drawer
                 variant="temporary"
                 open={mobileOpen}
                 onClose={handleDrawerToggle}
                 ModalProps={{ keepMounted: true }}
                 sx={{
-                  display: { xs: 'block', sm: 'none' },
+                  display: { xs: 'block', md: 'none' },
                   '& .MuiDrawer-paper': { boxSizing: 'border-box', width: 240 },
                 }}
               >
                 {drawer}
               </Drawer>
             </Hidden>
-            <Hidden xsDown implementation="css">
+            <Hidden smDown mdDown implementation="css">
               <Drawer
                 variant="permanent"
                 sx={{
-                  display: { xs: 'none', sm: 'block' },
+                  display: { xs: 'none', md: 'block' }, // Change sm to md
                   '& .MuiDrawer-paper': { boxSizing: 'border-box', width: 240 },
                 }}
                 open
@@ -105,7 +109,7 @@ function App() {
           </Box>
           <Box
             component="main"
-            sx={{ flexGrow: 1, p: 3, width: { sm: `calc(100% - 240px)` } }}
+            sx={{ flexGrow: 1, p: 3, width: { md: `calc(100% - 240px)` } }} // Change sm to md
           >
             <Toolbar /> {/* Acts as a space bar */}
             <Routes>
@@ -117,6 +121,7 @@ function App() {
         </Box>
       </ThemeProvider>
     </QueryClientProvider>
+
   );
 }
 

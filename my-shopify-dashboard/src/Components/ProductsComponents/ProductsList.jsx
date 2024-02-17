@@ -1,6 +1,6 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState } from 'react';
 import { useQuery } from 'react-query';
-import { fetchProductsList } from '../../Services/api'; // Adjust the import path as needed
+import { fetchProductsList } from '../../Services/api';
 import {
   CircularProgress,
   Box,
@@ -20,15 +20,54 @@ import EditIcon from '@mui/icons-material/Edit';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import WarningIcon from '@mui/icons-material/Warning';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import { green, red, yellow } from '@mui/material/colors';
+import { red, green, yellow, orange } from '@mui/material/colors';
+import ProductsColumnPreferences from './ProductsColumnPreferences';
+
+// Initial column visibility state based on available columns
+const initialColumns = [
+  { id: 'title', label: 'Title', visible: true },
+  { id: 'sku', label: 'SKU', visible: true },
+  { id: 'stock', label: 'Stock Level', visible: true },
+  { id: 'reorder_level', label: 'Reorder Level', visible: true },
+  { id: 'trend', label: 'Trend', visible: true },
+  { id: 'actions', label: 'Actions', visible: true },
+  { id: 'supplier_name', label: 'Supplier Name', visible: false },
+  { id: 'last_ordered_date', label: 'Last Ordered Date', visible: false },
+  { id: 'lead_time_days', label: 'Lead Time (Days)', visible: false },
+  { id: 'projected_runout_date', label: 'Projected Runout Date', visible: false },
+  { id: 'variant_title', label: 'Variant', visible: false },
+  { id: 'sales_velocity', label: 'Sales Velocity', visible: false },
+  { id: 'profit_margin', label: 'Profit Margin', visible: false },
+  { id: 'price', label: 'Price', visible: false },
+  { id: 'category', label: 'Category', visible: false },
+  { id: 'description', label: 'Description', visible: false },
+];
+
+
+// Initial user preferences for column visibility
+const initialUserPreferences = {
+  visible_columns: ['title', 'sku', 'stock', 'reorder_level', 'trend', 'actions'],
+};
 
 const getTrendIndicatorIcon = (stock, reorderLevel) => {
-  const trendIndicator = stock <= reorderLevel ? 'critical' : 'stable'; // Simplified for demonstration
+  let trendIndicator;
+  if (stock < reorderLevel) {
+    trendIndicator = 'critical';
+  } else if (stock === reorderLevel) {
+    trendIndicator = 'stable';
+  } else {
+    trendIndicator = 'increasing'; // Placeholder
+  }
+
   switch (trendIndicator) {
     case 'critical':
       return <Tooltip title="Critical"><WarningIcon sx={{ color: red[500], verticalAlign: 'middle' }} /></Tooltip>;
+    case 'decreasing':
+      return <Tooltip title="Decreasing"><WarningIcon sx={{ color: yellow[800], verticalAlign: 'middle' }} /></Tooltip>;
     case 'stable':
       return <Tooltip title="Stable"><CheckCircleIcon sx={{ color: green[500], verticalAlign: 'middle' }} /></Tooltip>;
+    case 'increasing':
+      return <Tooltip title="Increasing"><CheckCircleIcon sx={{ color: orange[500], verticalAlign: 'middle' }} /></Tooltip>;
     default:
       return null;
   }
@@ -37,18 +76,21 @@ const getTrendIndicatorIcon = (stock, reorderLevel) => {
 const ProductsList = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [preferencesOpen, setPreferencesOpen] = useState(false);
+  const [columns, setColumns] = useState(initialColumns);
+  const [userPreferences, setUserPreferences] = useState(initialUserPreferences);
 
   const { data, isLoading, isError, error } = useQuery(
     ['ProductsList', page, rowsPerPage],
     () => fetchProductsList(page + 1, rowsPerPage),
-    {
-      keepPreviousData: true,
-    }
+    { keepPreviousData: true }
   );
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
+
+  console.log("YOOHOO: ", preferencesOpen)
 
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(parseInt(event.target.value, 10));
@@ -59,80 +101,75 @@ const ProductsList = () => {
   if (isError) return <Typography color="error">Error: {error.message}</Typography>;
 
   return (
-    <Box sx={{
-      padding: '20px', 
-      margin: '10px',
-      overflowY: 'auto',
-      maxHeight: '500px',
-      '&::-webkit-scrollbar': {
-      width: '10px',
-      },
-      '&::-webkit-scrollbar-track': {
-      boxShadow: 'inset 0 0 5px grey',
-      borderRadius: '10px',
-      },
-      '&::-webkit-scrollbar-thumb': {
-      background: 'darkgrey',
-      borderRadius: '10px',
-      },
-      '&::-webkit-scrollbar-thumb:hover': {
-      background: '#3f9068',
-      },
-  }}>      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+    <Box sx={{ padding: '20px', margin: '10px' }}>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+        <Typography variant="h5">Products List</Typography>
 
-      <Typography variant="h5" sx={{ marginBottom: '20px' }}>Products List</Typography>
-      <IconButton aria-label="settings">
-          <SettingsIcon />
-        </IconButton>
-        </Box>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>Title</TableCell>
-              <TableCell>SKU</TableCell>
-              <TableCell>Stock Level</TableCell>
-              <TableCell>Trend</TableCell>
-              <TableCell>Actions</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {data?.products.map((product) => (
-              <TableRow key={product.product_id}>
-                <TableCell>{product.title}</TableCell>
-                <TableCell>{product.sku}</TableCell>
-                <TableCell>{`${product.stock}/${product.reorder_level}`}</TableCell>
-                <TableCell>{getTrendIndicatorIcon(product.stock, product.reorder_level)}</TableCell>
-                <TableCell>
-                  <IconButton aria-label="view">
-                    <VisibilityIcon sx={{ color: green[500] }} />
-                  </IconButton>
-                  <IconButton aria-label="edit">
-                    <EditIcon />
-                  </IconButton>
-                  <IconButton aria-label="order" onClick={() => console.log('Order', product.product_id)}>
-                    <AddShoppingCartIcon />
-                  </IconButton>
-                </TableCell>
-              </TableRow>
+        <ProductsColumnPreferences
+          open={preferencesOpen}
+          onClose={() => setPreferencesOpen(false)}
+          availableColumns={columns}
+          userPreferences={userPreferences}
+          setUserPreferences={setUserPreferences}
+        />
+      </Box>
+
+      <Table>
+        <TableHead>
+          <TableRow>
+            {columns.filter(column => userPreferences.visible_columns.includes(column.id)).map(column => (
+              <TableCell key={column.id}>{column.label}</TableCell>
             ))}
-              <TableRow>
-                <TablePagination
-                  rowsPerPageOptions={[5, 10, 25]}
-                  count={data?.totalProducts || 0}
-                  page={page}
-                  rowsPerPage={rowsPerPage}
-                  onPageChange={handleChangePage}
-                  onRowsPerPageChange={handleChangeRowsPerPage}
-                  sx={{
-                    '.MuiTablePagination-selectLabel, .MuiTablePagination-displayedRows, .MuiTablePagination-select, .MuiTablePagination-actions': {
-                      fontSize: '0.68rem',
-                    },
-                }}
-                />
-              </TableRow>
-          </TableBody>
-        </Table>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {data?.products.map(product => (
+            <TableRow key={product.product_id}>
+              {columns.filter(column => userPreferences.visible_columns.includes(column.id)).map(column => (
+                <TableCell key={column.id}>
+                  {column.id === 'title' && product.title}
+                  {column.id === 'sku' && product.sku}
+                  {column.id === 'stock' && `${product.stock}/${product.reorder_level}`}
+                  {column.id === 'reorder_level' && `${product.reorder_level}`}
+                  {column.id === 'trend' && getTrendIndicatorIcon(product.stock, product.reorder_level)}
+                  {column.id === 'actions' && (
+                    <>
+                      <IconButton aria-label="view">
+                        <VisibilityIcon sx={{ color: green[500] }} />
+                      </IconButton>
+                      <IconButton aria-label="edit">
+                        <EditIcon />
+                      </IconButton>
+                      <IconButton aria-label="order">
+                        <AddShoppingCartIcon />
+                      </IconButton>
+                    </>
+                  )}
+                  {column.id === 'supplier_name' && `${product.supplier_name}`}
+                  {column.id === 'last_ordered_date' && `${product.last_ordered_date}`}
+                  {column.id === 'lead_time_days' && `${product.lead_time_days}`}
+                  {column.id === 'projected_runout_date' && `${product.projected_runout_date}`}
+                  {column.id === 'variant_title' && `${product.variant_title}`}
+                  {column.id === 'sales_velocity' && `${product.sales_velocity}`}
+                  {column.id === 'profit_margin' && `${product.profit_margin}`}
+                  {column.id === 'price' && `${product.price}`}
+                  {column.id === 'category' && `${product.category}`}
+                  {column.id === 'description' && `${product.description}`}
 
+                </TableCell>
+              ))}
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+      <TablePagination
+        component="div"
+        count={data?.totalProducts || 0}
+        page={page}
+        rowsPerPage={rowsPerPage}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
+      />
     </Box>
   );
 };

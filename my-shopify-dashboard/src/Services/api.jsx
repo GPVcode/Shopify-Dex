@@ -4,9 +4,9 @@ const API_URL = `http://localhost:5000/api`
 
 export const fetchTotalRevenue = async () => {
     try {
-        // be courteous to user, use timeout.
+
         const response = await axios.get(`${API_URL}/total-revenue`, { timeout: 5000 });
-        // GPV, validate your data
+
         if (response.data && typeof response.data.totalRevenue === 'number') {
             return response.data;
         } else {
@@ -32,7 +32,7 @@ export const fetchRecentOrders = async (page = 1, limit = 5) => {
         if (response.data && Array.isArray(response.data.orders)) {
             return {
                 orders: response.data.orders,
-                total: response.data.total, // Assuming backend returns the total number of orders
+                total: response.data.total,
                 page,
                 limit
             };
@@ -49,9 +49,8 @@ export const fetchRecentOrders = async (page = 1, limit = 5) => {
 // Function to fetch inventory alerts
 export const fetchInventoryAlerts = async (page = 1, limit = 5) => {
     try {
-        const response = await axios.get(`${API_URL}/products/inventory-alerts`, { timeout: 5000 }); // 5000ms timeout
+        const response = await axios.get(`${API_URL}/products/inventory-alerts`, { timeout: 5000 }); 
 
-        // Basic Data Validation
         if (!response.data || !Array.isArray(response.data.items)) {
             throw new Error("Invalid pagination data format received");
         }
@@ -123,8 +122,6 @@ export const fetchCustomerInsights = async (page = 1, limit = 5) => {
             timeout: 5000,
         });
 
-        console.log("Cust Insights: ", response)
-
         if (response.data && typeof response.data === 'object' && Array.isArray(response.data.customers)) {
             return {
                 customers: response.data.customers,
@@ -184,8 +181,7 @@ export const fetchProductsList = async (page = 1, limit = 10) => {
             timeout: 5000
         });
 
-        console.log("Products List: ", response)
-
+        console.log("HEY! ", response)
 
         if (response.data && typeof response.data === 'object') {
             if (Array.isArray(response.data.products) && typeof response.data.totalProducts === 'number' && typeof response.data.totalPages === 'number') {
@@ -211,3 +207,23 @@ export const fetchProductsList = async (page = 1, limit = 10) => {
         }
     }
 };
+
+// export const fetchUserPreferences = async () => {
+//     try {
+//         const response = await axios.get(`${API_URL}/products/preferences`);
+//         return response.data; 
+//     } catch (error) {
+//         console.error('Error fetching user preferences:', error);
+//         return { error: "Failed to fetch user preferences" };
+//     }
+// };
+
+// export const updateUserPreferences = async (preferences) => {
+//     try {
+//         const response = await axios.post(`${API_URL}/products/preferences/update`, preferences);
+//         return response.data; 
+//     } catch (error) {
+//         console.error('Error updating user preferences:', error);
+//         return { error: "Failed to update user preferences" };
+//     }
+// };

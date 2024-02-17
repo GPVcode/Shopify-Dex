@@ -127,11 +127,11 @@ const InventoryAlerts = () => {
                 style={{ marginBottom: '20px' }}
               >Inventory Alerts
               </Typography>
-              <ColumnPreferences 
+              {/* <ColumnPreferences 
                 availableColumns={availableColumns} 
                 userPreferences={userPreferences} 
                 setUserPreferences={setUserPreferences}
-              />
+              /> */}
             </div>
             
             <Table size="small">

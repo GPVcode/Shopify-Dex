@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import { Button, Dialog, DialogTitle, DialogContent, DialogActions, FormControl, InputLabel, Select, Checkbox, MenuItem, ListItemText, OutlinedInput, IconButton } from '@mui/material';
 import SettingsIcon from '@mui/icons-material/Settings';
 
@@ -13,7 +14,7 @@ const MenuProps = {
   },
 };
 
-const CustomerInsightsColumnPreferences = ({ availableColumns, userPreferences, setUserPreferences }) => {
+const ProductsColumnPreferences = ({ availableColumns, userPreferences, setUserPreferences }) => {
   const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {
@@ -37,34 +38,31 @@ const CustomerInsightsColumnPreferences = ({ availableColumns, userPreferences, 
   return (
     <div>
       <IconButton 
-        variant="outlined" 
-        color="info" 
-        onClick={() => handleClickOpen()}
+        aria-label="column settings"
+        onClick={handleClickOpen}
         size="small"
       >
-        <SettingsIcon  />
+        <SettingsIcon />
       </IconButton>
       
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Choose Columns</DialogTitle>
         <DialogContent>
-          <FormControl sx={{ m: 1, width: 300 }}>
+          <FormControl fullWidth>
             <InputLabel id="column-checkbox-label">Columns</InputLabel>
             <Select
               labelId="column-checkbox-label"
               id="column-checkbox"
               multiple
-              value={userPreferences.visible_columns}
+              value={userPreferences?.visible_columns || []}
               onChange={handleChange}
-              input={<OutlinedInput label="Column Preferences" />}
-              renderValue={(selected) => selected.map(id => availableColumns.find(column => column.id === id).label).join(', ')}
+              input={<OutlinedInput label="Columns" />}
+              renderValue={(selected) => selected.map(id => availableColumns.find(column => column.id === id)?.label || '').join(', ')}
               MenuProps={MenuProps}
             >
               {availableColumns.map((column) => (
                 <MenuItem key={column.id} value={column.id}>
-                  <Checkbox 
-                    checked={userPreferences.visible_columns.includes(column.id)}
-                  />
+                  <Checkbox checked={userPreferences?.visible_columns?.includes(column.id) || false} />
                   <ListItemText primary={column.label} />
                 </MenuItem>
               ))}
@@ -80,4 +78,16 @@ const CustomerInsightsColumnPreferences = ({ availableColumns, userPreferences, 
   );
 };
 
-export default CustomerInsightsColumnPreferences;
+ProductsColumnPreferences.defaultProps = {
+  userPreferences: { visible_columns: [] },
+};
+
+ProductsColumnPreferences.propTypes = {
+  availableColumns: PropTypes.array.isRequired,
+  userPreferences: PropTypes.shape({
+    visible_columns: PropTypes.arrayOf(PropTypes.string),
+  }),
+  setUserPreferences: PropTypes.func.isRequired,
+};
+
+export default ProductsColumnPreferences;
