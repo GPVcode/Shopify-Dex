@@ -47,7 +47,7 @@ const InventoryAlerts = () => {
       "title", 
       "stock",
       "trend_indicator",
-      "action"
+      // "action"
     ] 
   });
   

@@ -174,17 +174,17 @@ export const fetchUserEngagementMetrics = async () => {
     }
 };
 
-export const fetchProductsList = async (page = 1, limit = 10) => {
+export const fetchProductsList = async (page = 1, limit = 10, searchQuery = '') => {
     try {
         const response = await axios.get(`${API_URL}/products/products-list`, {
-            params: { page, limit },
+            params: { page, limit, search: searchQuery },
             timeout: 5000
         });
 
-        console.log("HEY! ", response)
-
         if (response.data && typeof response.data === 'object') {
-            if (Array.isArray(response.data.products) && typeof response.data.totalProducts === 'number' && typeof response.data.totalPages === 'number') {
+            if (Array.isArray(response.data.products) && 
+                typeof response.data.totalProducts === 'number' && 
+                typeof response.data.totalPages === 'number') {
                 return response.data;
             } else {
                 console.error("Invalid data format received:", response.data);
@@ -207,6 +207,7 @@ export const fetchProductsList = async (page = 1, limit = 10) => {
         }
     }
 };
+
 
 // export const fetchUserPreferences = async () => {
 //     try {

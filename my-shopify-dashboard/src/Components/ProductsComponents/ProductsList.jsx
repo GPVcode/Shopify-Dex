@@ -22,12 +22,12 @@ import WarningIcon from '@mui/icons-material/Warning';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { red, green, yellow, orange } from '@mui/material/colors';
 import ProductsColumnPreferences from './ProductsColumnPreferences';
-
+import SearchBar from './SearchBar';
 // Initial column visibility state based on available columns
 const initialColumns = [
   { id: 'title', label: 'Title', visible: true },
   { id: 'sku', label: 'SKU', visible: true },
-  { id: 'stock', label: 'Stock Level', visible: true },
+  { id: 'stock', label: 'Stock/Restock', visible: true },
   { id: 'reorder_level', label: 'Reorder Level', visible: true },
   { id: 'trend', label: 'Trend', visible: true },
   { id: 'actions', label: 'Actions', visible: true },
@@ -53,10 +53,10 @@ const getTrendIndicatorIcon = (stock, reorderLevel) => {
   let trendIndicator;
   if (stock < reorderLevel) {
     trendIndicator = 'critical';
-  } else if (stock === reorderLevel) {
-    trendIndicator = 'stable';
+  } else if (stock <= reorderLevel + 5) {
+    trendIndicator = 'decreasing';
   } else {
-    trendIndicator = 'increasing'; // Placeholder
+    trendIndicator = 'stable'; // Placeholder
   }
 
   switch (trendIndicator) {
@@ -73,16 +73,17 @@ const getTrendIndicatorIcon = (stock, reorderLevel) => {
   }
 };
 
-const ProductsList = () => {
+const ProductsList = () => { 
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [preferencesOpen, setPreferencesOpen] = useState(false);
   const [columns, setColumns] = useState(initialColumns);
   const [userPreferences, setUserPreferences] = useState(initialUserPreferences);
+  const [searchQuery, setSearchQuery] = useState('');
 
   const { data, isLoading, isError, error } = useQuery(
-    ['ProductsList', page, rowsPerPage],
-    () => fetchProductsList(page + 1, rowsPerPage),
+    ['ProductsList', page, rowsPerPage, searchQuery],
+    () => fetchProductsList(page + 1, rowsPerPage, searchQuery),
     { keepPreviousData: true }
   );
 
@@ -90,12 +91,12 @@ const ProductsList = () => {
     setPage(newPage);
   };
 
-  console.log("YOOHOO: ", preferencesOpen)
 
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0); // Reset to first page
+    setPage(0);
   };
+  console.log("RPP: ", rowsPerPage)
 
   if (isLoading) return <CircularProgress />;
   if (isError) return <Typography color="error">Error: {error.message}</Typography>;
@@ -104,7 +105,8 @@ const ProductsList = () => {
     <Box sx={{ padding: '20px', margin: '10px' }}>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
         <Typography variant="h5">Products List</Typography>
-
+        
+        <SearchBar onSearch={(query) => setSearchQuery(query)} />
         <ProductsColumnPreferences
           open={preferencesOpen}
           onClose={() => setPreferencesOpen(false)}
@@ -169,6 +171,7 @@ const ProductsList = () => {
         rowsPerPage={rowsPerPage}
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
+        rowsPerPageOptions={[5, 10, 25, 50]}
       />
     </Box>
   );
