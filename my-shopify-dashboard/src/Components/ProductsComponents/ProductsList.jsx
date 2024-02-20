@@ -96,7 +96,6 @@ const ProductsList = () => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
-  console.log("RPP: ", rowsPerPage)
 
   if (isLoading) return <CircularProgress />;
   if (isError) return <Typography color="error">Error: {error.message}</Typography>;

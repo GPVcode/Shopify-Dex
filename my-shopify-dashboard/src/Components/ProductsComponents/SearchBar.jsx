@@ -1,16 +1,41 @@
-import React from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { TextField, Box } from '@mui/material';
 
-const SearchBar = ({ onSearch }) => {
+// Custom debounce function
+function debounce(func, wait) {
+  let timeout;
+  return function executedFunction(...args) {
+    const later = () => {
+      clearTimeout(timeout);
+      func(...args);
+    };
+    clearTimeout(timeout);
+    timeout = setTimeout(later, wait);
+  };
+}
 
-    console.log("hlkdsfjasljf: ", onSearch)
+const SearchBar = ({ onSearch }) => {
+  const [inputValue, setInputValue] = useState('');
+
+  const debouncedSearch = useCallback(debounce((query) => {
+    onSearch(query);
+  }, 500), [onSearch]);
+
+  // Effect that calls the debouncedSearch function when inputValue changes
+  useEffect(() => {
+    if (inputValue !== '') {
+      debouncedSearch(inputValue);
+    }
+  }, [inputValue, debouncedSearch]);
+
   return (
     <Box sx={{ marginBottom: 2 }}>
       <TextField
         fullWidth
         label="Search Products"
         variant="outlined"
-        onChange={(e) => onSearch(e.target.value)}
+        value={inputValue}
+        onChange={(e) => setInputValue(e.target.value)}
         placeholder="Enter product name..."
       />
     </Box>
