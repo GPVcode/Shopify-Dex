@@ -32,11 +32,11 @@ function App() {
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
   
-      {/* <Toolbar /> */}
+      <Toolbar />
       <List>
-        <Typography variant="h6" noWrap component="div" sx={{ fontWeight: 'bold', mb: 2, mt: 2 }}>
+        {/* <Typography variant="h6" noWrap component="div" sx={{ fontWeight: 'bold', mb: 2, mt: 2 }}>
             Shopidex
-        </Typography>
+        </Typography> */}
         <ListItemButton key="Dashboard" onClick={(event) => {
           event.stopPropagation();
           navigate('/')
@@ -64,7 +64,13 @@ function App() {
       <ThemeProvider theme={darkTheme}>
         <CssBaseline />
         <Box sx={{ display: 'flex' }}>
-          <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer - 1 }}>
+          <AppBar 
+            position="fixed" 
+            sx={{ 
+              zIndex: (theme) => theme.zIndex.drawer + 1, 
+              background: "#070e16"
+            }}
+          >
             <Toolbar>
               <IconButton
                 color="inherit"

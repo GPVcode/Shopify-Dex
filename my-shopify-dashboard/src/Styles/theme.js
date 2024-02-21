@@ -5,11 +5,11 @@ export const darkTheme = createTheme({
   palette: {
     mode: 'dark',
     background: {
-      default: '#070e16', // Dark blue shade for the background
-      paper: '#0d182a', // Slightly lighter dark blue for elements like Cards, Dialogs
+      default: '#070e16',
+      paper: '#0d182a',
     },
     primary: {
-      main: '#0d182a', // A shade of blue for primary buttons and icons
+      main: '#070e16', // A shade of blue for primary buttons and icons
     },
     secondary: {
       main: '#00B4D8', // A contrasting secondary color test
@@ -41,6 +41,7 @@ export const darkTheme = createTheme({
         colorPrimary: {
           backgroundColor: '#0d182a', // AppBar color
         },
+        
       },
     },
     MuiDrawer: {
