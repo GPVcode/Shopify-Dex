@@ -1,6 +1,19 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Button, Dialog, DialogTitle, DialogContent, DialogActions, FormControl, InputLabel, Select, Checkbox, MenuItem, ListItemText, OutlinedInput, IconButton } from '@mui/material';
+import { 
+  Button, 
+  Dialog, 
+  DialogTitle, 
+  DialogContent, 
+  DialogActions, 
+  FormControl, 
+  InputLabel, 
+  Select, 
+  Checkbox, 
+  MenuItem, 
+  ListItemText, 
+  OutlinedInput, 
+  IconButton } from '@mui/material';
 import SettingsIcon from '@mui/icons-material/Settings';
 
 const ITEM_HEIGHT = 48;

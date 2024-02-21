@@ -180,7 +180,6 @@ export const fetchProductsList = async (page = 1, limit = 10, searchQuery = '') 
             params: { page, limit, search: searchQuery },
             timeout: 5000
         });
-
         if (response.data && typeof response.data === 'object') {
             if (Array.isArray(response.data.products) && 
                 typeof response.data.totalProducts === 'number' && 

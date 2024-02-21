@@ -31,8 +31,12 @@ function App() {
 
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
-      <Toolbar />
+  
+      {/* <Toolbar /> */}
       <List>
+        <Typography variant="h6" noWrap component="div" sx={{ fontWeight: 'bold', mb: 2, mt: 2 }}>
+            Shopidex
+        </Typography>
         <ListItemButton key="Dashboard" onClick={(event) => {
           event.stopPropagation();
           navigate('/')
@@ -60,7 +64,7 @@ function App() {
       <ThemeProvider theme={darkTheme}>
         <CssBaseline />
         <Box sx={{ display: 'flex' }}>
-          <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
+          <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer - 1 }}>
             <Toolbar>
               <IconButton
                 color="inherit"
@@ -98,7 +102,7 @@ function App() {
               <Drawer
                 variant="permanent"
                 sx={{
-                  display: { xs: 'none', md: 'block' }, // Change sm to md
+                  display: { xs: 'none', md: 'block' },
                   '& .MuiDrawer-paper': { boxSizing: 'border-box', width: 240 },
                 }}
                 open
@@ -109,7 +113,7 @@ function App() {
           </Box>
           <Box
             component="main"
-            sx={{ flexGrow: 1, p: 3, width: { md: `calc(100% - 240px)` } }} // Change sm to md
+            sx={{ flexGrow: 1, p: 3, width: { md: `calc(100% - 240px)` } }}
           >
             <Toolbar /> {/* Acts as a space bar */}
             <Routes>

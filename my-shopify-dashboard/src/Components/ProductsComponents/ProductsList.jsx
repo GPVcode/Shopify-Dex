@@ -2,19 +2,9 @@ import React, { useState } from 'react';
 import { useQuery } from 'react-query';
 import { fetchProductsList } from '../../Services/api';
 import {
-  CircularProgress,
-  Box,
-  Typography,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-  IconButton,
-  TablePagination,
-  Tooltip,
+  CircularProgress, Box, Typography, Table, TableBody, TableCell, 
+  TableHead, TableRow, IconButton, TablePagination, Tooltip, Card
 } from '@mui/material';
-import SettingsIcon from '@mui/icons-material/Settings';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import EditIcon from '@mui/icons-material/Edit';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
@@ -23,7 +13,8 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { red, green, yellow, orange } from '@mui/material/colors';
 import ProductsColumnPreferences from './ProductsColumnPreferences';
 import SearchBar from './SearchBar';
-// Initial column visibility state based on available columns
+import { filterProducts } from './utils/filterProducts';
+
 const initialColumns = [
   { id: 'title', label: 'Title', visible: true },
   { id: 'sku', label: 'SKU', visible: true },
@@ -42,7 +33,6 @@ const initialColumns = [
   { id: 'category', label: 'Category', visible: false },
   { id: 'description', label: 'Description', visible: false },
 ];
-
 
 // Initial user preferences for column visibility
 const initialUserPreferences = {
@@ -80,13 +70,26 @@ const ProductsList = () => {
   const [columns, setColumns] = useState(initialColumns);
   const [userPreferences, setUserPreferences] = useState(initialUserPreferences);
   const [searchQuery, setSearchQuery] = useState('');
+  const [isSearching, setIsSearching] = useState(false); 
 
   const { data, isLoading, isError, error } = useQuery(
     ['ProductsList', page, rowsPerPage, searchQuery],
-    () => fetchProductsList(page + 1, rowsPerPage, searchQuery),
-    { keepPreviousData: true }
-  );
+    async () => {
+      setIsSearching(true); 
+    
+      const response  = await fetchProductsList(page + 1, rowsPerPage, searchQuery);
 
+      setIsSearching(false);
+      return response.products ? response.products : [];
+    },
+    { 
+      keepPreviousData: true,
+      // This onSuccess callback can help verify the data structure
+      onSuccess: (data) => {
+        console.log("Fetched Products List data: ", data);
+      }
+    }
+  );        
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -97,22 +100,31 @@ const ProductsList = () => {
     setPage(0);
   };
 
-  if (isLoading) return <CircularProgress />;
+  if (isLoading) return <Box sx={{ display: 'flex', justifyContent: 'center' }}><CircularProgress size={10} /></Box>;
   if (isError) return <Typography color="error">Error: {error.message}</Typography>;
+  const filteredProducts = filterProducts(data || [], searchQuery);
 
   return (
-    <Box sx={{ padding: '20px', margin: '10px' }}>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-        <Typography variant="h5">Products List</Typography>
+    <Card sx={{ overflow: 'auto', p: 3 }}>  
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}> 
+        <Typography variant="h6" gutterBottom>
+          Products List
+        </Typography>
+
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap' }}>
+          <Box sx={{ paddingRight: "1rem" }}>
+            <SearchBar onSearch={setSearchQuery} isLoading={isSearching} />
+          </Box>
+
+          <ProductsColumnPreferences
+            open={preferencesOpen}
+            onClose={() => setPreferencesOpen(false)}
+            availableColumns={columns}
+            userPreferences={userPreferences}
+            setUserPreferences={setUserPreferences}
+          />
+        </Box>
         
-        <SearchBar onSearch={(query) => setSearchQuery(query)} />
-        <ProductsColumnPreferences
-          open={preferencesOpen}
-          onClose={() => setPreferencesOpen(false)}
-          availableColumns={columns}
-          userPreferences={userPreferences}
-          setUserPreferences={setUserPreferences}
-        />
       </Box>
 
       <Table>
@@ -124,7 +136,7 @@ const ProductsList = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {data?.products.map(product => (
+          {filteredProducts.map(product => (
             <TableRow key={product.product_id}>
               {columns.filter(column => userPreferences.visible_columns.includes(column.id)).map(column => (
                 <TableCell key={column.id}>
@@ -163,16 +175,23 @@ const ProductsList = () => {
           ))}
         </TableBody>
       </Table>
-      <TablePagination
-        component="div"
-        count={data?.totalProducts || 0}
-        page={page}
-        rowsPerPage={rowsPerPage}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-        rowsPerPageOptions={[5, 10, 25, 50]}
-      />
-    </Box>
+      {isLoading ? (
+        <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
+          <CircularProgress size={24} />
+        </Box>
+      ) : (
+        <TablePagination
+          component="div"
+          count={filteredProducts.length}
+          page={page}
+          rowsPerPage={rowsPerPage}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+          rowsPerPageOptions={[5, 10, 25, 50]}
+        />
+      )}
+    </Card>
+    
   );
 };
 
