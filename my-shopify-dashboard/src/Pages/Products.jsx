@@ -8,7 +8,7 @@ const Products = () => {
     <div>        
             <Box sx={{ flexGrow: 1, marginBottom: 2 }}>
                 <Toolbar disableGutters>
-                    <Typography variant="h3" sx={{ flexGrow: 1, marginTop: 1 }}>
+                    <Typography variant="h3" sx={{ flexGrow: 1, marginTop: 1, color: '#2C2C2E' }}>
                         Products Management
                     </Typography>
                 </Toolbar>

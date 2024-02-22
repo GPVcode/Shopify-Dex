@@ -1,65 +1,50 @@
-// src/theme.js
 import { createTheme } from '@mui/material/styles';
 
 export const darkTheme = createTheme({
   palette: {
     mode: 'dark',
     background: {
-      default: '#070e16',
-      paper: '#0d182a',
+      default: '#0d0f0f', // Apple dark mode background
+      paper: '#0d0f0f', // Slightly lighter for elements like cards, dialogs
     },
     primary: {
-      main: '#070e16', // A shade of blue for primary buttons and icons
+      main: '#0A84FF', // Apple uses vibrant blues for primary actions in dark mode
     },
     secondary: {
-      main: '#00B4D8', // A contrasting secondary color test
+      main: '#30D158', // Green for secondary actions, inspired by iOS system colors
     },
     text: {
-      primary: '#ececec', // Light grey for primary text for better readability
-      secondary: '#A0AEC0', // Slightly darker grey for secondary text
+      primary: '#FFFFFF', // White text for maximum contrast
+      secondary: '#E5E5EA', // A lighter grey for less emphasis
     },
-    // Adjusting action colors for things like button hover states
     action: {
-      active: '#E0E0E0',
-      hover: '#0077B6',
-      selected: '#00B4D8',
-      disabled: '#A0AEC0',
-      disabledBackground: '#0d182a',
+      active: '#E5E5EA',
+      hover: '#48484A', // Slightly lighter grey for hover states
+      selected: '#0A84FF', // Using the primary blue for selection as well
+      disabled: '#3A3A3C',
+      disabledBackground: '#2C2C2E', // Keeping disabled elements discernible
     },
   },
   components: {
-    // Customizing components globally
     MuiButton: {
       styleOverrides: {
         root: {
-          color: 'white', // Ensuring button text is white for contrast
+          color: 'white', // Ensure button text is white for contrast
         },
-      },
-    },
-    MuiAppBar: {
-      styleOverrides: {
-        colorPrimary: {
-          backgroundColor: '#0d182a', // AppBar color
-        },
-        
       },
     },
     MuiDrawer: {
       styleOverrides: {
         paper: {
-          backgroundColor: '#070e16', // Drawer background
+          backgroundColor: '#2C2C2E', // Keeping consistent with paper backgrounds
         },
       },
     },
-    // Other component overrides can go here
+    // Any other component overrides for customization
   },
   typography: {
-    // Adjust typography colors if needed
     allVariants: {
-      color: '#E0E0E0',
+      color: '#FFFFFF',
     },
   },
 });
-
-
-

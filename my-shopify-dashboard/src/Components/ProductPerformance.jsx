@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useQuery } from 'react-query';
 import {
     CircularProgress,
@@ -9,11 +9,42 @@ import {
     TableCell,
     TableHead,
     TableRow,
+    TableSortLabel,
+    IconButton,
 } from '@mui/material';
-import { fetchProductPerformance } from '../Services/api'; // Ensure this path matches your project structure
+import SortIcon from '@mui/icons-material/Sort'; // Import Sort icon
+import { fetchProductPerformance } from '../Services/api';
 
 const ProductPerformance = () => {
     const { data, isLoading, isError, error } = useQuery('ProductPerformance', fetchProductPerformance);
+    const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
+
+    // Sort data based on sortConfig
+    const sortedData = React.useMemo(() => {
+        if (!data) return [];
+        const sortableItems = [...data];
+        if (sortConfig.key) {
+            sortableItems.sort((a, b) => {
+                if (a[sortConfig.key] < b[sortConfig.key]) {
+                    return sortConfig.direction === 'asc' ? -1 : 1;
+                }
+                if (a[sortConfig.key] > b[sortConfig.key]) {
+                    return sortConfig.direction === 'asc' ? 1 : -1;
+                }
+                return 0;
+            });
+        }
+        return sortableItems;
+    }, [data, sortConfig]);
+
+    // Handle sort requests
+    const requestSort = (key) => {
+        let direction = 'asc';
+        if (sortConfig.key === key && sortConfig.direction === 'asc') {
+            direction = 'desc';
+        }
+        setSortConfig({ key, direction });
+    };
 
     if (isLoading) {
         return (
@@ -32,53 +63,68 @@ const ProductPerformance = () => {
     }
 
     return (
-        <Box 
-            sx={{
-                padding: '20px', 
-                margin: '10px',
-                overflowY: 'auto',
-                maxHeight: '500px',
-                '&::-webkit-scrollbar': {
+        <Box sx={{
+            padding: '20px',
+            margin: '10px',
+            overflowY: 'auto',
+            maxHeight: '500px',
+            '&::-webkit-scrollbar': {
                 width: '10px',
-                },
-                '&::-webkit-scrollbar-track': {
+            },
+            '&::-webkit-scrollbar-track': {
                 boxShadow: 'inset 0 0 5px grey',
                 borderRadius: '10px',
-                },
-                '&::-webkit-scrollbar-thumb': {
+            },
+            '&::-webkit-scrollbar-thumb': {
                 background: 'darkgrey',
                 borderRadius: '10px',
-                },
-                '&::-webkit-scrollbar-thumb:hover': {
+            },
+            '&::-webkit-scrollbar-thumb:hover': {
                 background: '#3f9068',
-                },
-            }}
-        >
-            <Typography 
-                variant="h5" 
-                style={{ marginBottom: '20px' }}
-            >Product Performance
-            </Typography>
+            },
+        }}>
+            <Box 
+                sx={{ 
+                    display: 'flex', 
+                    justifyContent: 'space-between', 
+                    alignItems: 'center', 
+                    marginBottom: '2rem' 
+            }}>
+                <Typography variant="h6">Product Performance</Typography>
+                <SortIcon />
+            </Box>
             <Table size="small">
                 <TableHead>
                     <TableRow>
                         <TableCell>Product</TableCell>
-                        <TableCell align="right">Volume</TableCell>
-                        <TableCell align="right">Revenue</TableCell>
-                        {/* <TableCell align="right">Profit %</TableCell> */}
-                        {/* <TableCell align="right">Return Rate</TableCell> */}
+                        <TableCell align="right">
+                            <TableSortLabel
+                                active={sortConfig.key === 'salesVolume'}
+                                direction={sortConfig.key === 'salesVolume' ? sortConfig.direction : 'asc'}
+                                onClick={() => requestSort('salesVolume')}
+                            >
+                                Volume
+                            </TableSortLabel>
+                        </TableCell>
+                        <TableCell align="right">
+                            <TableSortLabel
+                                active={sortConfig.key === 'revenue'}
+                                direction={sortConfig.key === 'revenue' ? sortConfig.direction : 'asc'}
+                                onClick={() => requestSort('revenue')}
+                            >
+                                Revenue
+                            </TableSortLabel>
+                        </TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {data.map((product) => (
+                    {sortedData.map((product) => (
                         <TableRow key={product.productId}>
                             <TableCell component="th" scope="row">
                                 {product.title}
                             </TableCell>
                             <TableCell align="right">{product.salesVolume}</TableCell>
                             <TableCell align="right">${product.revenue}</TableCell>
-                            {/* <TableCell align="right">{product.profitMargin}</TableCell> */}
-                            {/* <TableCell align="right">{product.returnRate}</TableCell> */}
                         </TableRow>
                     ))}
                 </TableBody>

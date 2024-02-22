@@ -225,6 +225,7 @@ const ordersResponse = {
         }
     ]
 };
+
 const inventoryResponse = {
   "inventory": [
     {

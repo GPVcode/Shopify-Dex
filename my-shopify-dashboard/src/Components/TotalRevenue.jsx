@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { useQuery } from 'react-query';
-import { CircularProgress, Box, Typography, ButtonGroup, Button, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { CircularProgress, Box, Typography } from '@mui/material';
+import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import { fetchTotalRevenue } from '../Services/api';
 
 function TotalRevenue() {
@@ -9,12 +9,15 @@ function TotalRevenue() {
     const [view, setView] = useState('total'); // 'total', 'monthly', or 'daily'
     const [selectedMonth, setSelectedMonth] = useState('');
     
+    const percentageIncrease = useMemo(() => {
+        if (!data || Object.keys(data.monthlyRevenue).length < 2) return '0';
+        const months = Object.keys(data.monthlyRevenue);
+        const lastMonthRevenue = data.monthlyRevenue[months[months.length - 1]];
+        const prevMonthRevenue = data.monthlyRevenue[months[months.length - 2]];
+        return (((lastMonthRevenue - prevMonthRevenue) / prevMonthRevenue) * 100).toFixed(2);
+    }, [data]);
 
     const today = new Date().toISOString().split('T')[0]; // Get today's date in YYYY-MM-DD format
-
-    const handleMonthChange = (event) => {
-        setSelectedMonth(event.target.value);
-    };
 
     const months = data ? Object.keys(data.monthlyRevenue || {}) : [];
 
@@ -38,38 +41,6 @@ function TotalRevenue() {
         }
     }, [data, view, selectedMonth, today, formattedMonths]);
 
-    const revenueData = useMemo(() => {
-        switch (view) {
-            case 'total':
-                return months.map(month => ({
-                    time: monthNames[parseInt(month.split('-')[1], 10) - 1],
-                    revenue: data.monthlyRevenue[month]
-                }));
-            case 'monthly':
-                if (!selectedMonth || !data.dailyRevenue) {
-                    return [];
-                }
-                // Extract the year and month from the selectedMonth
-                // Assuming selectedMonth is in "MMM YYYY" format (e.g., "Feb 2024")
-                const [selectedMonthName, selectedYear] = selectedMonth.split(' ');
-                const monthIndex = monthNames.findIndex(month => month === selectedMonthName) + 1;
-                const monthPrefix = `${selectedYear}-${monthIndex.toString().padStart(2, '0')}`;
-    
-                // Filter and map dailyRevenue entries for the selected month
-                return Object.entries(data.dailyRevenue).filter(([date]) => 
-                    date.startsWith(monthPrefix)
-                ).map(([date, revenue]) => ({
-                    time: date.substring(8), // Get the day part of the date string
-                    revenue
-                }));
-            case 'daily':
-                return []; // No chart data needed for 'daily'
-            default:
-                return [];
-        }
-    }, [data, view, selectedMonth, today, formattedMonths, monthNames]);
-
-
     if (isLoading) {
         return <Box style={{ padding: '20px', margin: '10px' }}><CircularProgress /></Box>;
     } 
@@ -77,75 +48,45 @@ function TotalRevenue() {
         return <Box style={{ padding: '20px', margin: '10px' }}>Error: {error.message}</Box>;
     }
 
+    const percentageColor = parseFloat(percentageIncrease) >= 0 ? 'green' : 'indianred';
+
     return (
-        <Box 
-            sx={{
-                padding: '20px',
-                margin: '10px',
-                overflowY: 'auto',
-                maxHeight: '500px',
-                '&::-webkit-scrollbar': {
+        <Box sx={{
+            padding: '20px',
+            margin: '10px',
+            overflowY: 'auto',
+            maxHeight: '500px',
+            '&::-webkit-scrollbar': {
                 width: '10px',
-                },
-                '&::-webkit-scrollbar-track': {
+            },
+            '&::-webkit-scrollbar-track': {
                 boxShadow: 'inset 0 0 5px grey',
                 borderRadius: '10px',
-                },
-                '&::-webkit-scrollbar-thumb': {
+            },
+            '&::-webkit-scrollbar-thumb': {
                 background: 'darkgrey',
                 borderRadius: '10px',
-                },
-                '&::-webkit-scrollbar-thumb:hover': {
+            },
+            '&::-webkit-scrollbar-thumb:hover': {
                 background: '#3f9068',
-                },
-            }}
-        >
-            <Typography 
-                variant="h5"
-                style={{ marginBottom: '20px' }}
-            >Revenue</Typography>
-            <ButtonGroup 
-                size="sm" 
-                aria-label="outlined button group"
-                style={{ 
-                    marginTop: 15,
-                    marginBottom: 15
-                }}
-            >
-                <Button onClick={() => setView('total')}>Total</Button>
-                <Button onClick={() => setView('monthly')}>Monthly</Button>
-                <Button onClick={() => setView('daily')}>Today</Button>
-            </ButtonGroup>
-            {view === 'monthly' && (
-                <Box display="flex" justifyContent="left" marginBottom="20px">
-                    <FormControl variant="outlined" size="small" style={{ minWidth: 120 }}>
-                        <InputLabel>Month</InputLabel>
-                        <Select
-                            value={selectedMonth}
-                            onChange={handleMonthChange}
-                            label="Month"
-                        >
-                            {formattedMonths.map((formattedMonth, index) => (
-                                <MenuItem key={months[index]} value={formattedMonth}>{formattedMonth}</MenuItem>
-                            ))}
-                        </Select>
-                    </FormControl>
-                </Box>
-            )}
-            <Typography variant="h4" sx={{ marginBottom: '30px', fontWeight: 'bold' }}>
+            },
+        }}>
+            <Box sx={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                marginBottom: '1rem',
+            }}>
+                <Typography variant="h6">Total Revenue</Typography>
+                <AttachMoneyIcon/> 
+            </Box>
+            
+            <Typography variant="h4" sx={{ fontWeight: 'bold' }}>
                 ${revenueFigure}
             </Typography>
-            {view !== 'daily' && (
-                <ResponsiveContainer width="100%" height={300}>
-                    <LineChart data={revenueData} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
-                        <CartesianGrid strokeDasharray="4 4" />
-                        <XAxis fontSize='0.71rem' dataKey="time" />
-                        <YAxis fontSize='0.71rem' />
-                        <Tooltip />
-                        <Line type="monotone" dataKey="revenue" stroke="#8884d8" activeDot={{ r: 8 }} />
-                    </LineChart>
-                </ResponsiveContainer>
-            )}
+            <Typography variant="body2" sx={{ color: percentageColor }}>
+                {percentageIncrease}% from last month
+            </Typography>
         </Box>        
     );
 }

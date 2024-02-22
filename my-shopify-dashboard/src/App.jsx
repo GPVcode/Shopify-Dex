@@ -3,135 +3,150 @@ import { Routes, Route, useNavigate } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import Dashboard from './Pages/Dashboard';
 import Products from './Pages/Products';
-import { 
-  ThemeProvider, 
-  CssBaseline, 
-  AppBar, 
-  Toolbar, 
-  Typography,
-  Drawer, 
-  List, ListItemButton,ListItemIcon, ListItemText, 
-  IconButton,
-  Box, 
-  Hidden } from '@mui/material';
-import MenuIcon from '@mui/icons-material/Menu';
+import {
+  ThemeProvider,
+  CssBaseline,
+  Drawer,
+  List,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+  Box,
+  Fab,
+  Typography
+} from '@mui/material';
 import DashboardIcon from '@mui/icons-material/Dashboard';
-import StorefrontIcon from '@mui/icons-material/Storefront'; 
+import StorefrontIcon from '@mui/icons-material/Storefront';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import { darkTheme } from './Styles/theme';
+import ShopidexLogo from './Styles/logo/Shopidex Logo.png'
 
 const queryClient = new QueryClient();
 
 function App() {
-  const [mobileOpen, setMobileOpen] = useState(false);
+  const [isSidebarExpanded, setIsSidebarExpanded] = useState(true);
   const navigate = useNavigate();
 
-  const handleDrawerToggle = () => {
-    setMobileOpen(!mobileOpen);
+  const toggleSidebar = () => {
+    setIsSidebarExpanded(!isSidebarExpanded);
   };
 
-  const drawer = (
-    <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
-  
-      <Toolbar />
-      <List>
-        {/* <Typography variant="h6" noWrap component="div" sx={{ fontWeight: 'bold', mb: 2, mt: 2 }}>
-            Shopidex
-        </Typography> */}
-        <ListItemButton key="Dashboard" onClick={(event) => {
-          event.stopPropagation();
-          navigate('/')
-        }}>
-          <ListItemIcon>
-            <DashboardIcon />
-          </ListItemIcon>
-          <ListItemText primary="Dashboard" />
-        </ListItemButton>
-        <ListItemButton key="Products" onClick={(event) => { 
-          event.stopPropagation();
-          navigate('/products')
-        }}>
-        <ListItemIcon>
-            <StorefrontIcon />
-          </ListItemIcon>
-          <ListItemText primary="Products" />
-        </ListItemButton>
-      </List>
-    </Box>
+  const drawerWidthExpanded = 200;
+  const drawerWidthCollapsed = 72;
+
+  const drawerContent = (
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          height: '100%',
+          py: 2,
+        }}
+      >
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            
+            justifyContent: 'center',
+            p: 2,
+            width: '100%',
+          }}
+        >
+          <img 
+            src={ShopidexLogo} 
+            alt="Shopidex Logo" 
+            style={{ 
+              height: isSidebarExpanded ? '3rem' : '32px', 
+              width: isSidebarExpanded ? '3rem' : '32px',
+              my: 1
+            }} 
+          />
+          {isSidebarExpanded && <Typography variant="h6" noWrap sx={{ marginLeft: 1 }}>Shopidex</Typography>}
+        </Box>
+
+        <List sx={{ width: '100%', mt: 2 }}>
+          {['Dashboard', 'Products'].map((text, index) => (
+            <ListItemButton 
+              key={text}
+              sx={{
+                justifyContent: 'center',
+                my: 0.5,
+              }}
+              onClick={() => navigate(index === 0 ? '/' : '/products')}
+            >
+              <ListItemIcon sx={{ minWidth: 'auto', justifyContent: 'center' }}>
+                {index === 0 ? <DashboardIcon /> : <StorefrontIcon />}
+              </ListItemIcon>
+              {isSidebarExpanded && <ListItemText primary={text} sx={{marginLeft: 1}}/>}
+            </ListItemButton>
+          ))}
+        </List>
+      </Box>
   );
+  
 
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider theme={darkTheme}>
         <CssBaseline />
-        <Box sx={{ display: 'flex' }}>
-          <AppBar 
-            position="fixed" 
-            sx={{ 
-              zIndex: (theme) => theme.zIndex.drawer + 1, 
-              background: "#070e16"
+
+        <Box sx={{ display: 'flex', position: 'relative', }}>
+
+          <Drawer
+            variant="permanent"
+            sx={{
+              width: isSidebarExpanded ? drawerWidthExpanded : drawerWidthCollapsed,
+              flexShrink: 0,
+              '& .MuiDrawer-paper': {
+                width: isSidebarExpanded ? drawerWidthExpanded : drawerWidthCollapsed,
+                boxSizing: 'border-box',
+                background: "#070e16",
+                overflowX: 'hidden',
+              },
             }}
+            open
           >
-            <Toolbar>
-              <IconButton
-                color="inherit"
-                aria-label="open drawer"
-                edge="start"
-                onClick={handleDrawerToggle}
-                sx={{ mr: 2, display: { md: 'none' } }}
-              >
-                <MenuIcon />
-              </IconButton>
-              <Typography variant="h6" noWrap component="div">
-                Shopidex
-              </Typography>
-            </Toolbar>
-          </AppBar>
-          <Box
-            component="nav"
-            sx={{ width: { md: 240 }, flexShrink: { md: 0 } }}
+            {drawerContent}
+          </Drawer>
+
+          <Fab
+            color="primary"
+            sx={{
+              position: 'fixed', // Changed from 'absolute' to 'fixed'
+              top: "50%",
+              left: isSidebarExpanded ? `${drawerWidthExpanded}px` : `${drawerWidthCollapsed}px`,
+              transform: 'translateX(-50%) translateY(-50%)',
+              zIndex: 1201,
+              backgroundColor: "#232f3e"
+            }}
+            onClick={toggleSidebar}
           >
-            <Hidden mdUp implementation="css">
-              <Drawer
-                variant="temporary"
-                open={mobileOpen}
-                onClose={handleDrawerToggle}
-                ModalProps={{ keepMounted: true }}
-                sx={{
-                  display: { xs: 'block', md: 'none' },
-                  '& .MuiDrawer-paper': { boxSizing: 'border-box', width: 240 },
-                }}
-              >
-                {drawer}
-              </Drawer>
-            </Hidden>
-            <Hidden smDown mdDown implementation="css">
-              <Drawer
-                variant="permanent"
-                sx={{
-                  display: { xs: 'none', md: 'block' },
-                  '& .MuiDrawer-paper': { boxSizing: 'border-box', width: 240 },
-                }}
-                open
-              >
-                {drawer}
-              </Drawer>
-            </Hidden>
-          </Box>
+            {isSidebarExpanded ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+          </Fab>
+
+
           <Box
             component="main"
-            sx={{ flexGrow: 1, p: 3, width: { md: `calc(100% - 240px)` } }}
+            sx={{
+              flexGrow: 1,
+              p: 3,
+              width: `calc(100% - ${isSidebarExpanded ? drawerWidthExpanded : drawerWidthCollapsed}px)`,
+            }}
           >
-            <Toolbar /> {/* Acts as a space bar */}
             <Routes>
               <Route path="/" element={<Dashboard />} />
               <Route path="/products" element={<Products />} />
-              {/* Define other routes as needed */}
+              {/* Define more routes as needed */}
             </Routes>
           </Box>
+
         </Box>
+        
       </ThemeProvider>
     </QueryClientProvider>
-
   );
 }
 

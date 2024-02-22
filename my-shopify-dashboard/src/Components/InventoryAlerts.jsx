@@ -70,7 +70,6 @@ const InventoryAlerts = () => {
   
   // Assuming inventory is part of the data. This is for UX (give empty instead of error in event there is no data)
   const inventory = data?.items || [];
-  const totalCount = data?.total || 0;
 
   // Calculate trend_indicator for each inventory item
   const inventoryWithTrend = inventory.map(item => ({
@@ -96,6 +95,7 @@ const InventoryAlerts = () => {
     textAlign: 'center',
     alignItems: 'center',
     justifyContent: 'center',
+    fontSize: 'small'
   };
 
   return (
@@ -117,23 +117,21 @@ const InventoryAlerts = () => {
             borderRadius: '10px',
             },
             '&::-webkit-scrollbar-thumb:hover': {
-            background: '#3f9068',
+            background: '#232f3e',
             },
         }}
         >
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <Typography 
-                variant="h5"
-                style={{ marginBottom: '20px' }}
-              >Inventory Alerts
-              </Typography>
-              {/* <ColumnPreferences 
-                availableColumns={availableColumns} 
-                userPreferences={userPreferences} 
-                setUserPreferences={setUserPreferences}
-              /> */}
-            </div>
-            
+             <Box 
+                sx={{ 
+                    display: 'flex', 
+                    justifyContent: 'space-between', 
+                    alignItems: 'center', 
+                    marginBottom: '1rem' 
+                }}>
+                <Typography variant="h6">Inventory Alerts</Typography>
+                <WarningIcon />
+            </Box>
+              
             <Table size="small">
                   <TableHead>
                     <TableRow>
@@ -143,45 +141,30 @@ const InventoryAlerts = () => {
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                  {inventoryWithTrend.map((item, index) => (
-                    <TableRow key={index}>
-                      {availableColumns.map(column => (
-                        userPreferences.visible_columns.includes(column.id) &&
-                        <TableCell style={cellStyle} key={column.id}>
-                          {column.id === 'action' ? 
-                            <IconButton 
-                              variant="outlined" 
-                              color="info" 
-                              onClick={() => handleOrderClick(item)}
-                              size="small"
-                            >
-                              <AddShoppingCartIcon  />
-                              </IconButton>
-                            :
-                            column.id === 'trend_indicator' ? getTrendIndicatorIcon(item[column.id]) : item[column.id]
-                          }
-                        </TableCell>
-                      ))}
-                    </TableRow>
-                  ))}
+                    {inventoryWithTrend.map((item, index) => (
+                      <TableRow key={index}>
+                        {availableColumns.map(column => (
+                          userPreferences.visible_columns.includes(column.id) &&
+                          <TableCell style={cellStyle} key={column.id}>
+                            {column.id === 'action' ? 
+                              <IconButton 
+                                variant="outlined" 
+                                color="info" 
+                                onClick={() => handleOrderClick(item)}
+                                size="small"
+                              >
+                                <AddShoppingCartIcon  />
+                                </IconButton>
+                              :
+                              column.id === 'trend_indicator' ? getTrendIndicatorIcon(item[column.id]) : item[column.id]
+                            }
+                          </TableCell>
+                        ))}
+                        
+                      </TableRow>
+                    ))}
+              
                   </TableBody>
-                  <TableFooter>
-                        <TableRow>
-                        <TablePagination
-                            rowsPerPageOptions={[5, 10, 25]}
-                            count={totalCount}
-                            page={page}
-                            rowsPerPage={rowsPerPage}
-                            onPageChange={handleChangePage}
-                            onRowsPerPageChange={handleChangeRowsPerPage}
-                            sx={{
-                                '.MuiTablePagination-selectLabel, .MuiTablePagination-displayedRows, .MuiTablePagination-select, .MuiTablePagination-actions': {
-                                  fontSize: '0.68rem',
-                                },
-                            }}
-                        />
-                        </TableRow>
-                    </TableFooter>
               </Table>
         </Box>
   )

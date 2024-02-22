@@ -7,6 +7,7 @@ export const fetchTotalRevenue = async () => {
 
         const response = await axios.get(`${API_URL}/total-revenue`, { timeout: 5000 });
 
+        console.log("Total Revenue Data: ", response)
         if (response.data && typeof response.data.totalRevenue === 'number') {
             return response.data;
         } else {
@@ -28,6 +29,8 @@ export const fetchRecentOrders = async (page = 1, limit = 5) => {
             },
             timeout: 5000
         });
+
+        console.log("Orders Data: ", response)
 
         if (response.data && Array.isArray(response.data.orders)) {
             return {
