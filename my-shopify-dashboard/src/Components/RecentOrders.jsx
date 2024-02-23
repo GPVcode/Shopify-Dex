@@ -19,6 +19,7 @@ import {
     Info
 } from '@mui/icons-material';
 import Tooltip from '@mui/material/Tooltip';
+import { History } from '@mui/icons-material';
 import { fetchRecentOrders } from '../Services/api';
 import { formatDistanceToNow } from 'date-fns';
 
@@ -85,34 +86,39 @@ const RecentOrders = () => {
         justifyContent: 'center'
     };
 
-
-    // Check if data.orders is an array before mapping
     return (
-            <Box 
-                style={{ padding: '20px', margin: '10px' }}
-                sx={{
-                    overflowY: 'auto',
-                    maxHeight: '500px',
-                    '&::-webkit-scrollbar': {
-                      width: '10px',
-                    },
-                    '&::-webkit-scrollbar-track': {
-                      boxShadow: 'inset 0 0 5px grey',
-                      borderRadius: '10px',
-                    },
-                    '&::-webkit-scrollbar-thumb': {
-                      background: 'darkgrey',
-                      borderRadius: '10px',
-                    },
-                    '&::-webkit-scrollbar-thumb:hover': {
-                      background: '#3f9068',
-                    },
-                  }}
-            >
-                <Typography 
-                    variant="h5"
-                    style={{ marginBottom: '20px' }}
-                >Recent Orders</Typography>
+        <Box 
+            sx={{
+                padding: '20px', 
+                margin: '10px',
+                overflowY: 'auto',
+                maxHeight: '500px',
+                '&::-webkit-scrollbar': {
+                width: '10px',
+                },
+                '&::-webkit-scrollbar-track': {
+                boxShadow: 'inset 0 0 5px grey',
+                borderRadius: '10px',
+                },
+                '&::-webkit-scrollbar-thumb': {
+                background: 'darkgrey',
+                borderRadius: '10px',
+                },
+                '&::-webkit-scrollbar-thumb:hover': {
+                background: '#232f3e',
+                },
+            }}
+        >
+                <Box 
+                sx={{ 
+                    display: 'flex', 
+                    justifyContent: 'space-between', 
+                    alignItems: 'center', 
+                    marginBottom: '1rem' 
+                }}>
+                <Typography variant="h5">Recent Activity</Typography>
+                    <History />
+                </Box>
                 <Table>
                     <TableHead>
                         <TableRow>

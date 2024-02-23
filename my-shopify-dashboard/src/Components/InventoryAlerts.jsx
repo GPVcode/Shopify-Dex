@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { useQuery } from 'react-query';
 import { fetchInventoryAlerts } from '../Services/api';
-import { CircularProgress, Box, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Tooltip, TableFooter, TablePagination, IconButton } from '@mui/material';
+import { CircularProgress, Box, Typography, Table, TableBody, TableCell, TableHead, TableRow, Tooltip, IconButton } from '@mui/material';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import WarningIcon from '@mui/icons-material/Warning'; // Import warning icon
 import CheckCircleIcon from '@mui/icons-material/CheckCircle'; // Import check circle icon
-import ColumnPreferences from './ColumnPreferences';
+// import ColumnPreferences from './ColumnPreferences';
 import { green, yellow, red } from '@mui/material/colors'; // Import colors
 
 const getTrendIndicatorIcon = (trendIndicator) => {
@@ -119,7 +119,7 @@ const InventoryAlerts = () => {
             '&::-webkit-scrollbar-thumb:hover': {
             background: '#232f3e',
             },
-        }}
+          }}
         >
              <Box 
                 sx={{ 

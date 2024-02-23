@@ -13,7 +13,8 @@ import {
   ListItemText,
   Box,
   Fab,
-  Typography
+  Typography,
+  Tooltip
 } from '@mui/material';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import StorefrontIcon from '@mui/icons-material/Storefront';
@@ -69,21 +70,29 @@ function App() {
 
         <List sx={{ width: '100%', mt: 2 }}>
           {['Dashboard', 'Products'].map((text, index) => (
-            <ListItemButton 
+            <Tooltip 
+              title={isSidebarExpanded ? '' : text} 
               key={text}
-              sx={{
-                justifyContent: 'center',
-                my: 0.5,
-              }}
-              onClick={() => navigate(index === 0 ? '/' : '/products')}
+              placement="right"
+              enterDelay={500}
+              leaveDelay={200}
             >
-              <ListItemIcon sx={{ minWidth: 'auto', justifyContent: 'center' }}>
-                {index === 0 ? <DashboardIcon /> : <StorefrontIcon />}
-              </ListItemIcon>
-              {isSidebarExpanded && <ListItemText primary={text} sx={{marginLeft: 1}}/>}
-            </ListItemButton>
+              <ListItemButton 
+                sx={{
+                  justifyContent: isSidebarExpanded ? 'initial' : 'center',
+                  my: 0.5,
+                }}
+                onClick={() => navigate(index === 0 ? '/' : '/products')}
+              >
+                <ListItemIcon sx={{ minWidth: 'auto', justifyContent: 'center' }}>
+                  {index === 0 ? <DashboardIcon /> : <StorefrontIcon />}
+                </ListItemIcon>
+                {isSidebarExpanded && <ListItemText primary={text} sx={{marginLeft: 1}}/>}
+              </ListItemButton>
+            </Tooltip>
           ))}
         </List>
+
       </Box>
   );
   
@@ -127,7 +136,6 @@ function App() {
             {isSidebarExpanded ? <ChevronLeftIcon /> : <ChevronRightIcon />}
           </Fab>
 
-
           <Box
             component="main"
             sx={{
@@ -141,8 +149,8 @@ function App() {
               <Route path="/products" element={<Products />} />
               {/* Define more routes as needed */}
             </Routes>
-          </Box>
 
+          </Box>
         </Box>
         
       </ThemeProvider>

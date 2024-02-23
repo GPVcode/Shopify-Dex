@@ -27,12 +27,28 @@ function RevenueOverview() {
     }
 
     return (
-        <Box sx={{ 
-            padding: '20px', 
-            margin: '10px', 
-            display: 'flex', 
-            flexDirection: 'column' 
-        }}>
+        <Box 
+            sx={{
+                padding: '20px', 
+                margin: '10px',
+                overflowY: 'auto',
+                maxHeight: '500px',
+                '&::-webkit-scrollbar': {
+                width: '10px',
+                },
+                '&::-webkit-scrollbar-track': {
+                boxShadow: 'inset 0 0 5px grey',
+                borderRadius: '10px',
+                },
+                '&::-webkit-scrollbar-thumb': {
+                background: 'darkgrey',
+                borderRadius: '10px',
+                },
+                '&::-webkit-scrollbar-thumb:hover': {
+                background: '#232f3e',
+                },
+            }}
+        >
             <Box 
                 sx={{ 
                     display: 'flex', 
@@ -40,7 +56,7 @@ function RevenueOverview() {
                     alignItems: 'center', 
                     marginBottom: '2rem' 
                 }}>
-                <Typography variant="h6">Overview</Typography>
+                <Typography variant="h4">Overview</Typography>
                 <AccountBalanceIcon />
             </Box>
             <ResponsiveContainer width="100%" height={300}>
