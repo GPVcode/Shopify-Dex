@@ -16,10 +16,9 @@ import { fetchCustomerInsights } from '../Services/api';
 import PersonSearchIcon from '@mui/icons-material/PersonSearch';
 
 const CustomerInsights = () => {
-    const [page, setPage] = useState(0); // Zero-based page index for consistency
+    const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
 
-    // Adjust query key and fetch function accordingly
     const { data, isLoading, isError, error } = useQuery(
         ['CustomerInsights', page, rowsPerPage], 
         () => fetchCustomerInsights(page + 1, rowsPerPage), 
@@ -40,10 +39,9 @@ const CustomerInsights = () => {
 
     const handleChangeRowsPerPage = event => {
         setRowsPerPage(parseInt(event.target.value, 10));
-        setPage(0); // Reset to first page after rows per page change
+        setPage(0); 
     };
 
-    // Assuming your data structure includes an array of customers and pagination info
     return (
         <Box 
             sx={{
@@ -87,7 +85,7 @@ const CustomerInsights = () => {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                {data?.customers.map(customer => (
+                {/* {data?.customers.map(customer => (
                     <TableRow key={customer.id}>
                         <TableCell>{customer.customer_status}</TableCell>
                         <TableCell>{customer.first_name} {customer.last_name}</TableCell>
@@ -95,7 +93,7 @@ const CustomerInsights = () => {
                         <TableCell>{customer.orders_count}</TableCell>
                         <TableCell>${customer.total_spent}</TableCell>
                     </TableRow>
-                ))}
+                ))} */}
                 </TableBody>
                 <TableFooter>
                     <TableRow>
