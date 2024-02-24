@@ -8,7 +8,6 @@ import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 function RevenueOverview() {
     const { data, isLoading, isError, error } = useQuery('totalRevenue', fetchTotalRevenue);
 
-    // Process data for the chart
     const chartData = useMemo(() => {
         if (!data || !data.monthlyRevenue) return [];
         

@@ -30,8 +30,6 @@ export const fetchRecentOrders = async (page = 1, limit = 5) => {
             timeout: 5000
         });
 
-        console.log("Orders Data: ", response)
-
         if (response.data && Array.isArray(response.data.orders)) {
             return {
                 orders: response.data.orders,
