@@ -75,7 +75,7 @@ function TotalRevenue() {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'space-between',
-                marginBottom: '1rem',
+                marginBottom: '2rem',
             }}>
                 <Typography variant="h6">Total Revenue</Typography>
                 <AttachMoneyIcon/> 

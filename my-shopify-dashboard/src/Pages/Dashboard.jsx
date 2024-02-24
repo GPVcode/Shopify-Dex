@@ -51,9 +51,21 @@ const Dashboard = () => {
           <Typography variant="h3" sx={{ flexGrow: 1, mt: 1, mb: 1, color: '#ffffff' }}>
             Dashboard
           </Typography>
+          {/* <ButtonGroup variant="outlined" aria-label="outlined primary button group">
+            {['overview', 'analytics', 'notifications'].map((view) => (
+              <Button
+                key={view}
+                variant={isActive(view)}
+                onClick={() => handleViewChange(view)}
+                sx={buttonStyle(view)} // Apply the custom style based on the active state
+              >
+                {view.charAt(0).toUpperCase() + view.slice(1)}
+              </Button>
+            ))}
+          </ButtonGroup> */}
         </Toolbar>
         
-        <Toolbar disableGutters sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        {/* <Toolbar disableGutters sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <ButtonGroup variant="outlined" aria-label="outlined primary button group">
             {['overview', 'analytics', 'notifications'].map((view) => (
               <Button
@@ -69,7 +81,7 @@ const Dashboard = () => {
           <Button startIcon={<DateRangeIcon />} variant="outlined" size="small" sx={{ borderColor: '#232f3e', color: '#232f3e' }}>
             Time Frame
           </Button>
-        </Toolbar>
+        </Toolbar> */}
       </Box>
 
       {activeView === 'overview' && (
@@ -119,7 +131,7 @@ const Dashboard = () => {
                 <InventoryAlerts />
             </Card>
           </Grid>
-          <Grid item xs={12} sm={12} md={6} lg={8}>
+          <Grid item xs={12} sm={12} md={12} lg={8}>
               <Card style={{ 
                   height: '100%', maxHeight: '450px', 
                   display: 'flex', flexDirection: 'column', 
@@ -175,7 +187,16 @@ const Dashboard = () => {
                   <TrafficSourcesPieChart />
               </Card>
             </Grid>
-            <Grid item xs={12} sm={12} md={6} lg={1}>
+            <Grid item xs={12} sm={12} md={12} lg={12}>
+              <Card 
+                  style={{ 
+                    height: '100%', maxHeight: '600px', 
+                    display: 'flex', flexDirection: 'column', 
+                    overflow: 'auto', borderRadius: "12px",
+                    border: '1px solid #232f3e'
+              }}>          
+                <CustomerInsights />
+              </Card>
             </Grid>
           </Grid>
         </Box>

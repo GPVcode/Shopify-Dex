@@ -126,7 +126,7 @@ const InventoryAlerts = () => {
                     display: 'flex', 
                     justifyContent: 'space-between', 
                     alignItems: 'center', 
-                    marginBottom: '1rem' 
+                    marginBottom: '2rem' 
                 }}>
                 <Typography variant="h6">Inventory Alerts</Typography>
                 <WarningIcon />

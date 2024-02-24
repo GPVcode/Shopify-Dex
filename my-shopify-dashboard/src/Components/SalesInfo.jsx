@@ -53,7 +53,7 @@ function SalesInfo() {
                     display: 'flex', 
                     justifyContent: 'space-between', 
                     alignItems: 'center', 
-                    marginBottom: '1rem' 
+                    marginBottom: '2rem' 
                 }}>
                 <Typography variant="h6">Sales</Typography>
                 <CreditCardIcon />

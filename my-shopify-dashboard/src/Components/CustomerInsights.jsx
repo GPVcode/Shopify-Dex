@@ -12,7 +12,8 @@ import {
     TableFooter,
     TablePagination
 } from '@mui/material';
-import { fetchCustomerInsights } from '../Services/api'; // Ensure this path matches your project structure
+import { fetchCustomerInsights } from '../Services/api';
+import PersonSearchIcon from '@mui/icons-material/PersonSearch';
 
 const CustomerInsights = () => {
     const [page, setPage] = useState(0); // Zero-based page index for consistency
@@ -66,10 +67,15 @@ const CustomerInsights = () => {
                 },
             }}
         >
-            <Typography 
-                variant="h5"
-                style={{ marginBottom: '20px' }}
-            >Customer Insights</Typography>
+            <Box sx={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                marginBottom: '2rem',
+            }}>
+                <Typography variant="h5">Customer Insights</Typography>
+                <PersonSearchIcon/> 
+            </Box>
             <Table size="small">
                 <TableHead>
                     <TableRow>

@@ -2,7 +2,8 @@ import React from 'react';
 import { useQuery } from 'react-query';
 import { CircularProgress, Box, Typography } from '@mui/material';
 import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from 'recharts';
-import { fetchTrafficSources } from '../Services/api'; // Adjust the import path as necessary
+import { fetchTrafficSources } from '../Services/api'; 
+import ShareIcon from '@mui/icons-material/Share';
 
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
   
@@ -25,7 +26,15 @@ const TrafficSourcesPieChart = () => {
 
     return (
         <Box style={{ padding: '20px', margin: '10px' }}>
-            <Typography variant="h5">Traffic Sources</Typography>
+            <Box sx={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                marginBottom: '2rem',
+            }}>
+                <Typography variant="h6">Traffic Sources</Typography>
+                <ShareIcon /> 
+            </Box>
             <ResponsiveContainer width="100%" height={300}>
                 <PieChart>
                     <Pie

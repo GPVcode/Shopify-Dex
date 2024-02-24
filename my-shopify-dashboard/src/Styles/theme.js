@@ -19,7 +19,7 @@ export const darkTheme = createTheme({
     },
     action: {
       active: '#E5E5EA',
-      hover: '#48484A', // Slightly lighter grey for hover states
+      hover: '#232f3e', 
       selected: '#0A84FF', // Using the primary blue for selection as well
       disabled: '#3A3A3C',
       disabledBackground: '#2C2C2E', // Keeping disabled elements discernible

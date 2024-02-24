@@ -56,7 +56,7 @@ function RevenueOverview() {
                     alignItems: 'center', 
                     marginBottom: '2rem' 
                 }}>
-                <Typography variant="h4">Overview</Typography>
+                <Typography variant="h5">Revenue Overview</Typography>
                 <AccountBalanceIcon />
             </Box>
             <ResponsiveContainer width="100%" height={300}>

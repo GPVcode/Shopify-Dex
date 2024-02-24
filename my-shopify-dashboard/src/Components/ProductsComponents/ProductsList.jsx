@@ -3,7 +3,7 @@ import { useQuery } from 'react-query';
 import { fetchProductsList } from '../../Services/api';
 import {
   CircularProgress, Box, Typography, Table, TableBody, TableCell, 
-  TableHead, TableRow, IconButton, TablePagination, Tooltip, Card
+  TableHead, TableRow, IconButton, TablePagination, Tooltip, TextField
 } from '@mui/material';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import EditIcon from '@mui/icons-material/Edit';
@@ -14,6 +14,8 @@ import { red, green, yellow, orange } from '@mui/material/colors';
 import ProductsColumnPreferences from './ProductsColumnPreferences';
 import SearchBar from './SearchBar';
 import { filterProducts } from './utils/filterProducts';
+import SortIcon from '@mui/icons-material/Sort'; // Import Sort icon
+import InventoryIcon from '@mui/icons-material/Inventory';
 
 const initialColumns = [
   { id: 'title', label: 'Title', visible: true },
@@ -105,92 +107,135 @@ const ProductsList = () => {
   const filteredProducts = filterProducts(data || [], searchQuery);
 
   return (
-    <Card sx={{ overflow: 'auto', p: 3 }}>  
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}> 
-        <Typography variant="h6" gutterBottom>
-          Products List
-        </Typography>
+      <Box sx={{
+          padding: '20px',
+          margin: '10px',
+          overflowY: 'auto',
+          maxHeight: '500px',
+          '&::-webkit-scrollbar': {
+              width: '10px',
+          },
+          '&::-webkit-scrollbar-track': {
+              boxShadow: 'inset 0 0 5px grey',
+              borderRadius: '10px',
+          },
+          '&::-webkit-scrollbar-thumb': {
+              background: 'darkgrey',
+              borderRadius: '10px',
+          },
+          '&::-webkit-scrollbar-thumb:hover': {
+              background: '#3f9068',
+          },
+      }}>
 
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap' }}>
-          <Box sx={{ paddingRight: "1rem" }}>
-            <SearchBar onSearch={setSearchQuery} isLoading={isSearching} />
+          <Box 
+            sx={{ 
+              display: 'flex', 
+              flexDirection: { xs: 'column', sm: 'column', med: 'column', lg: 'row' },
+              justifyContent: 'space-between', 
+              marginBottom: '2rem',
+              gap: 2,
+
+          }}>
+              <Typography variant="h4">Product List</Typography>
+            <Box sx={{ 
+              display: 'flex', 
+              justifyContent: 'left', 
+              alignItems: 'center', 
+              flexWrap: 'wrap',
+              gap: 2,
+            }}>
+              <Box>
+              <TextField
+                onSearch={setSearchQuery}
+                size="small" 
+                isLoading={isSearching}
+                sx={{
+                  '.MuiOutlinedInput-root': {
+                    borderRadius: '50px', // Apply border-radius to the input field
+                  },
+                }}
+                placeholder='Search...'
+              />
+              </Box>
+
+              <ProductsColumnPreferences
+                open={preferencesOpen}
+                onClose={() => setPreferencesOpen(false)}
+                availableColumns={columns}
+                userPreferences={userPreferences}
+                setUserPreferences={setUserPreferences}
+              />
+              <InventoryIcon />
+            </Box>
           </Box>
 
-          <ProductsColumnPreferences
-            open={preferencesOpen}
-            onClose={() => setPreferencesOpen(false)}
-            availableColumns={columns}
-            userPreferences={userPreferences}
-            setUserPreferences={setUserPreferences}
-          />
-        </Box>
-        
-      </Box>
+          <Table>
+            <TableHead>
+              <TableRow>
+                {columns.filter(column => userPreferences.visible_columns.includes(column.id)).map(column => (
+                  <TableCell key={column.id}>{column.label}</TableCell>
+                ))}
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {filteredProducts.map(product => (
+                <TableRow key={product.product_id}>
+                  {columns.filter(column => userPreferences.visible_columns.includes(column.id)).map(column => (
+                    <TableCell key={column.id}>
+                      {column.id === 'title' && product.title}
+                      {column.id === 'sku' && product.sku}
+                      {column.id === 'stock' && `${product.stock}/${product.reorder_level}`}
+                      {column.id === 'reorder_level' && `${product.reorder_level}`}
+                      {column.id === 'trend' && getTrendIndicatorIcon(product.stock, product.reorder_level)}
+                      {column.id === 'actions' && (
+                        <>
+                          <IconButton aria-label="view">
+                            <VisibilityIcon sx={{ color: green[500] }} />
+                          </IconButton>
+                          <IconButton aria-label="edit">
+                            <EditIcon />
+                          </IconButton>
+                          <IconButton aria-label="order">
+                            <AddShoppingCartIcon />
+                          </IconButton>
+                        </>
+                      )}
+                      {column.id === 'supplier_name' && `${product.supplier_name}`}
+                      {column.id === 'last_ordered_date' && `${product.last_ordered_date}`}
+                      {column.id === 'lead_time_days' && `${product.lead_time_days}`}
+                      {column.id === 'projected_runout_date' && `${product.projected_runout_date}`}
+                      {column.id === 'variant_title' && `${product.variant_title}`}
+                      {column.id === 'sales_velocity' && `${product.sales_velocity}`}
+                      {column.id === 'profit_margin' && `${product.profit_margin}`}
+                      {column.id === 'price' && `${product.price}`}
+                      {column.id === 'category' && `${product.category}`}
+                      {column.id === 'description' && `${product.description}`}
 
-      <Table>
-        <TableHead>
-          <TableRow>
-            {columns.filter(column => userPreferences.visible_columns.includes(column.id)).map(column => (
-              <TableCell key={column.id}>{column.label}</TableCell>
-            ))}
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {filteredProducts.map(product => (
-            <TableRow key={product.product_id}>
-              {columns.filter(column => userPreferences.visible_columns.includes(column.id)).map(column => (
-                <TableCell key={column.id}>
-                  {column.id === 'title' && product.title}
-                  {column.id === 'sku' && product.sku}
-                  {column.id === 'stock' && `${product.stock}/${product.reorder_level}`}
-                  {column.id === 'reorder_level' && `${product.reorder_level}`}
-                  {column.id === 'trend' && getTrendIndicatorIcon(product.stock, product.reorder_level)}
-                  {column.id === 'actions' && (
-                    <>
-                      <IconButton aria-label="view">
-                        <VisibilityIcon sx={{ color: green[500] }} />
-                      </IconButton>
-                      <IconButton aria-label="edit">
-                        <EditIcon />
-                      </IconButton>
-                      <IconButton aria-label="order">
-                        <AddShoppingCartIcon />
-                      </IconButton>
-                    </>
-                  )}
-                  {column.id === 'supplier_name' && `${product.supplier_name}`}
-                  {column.id === 'last_ordered_date' && `${product.last_ordered_date}`}
-                  {column.id === 'lead_time_days' && `${product.lead_time_days}`}
-                  {column.id === 'projected_runout_date' && `${product.projected_runout_date}`}
-                  {column.id === 'variant_title' && `${product.variant_title}`}
-                  {column.id === 'sales_velocity' && `${product.sales_velocity}`}
-                  {column.id === 'profit_margin' && `${product.profit_margin}`}
-                  {column.id === 'price' && `${product.price}`}
-                  {column.id === 'category' && `${product.category}`}
-                  {column.id === 'description' && `${product.description}`}
-
-                </TableCell>
+                    </TableCell>
+                  ))}
+                </TableRow>
               ))}
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-      {isLoading ? (
-        <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
-          <CircularProgress size={24} />
-        </Box>
-      ) : (
-        <TablePagination
-          component="div"
-          count={filteredProducts.length}
-          page={page}
-          rowsPerPage={rowsPerPage}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-          rowsPerPageOptions={[5, 10, 25, 50]}
-        />
-      )}
-    </Card>
+            </TableBody>
+          </Table>
+
+          {isLoading ? (
+            <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
+              <CircularProgress size={24} />
+            </Box>
+          ) : (
+            <TablePagination
+              component="div"
+              count={filteredProducts.length}
+              page={page}
+              rowsPerPage={rowsPerPage}
+              onPageChange={handleChangePage}
+              onRowsPerPageChange={handleChangeRowsPerPage}
+              rowsPerPageOptions={[5, 10, 25, 50]}
+            />
+          )}
+
+      </Box>
     
   );
 };

@@ -29,7 +29,7 @@ function Accounts() {
 
     return (
         <Box sx={{ padding: '20px', margin: '10px', display: 'flex', flexDirection: 'column' }}>
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
                 <Typography variant="h6">Accounts</Typography>
                 <PeopleIcon />
             </Box>

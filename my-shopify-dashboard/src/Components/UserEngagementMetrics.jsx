@@ -11,6 +11,7 @@ import {
     TableRow,
 } from '@mui/material';
 import { fetchUserEngagementMetrics } from '../Services/api'; // Ensure this path matches your project structure
+import InsightsIcon from '@mui/icons-material/Insights';
 
 const UserEngagementMetrics = () => {
     const { data, isLoading, isError, error } = useQuery('UserEngagementMetrics', fetchUserEngagementMetrics);
@@ -54,11 +55,15 @@ const UserEngagementMetrics = () => {
                 },
             }}
         >
-            <Typography 
-                variant="h5" 
-                style={{ marginBottom: '20px' }}
-            >User Engagement Metrics
-            </Typography>
+            <Box sx={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                marginBottom: '2rem',
+            }}>
+            <Typography variant="h5" >User Engagement Metrics</Typography>
+                <InsightsIcon />
+            </Box>
             <Table size="small">
                 <TableHead>
                     <TableRow>

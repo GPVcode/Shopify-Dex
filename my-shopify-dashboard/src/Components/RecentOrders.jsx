@@ -114,7 +114,7 @@ const RecentOrders = () => {
                     display: 'flex', 
                     justifyContent: 'space-between', 
                     alignItems: 'center', 
-                    marginBottom: '1rem' 
+                    marginBottom: '2rem' 
                 }}>
                 <Typography variant="h5">Recent Activity</Typography>
                     <History />

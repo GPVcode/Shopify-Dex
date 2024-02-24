@@ -10,7 +10,6 @@ import {
     TableHead,
     TableRow,
     TableSortLabel,
-    IconButton,
 } from '@mui/material';
 import SortIcon from '@mui/icons-material/Sort'; // Import Sort icon
 import { fetchProductPerformance } from '../Services/api';
