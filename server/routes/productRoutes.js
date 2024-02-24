@@ -41,7 +41,6 @@ router.get('/products-list', async (req, res) => {
     try {
         const productsData = await fetchProductsList({ page, limit });
 
-        console.log("PRODUCTS DATA: ", productsData)
         // Return paginated products list along with pagination info
         res.json(productsData);
 
