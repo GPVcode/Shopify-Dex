@@ -48,6 +48,7 @@ function App() {
           alignItems: 'center',
           height: '100%',
           py: 2,
+          backgroundColor: '#0d0f0f'
         }}
       >
         <Box
