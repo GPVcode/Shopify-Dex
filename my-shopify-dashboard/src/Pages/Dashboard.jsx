@@ -71,7 +71,7 @@ const Dashboard = () => {
             {['overview', 'analytics', 'notifications'].map((view) => (
               <Button
                 key={view}
-                variant={isActive(view)}
+                variant={isActive(view)}dd
                 onClick={() => handleViewChange(view)}
                 sx={buttonStyle(view)} // Apply the custom style based on the active state
               >
