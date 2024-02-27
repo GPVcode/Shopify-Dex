@@ -12,16 +12,15 @@ import WarningIcon from '@mui/icons-material/Warning';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { red, green, yellow, orange } from '@mui/material/colors';
 import ProductsColumnPreferences from './ProductsColumnPreferences';
-import SearchBar from './SearchBar';
 import { filterProducts } from './utils/filterProducts';
-import SortIcon from '@mui/icons-material/Sort'; // Import Sort icon
+import SortIcon from '@mui/icons-material/Sort';
 import InventoryIcon from '@mui/icons-material/Inventory';
 
 const initialColumns = [
   { id: 'title', label: 'Title', visible: true },
   { id: 'sku', label: 'SKU', visible: true },
-  { id: 'stock', label: 'Stock/Restock', visible: true },
-  { id: 'reorder_level', label: 'Reorder Level', visible: true },
+  { id: 'stock', label: 'Stock/Reorder', visible: true },
+  { id: 'reorder_level', label: 'Reorder Level', visible: false },
   { id: 'trend', label: 'Trend', visible: true },
   { id: 'actions', label: 'Actions', visible: true },
   { id: 'supplier_name', label: 'Supplier Name', visible: false },
@@ -38,7 +37,7 @@ const initialColumns = [
 
 // Initial user preferences for column visibility
 const initialUserPreferences = {
-  visible_columns: ['title', 'sku', 'stock', 'reorder_level', 'trend', 'actions'],
+  visible_columns: ['title', 'sku', 'stock', 'trend', 'actions'],
 };
 
 const getTrendIndicatorIcon = (stock, reorderLevel) => {

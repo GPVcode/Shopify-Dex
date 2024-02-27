@@ -3,8 +3,8 @@ import { Routes, Route, useNavigate } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import Dashboard from './Pages/Dashboard';
 import Products from './Pages/Products';
-import Tasks from './Pages/Tasks';
-import Accounts from './Components/Accounts';
+// import Tasks from './Pages/Tasks';
+import Accounts from './Pages/Accounts';
 import {
   ThemeProvider,
   CssBaseline,
@@ -153,7 +153,7 @@ function App() {
               <Route path="/" element={<Dashboard />} />
               <Route path="/products" element={<Products />} />
               <Route path="/accounts" element={<Accounts />} />
-              <Route path="/tasks" element={<Tasks />} />
+              {/* <Route path="/tasks" element={<Tasks />} /> */}
               {/* Define more routes as needed */}
             </Routes>
 

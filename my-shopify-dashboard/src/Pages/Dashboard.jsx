@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { 
-  Grid, 
-  Card, 
-  Toolbar, 
-  Typography, 
+import {
+  Grid,
+  Card,
+  Toolbar,
+  Typography,
   Box,
   ButtonGroup,
-  Button 
+  Button
 } from '@mui/material';
 import DateRangeIcon from '@mui/icons-material/DateRange';
 import TotalRevenue from '../Components/TotalRevenue.jsx';
@@ -52,20 +52,8 @@ const Dashboard = () => {
           <Typography variant="h3" sx={{ flexGrow: 1, mt: 1, mb: 1, color: '#ffffff' }}>
             Dashboard
           </Typography>
-          {/* <ButtonGroup variant="outlined" aria-label="outlined primary button group">
-            {['overview', 'analytics', 'notifications'].map((view) => (
-              <Button
-                key={view}
-                variant={isActive(view)}
-                onClick={() => handleViewChange(view)}
-                sx={buttonStyle(view)} // Apply the custom style based on the active state
-              >
-                {view.charAt(0).toUpperCase() + view.slice(1)}
-              </Button>
-            ))}
-          </ButtonGroup> */}
         </Toolbar>
-        
+       
         {/* <Toolbar disableGutters sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <ButtonGroup variant="outlined" aria-label="outlined primary button group">
             {['overview', 'analytics', 'notifications'].map((view) => (
@@ -85,7 +73,6 @@ const Dashboard = () => {
         </Toolbar> */}
       </Box>
 
-      {activeView === 'overview' && (
         <Box >
           <Grid container spacing={2} >
             <Grid item xs={12} sm={12} md={6} lg={3}>
@@ -201,7 +188,6 @@ const Dashboard = () => {
             </Grid>
           </Grid>
         </Box>
-      )}
 {/* 
       {activeView === 'analytics' && (
         <Box>
