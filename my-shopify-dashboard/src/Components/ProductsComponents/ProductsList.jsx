@@ -13,7 +13,6 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { red, green, yellow, orange } from '@mui/material/colors';
 import ProductsColumnPreferences from './ProductsColumnPreferences';
 import { filterProducts } from './utils/filterProducts';
-import SortIcon from '@mui/icons-material/Sort';
 import InventoryIcon from '@mui/icons-material/Inventory';
 
 const initialColumns = [
@@ -137,36 +136,36 @@ const ProductsList = () => {
 
           }}>
               <Typography variant="h4">Product List</Typography>
-            <Box sx={{ 
-              display: 'flex', 
-              justifyContent: 'left', 
-              alignItems: 'center', 
-              flexWrap: 'wrap',
-              gap: 2,
-            }}>
-              <Box>
-              <TextField
-                onSearch={setSearchQuery}
-                size="small" 
-                isLoading={isSearching}
-                sx={{
-                  '.MuiOutlinedInput-root': {
-                    borderRadius: '50px', // Apply border-radius to the input field
-                  },
-                }}
-                placeholder='Search...'
-              />
-              </Box>
+              <Box sx={{ 
+                display: 'flex', 
+                justifyContent: 'left', 
+                alignItems: 'center', 
+                flexWrap: 'wrap',
+                gap: 2,
+              }}>
+                <Box>
+                  <TextField
+                    onSearch={setSearchQuery}
+                    size="small" 
+                    isLoading={isSearching}
+                    sx={{
+                      '.MuiOutlinedInput-root': {
+                        borderRadius: '50px', // Apply border-radius to the input field
+                      },
+                    }}
+                    placeholder='Search...'
+                  />
+                </Box>
 
-              <ProductsColumnPreferences
-                open={preferencesOpen}
-                onClose={() => setPreferencesOpen(false)}
-                availableColumns={columns}
-                userPreferences={userPreferences}
-                setUserPreferences={setUserPreferences}
-              />
-              <InventoryIcon />
-            </Box>
+                <ProductsColumnPreferences
+                  open={preferencesOpen}
+                  onClose={() => setPreferencesOpen(false)}
+                  availableColumns={columns}
+                  userPreferences={userPreferences}
+                  setUserPreferences={setUserPreferences}
+                />
+                <InventoryIcon />
+              </Box>
           </Box>
 
           <Table>

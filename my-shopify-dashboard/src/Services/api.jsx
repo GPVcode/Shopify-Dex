@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { useQuery } from 'react-query';
 
 const API_URL = `https://shopidex.onrender.com/api`
 
@@ -121,6 +122,8 @@ export const fetchCustomerInsights = async (page = 1, limit = 5) => {
             params: { page, limit },
             timeout: 5000,
         });
+
+        console.log("Customer Insights Server Data: ", response)
 
         if (response.data && typeof response.data === 'object' && Array.isArray(response.data.customers)) {
             return {

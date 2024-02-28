@@ -31,11 +31,7 @@ const ProductsColumnPreferences = ({ availableColumns, userPreferences, setUserP
   const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
+    setOpen(!open);
   };
 
   const handleChange = (event) => {
@@ -49,7 +45,7 @@ const ProductsColumnPreferences = ({ availableColumns, userPreferences, setUserP
   };
 
   return (
-    <div>
+    <>
       <IconButton 
         aria-label="column settings"
         onClick={handleClickOpen}
@@ -58,7 +54,7 @@ const ProductsColumnPreferences = ({ availableColumns, userPreferences, setUserP
         <SettingsIcon />
       </IconButton>
       
-      <Dialog open={open} onClose={handleClose}>
+      <Dialog open={open} onClose={handleClickOpen}>
         <DialogTitle>Choose Columns</DialogTitle>
         <DialogContent>
           <FormControl fullWidth>
@@ -83,11 +79,11 @@ const ProductsColumnPreferences = ({ availableColumns, userPreferences, setUserP
           </FormControl>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handleClose}>OK</Button>
+          <Button onClick={handleClickOpen}>Cancel</Button>
+          <Button onClick={handleClickOpen}>OK</Button>
         </DialogActions>
       </Dialog>
-    </div>
+    </>
   );
 };
 
