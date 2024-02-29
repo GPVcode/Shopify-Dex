@@ -10,7 +10,7 @@ router.get('/customer-insights', async (req, res) => {
 
         const queryParameters = {
             page: parseInt(req.query.page) || 1,
-            limit: parseInt(req.query.limit) || 5
+            limit: parseInt(req.query.limit) || 10
         };
 
         const insights = await fetchCustomerInsights(queryParameters);

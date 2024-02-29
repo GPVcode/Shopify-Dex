@@ -116,7 +116,7 @@ export const fetchTrafficSources = async () => {
     }
 };
 
-export const fetchCustomerInsights = async (page = 1, limit = 5) => {
+export const fetchCustomerInsights = async (page = 1, limit = 10) => {
     try {
         const response = await axios.get(`${API_URL}/customers/customer-insights`, {
             params: { page, limit },

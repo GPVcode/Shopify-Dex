@@ -16,7 +16,7 @@ import { fetchProductPerformance } from '../Services/api';
 
 const ProductPerformance = () => {
     const { data, isLoading, isError, error } = useQuery('ProductPerformance', fetchProductPerformance);
-    const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
+    const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' }); // {no sorting: ascending}
 
     // Sort data based on sortConfig
     const sortedData = React.useMemo(() => {
