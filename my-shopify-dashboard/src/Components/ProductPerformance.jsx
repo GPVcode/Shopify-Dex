@@ -11,7 +11,7 @@ import {
     TableRow,
     TableSortLabel,
 } from '@mui/material';
-import SortIcon from '@mui/icons-material/Sort'; // Import Sort icon
+import SortIcon from '@mui/icons-material/Sort';
 import { fetchProductPerformance } from '../Services/api';
 
 const ProductPerformance = () => {

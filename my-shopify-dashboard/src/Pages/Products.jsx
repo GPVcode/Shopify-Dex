@@ -7,13 +7,13 @@ const Products = () => {
     return (
     <>        
         <Box sx={{ flexGrow: 1, mt: 4, ml: 1, mr: 1, mb: 3, overflowY: 'auto' }}>
-            <Box sx={{ flexGrow: 1, marginBottom: 1 }}>   
+            {/* <Box sx={{ flexGrow: 1, marginBottom: 1 }}>   
                 <Toolbar disableGutters>
                     <Typography variant="h3" sx={{ flexGrow: 1, mt: 1, mb: 1, color: '#ffffff' }}>
                         Products Management
                     </Typography>
                 </Toolbar>
-            </Box>
+            </Box> */}
 
             <Box>
             <Grid container spacing={2}>

@@ -29,7 +29,7 @@ const MenuProps = {
   },
 };
 
-const AccountsColumnPreferences = ({ availableColumns, userPreferences, setUserPreferences }) => {
+const AccountsColumnPreferences = ({ columns, userPreferences, setUserPreferences }) => {
   const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {
@@ -70,10 +70,10 @@ const AccountsColumnPreferences = ({ availableColumns, userPreferences, setUserP
               value={userPreferences?.visible_columns || []}
               onChange={handleChange}
               input={<OutlinedInput label="Columns" />}
-              renderValue={(selected) => selected.map(id => availableColumns.find(column => column.id === id)?.label || '').join(', ')}
+              renderValue={(selected) => selected.map(id => columns.find(column => column.id === id)?.label || '').join(', ')}
               MenuProps={MenuProps}
             >
-              {availableColumns.map((column) => (
+              {columns.map((column) => (
                 <MenuItem key={column.id} value={column.id}>
                   <Checkbox checked={userPreferences?.visible_columns?.includes(column.id) || false} />
                   <ListItemText primary={column.label} />

@@ -112,7 +112,7 @@ export const fetchTrafficSources = async () => {
         return response.data.traffic_sources;
     } catch (error) {
         console.error('There was a problem fetching the traffic sources:', error);
-        throw error; // Or handle this more gracefully in UI
+        return { error: "Failed to fetch data" };
     }
 };
 
@@ -122,8 +122,6 @@ export const fetchCustomerInsights = async (page = 1, limit = 5) => {
             params: { page, limit },
             timeout: 5000,
         });
-
-        console.log("Customer Insights Server Data: ", response)
 
         if (response.data && typeof response.data === 'object' && Array.isArray(response.data.customers)) {
             return {

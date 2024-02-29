@@ -3,7 +3,7 @@ import { useQuery } from 'react-query';
 import { fetchCustomerInsights } from '../../Services/api';
 import {
   CircularProgress, Box, Typography, Table, TableBody, TableCell, 
-  TableHead, TableRow, TablePagination, IconButton, TextField, Alert
+  TableHead, TableRow, TablePagination, TextField, Alert
 } from '@mui/material';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import AccountsColumnPreferences from './AccountsColumnPreferences';
@@ -32,7 +32,7 @@ const getStatusStyles = (status) => {
   let color;
   switch (status) {
     case 'New':
-      color = 'blue';
+      color = 'lightBlue';
       break;
     case 'Returning':
       color = 'green';
@@ -143,9 +143,10 @@ const AccountsList = () => {
           < AccountsColumnPreferences 
             open={preferencesOpen}
             onClose={() => setPreferencesOpen(false)}
-            availableColumns={columns}
+            columns={columns}
             userPreferences={userPreferences}
             setUserPreferences={setUserPreferences}
+            setColumns={setColumns}
           />
           )}
           <AccountCircleIcon />
