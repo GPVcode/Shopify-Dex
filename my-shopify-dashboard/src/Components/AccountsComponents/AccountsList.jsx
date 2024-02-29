@@ -7,22 +7,69 @@ import {
 } from '@mui/material';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import AccountsColumnPreferences from './AccountsColumnPreferences';
+import { filterAccounts } from './utils/filterAccounts';
 
 const initialColumns = [
   { id: 'name', label: 'Name', visible: true },
   { id: 'email', label: 'Email', visible: true },
   { id: 'status', label: 'Status', visible: true },
   { id: 'totalSpent', label: 'Total Spent', visible: true },
+  { id: 'ordersCount', label: 'Orders Count', visible: false },
+  { id: 'id', label: 'ID', visible: false },
+  { id: 'created_at', label: 'Created At', visible: false },
+  { id: 'city', label: 'City', visible: false },
+  { id: 'province', label: 'Province', visible: false },
+  { id: 'country', label: 'Country', visible: false },
+  { id: 'customer_status', label: 'Customer Status', visible: false }
 ];
+
+// Initial user preferences for column visibility
+const initialUserPreferences = {
+  visible_columns: ['name', 'email', 'status', 'totalSpent'],
+};
+
+const getStatusStyles = (status) => {
+  let color;
+  switch (status) {
+    case 'New':
+      color = 'blue';
+      break;
+    case 'Returning':
+      color = 'green';
+      break;
+    case 'High-Value':
+      color = 'gold';
+      break;
+    default:
+      color = 'grey';
+  }
+
+  return (
+    <span style={{ color: color }}>
+      {status}
+    </span>
+  );
+};
+
 
 const AccountsList = () => {
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [preferencesOpen, setPreferencesOpen] = useState(false);
   const [columns, setColumns] = useState(initialColumns);
+  const [userPreferences, setUserPreferences] = useState(initialUserPreferences);
+  const [searchQuery, setSearchQuery] = useState('');
 
-  const { data, error, isLoading, isError } = useQuery(['customerInsights', page, rowsPerPage], () => fetchCustomerInsights(page + 1, rowsPerPage), { keepPreviousData: true });
+  const { data, error, isLoading, isError } = useQuery(
+    ['customerInsights', page, rowsPerPage], 
+    async () => await fetchCustomerInsights(page + 1, rowsPerPage), 
+    { keepPreviousData: true }
+  );
 
-  const handleChangePage = (event, newPage) => setPage(newPage);
+  const handleChangePage = (event, newPage) =>{
+    setPage(newPage);
+  }
+
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
@@ -31,7 +78,7 @@ const AccountsList = () => {
   if (isLoading) {
     return (
       <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '20px' }}>
-        <CircularProgress />
+        <CircularProgress size={10} />
       </Box>
     );
   }
@@ -43,6 +90,8 @@ const AccountsList = () => {
       </Box>
     );
   }
+
+  const filteredAccounts = filterAccounts(data?.customers, searchQuery);
 
   return (
     <Box sx={{
@@ -65,15 +114,40 @@ const AccountsList = () => {
             background: '#3f9068',
         },
     }}>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', marginBottom: '2rem', alignItems: 'center', flexWrap: 'wrap' }}>
+      <Box 
+        sx={{ 
+          display: 'flex', 
+          flexDirection: { xs: 'column', sm: 'column', med: 'column', lg: 'row' },
+          justifyContent: 'space-between', 
+          marginBottom: '2rem', 
+          gap: 2,
+        }}>
         <Typography variant="h4">Accounts List</Typography>
-        <Box sx={{ display: 'flex', gap: 1, alignItems: 'center', mt: '1rem' }}>
-          <TextField 
-            size="small"
-            sx={{ '.MuiOutlinedInput-root': { borderRadius: '50px' } }}
-            placeholder='Search...'
+        <Box sx={{ 
+          display: 'flex', 
+          justifyContent: 'left', 
+          alignItems: 'center', 
+          flexWrap: 'wrap',
+          gap: 2, 
+        }}>
+          <Box>
+            <TextField 
+              size="small"
+              sx={{ '.MuiOutlinedInput-root': { borderRadius: '50px' } }}
+              placeholder='Search...'
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+          </Box>
+          {columns && (
+          < AccountsColumnPreferences 
+            open={preferencesOpen}
+            onClose={() => setPreferencesOpen(false)}
+            availableColumns={columns}
+            userPreferences={userPreferences}
+            setUserPreferences={setUserPreferences}
           />
-          < AccountsColumnPreferences />
+          )}
           <AccountCircleIcon />
         </Box>
       </Box>
@@ -81,42 +155,36 @@ const AccountsList = () => {
       <Table>
         <TableHead>
           <TableRow>
-            {columns.filter(column => column.visible).map(column => (
+            {columns.filter(column => userPreferences.visible_columns.includes(column.id)).map(column => (
               <TableCell key={column.id}>{column.label}</TableCell>
             ))}
           </TableRow>
         </TableHead>
         <TableBody>
-          {data.customers.map(customer => (
+          {filteredAccounts.map(customer => (
             <TableRow key={customer.id}>
-              {columns.map(column => {
-                if (!column.visible) return null;
-                let cellValue;
-                switch (column.id) {
-                  case 'name':
-                    cellValue = `${customer.first_name} ${customer.last_name}`;
-                    break;
-                  case 'email':
-                    cellValue = customer.email;
-                    break;
-                  case 'status':
-                    cellValue = customer.customer_status;
-                    break;
-                  case 'totalSpent':
-                    cellValue = `$${customer.total_spent}`;
-                    break;
-                  default:
-                    cellValue = '';
-                }
-                return <TableCell key={column.id}>{cellValue}</TableCell>;
-              })}
+              {columns.filter(column => userPreferences.visible_columns.includes(column.id)).map(column => (
+                    <TableCell key={column.id}>
+                      {column.id === 'name' && `${customer.first_name} ${customer.last_name}`}
+                      {column.id === 'email' && customer.email}
+                      {column.id === 'status' && getStatusStyles(customer.customer_status)}
+                      {column.id === 'totalSpent' && customer.total_spent}
+                      {column.id === 'ordersCount' && customer.orders_count}
+                      {column.id === 'id' && customer.id}
+                      {column.id === 'created_at' && customer.created_at}
+                      {column.id === 'city' && customer.city}
+                      {column.id === 'province' && customer.province}
+                      {column.id === 'country' && customer.country}
+                      {column.id === 'customer_status' && customer.customer_status}
+                    </TableCell>
+                  ))}
             </TableRow>
           ))}
         </TableBody>
       </Table>
       <TablePagination
         component="div"
-        count={data.total}
+        count={data?.total || 0}
         page={page}
         onPageChange={handleChangePage}
         rowsPerPage={rowsPerPage}

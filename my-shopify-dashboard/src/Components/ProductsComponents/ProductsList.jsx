@@ -72,6 +72,7 @@ const ProductsList = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [isSearching, setIsSearching] = useState(false); 
 
+
   const { data, isLoading, isError, error } = useQuery(
     ['ProductsList', page, rowsPerPage, searchQuery],
     async () => {
@@ -100,7 +101,13 @@ const ProductsList = () => {
     setPage(0);
   };
 
-  if (isLoading) return <Box sx={{ display: 'flex', justifyContent: 'center' }}><CircularProgress size={10} /></Box>;
+  if (isLoading){ 
+    return(
+      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '20px' }}>
+        <CircularProgress size={10} />
+      </Box>
+    ) 
+  } 
   if (isError) return <Typography color="error">Error: {error.message}</Typography>;
   const filteredProducts = filterProducts(data || [], searchQuery);
 
@@ -133,7 +140,6 @@ const ProductsList = () => {
               justifyContent: 'space-between', 
               marginBottom: '2rem',
               gap: 2,
-
           }}>
               <Typography variant="h4">Product List</Typography>
               <Box sx={{ 
@@ -150,7 +156,7 @@ const ProductsList = () => {
                     isLoading={isSearching}
                     sx={{
                       '.MuiOutlinedInput-root': {
-                        borderRadius: '50px', // Apply border-radius to the input field
+                        borderRadius: '50px',
                       },
                     }}
                     placeholder='Search...'

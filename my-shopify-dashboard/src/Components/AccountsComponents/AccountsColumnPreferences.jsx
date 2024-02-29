@@ -17,6 +17,7 @@ import {
 } from '@mui/material';
 import SettingsIcon from '@mui/icons-material/Settings';
 
+// These props might be slightly different based on how your accounts data is structured
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
 const MenuProps = {
@@ -28,11 +29,8 @@ const MenuProps = {
   },
 };
 
-const AccountsColumnPreferences = ({ columns, setColumns }) => {
+const AccountsColumnPreferences = ({ availableColumns, userPreferences, setUserPreferences }) => {
   const [open, setOpen] = useState(false);
-
-  // Extracts the ids of visible columns from the columns array
-  const visibleColumnIds = columns.filter(column => column.visible).map(column => column.id);
 
   const handleClickOpen = () => {
     setOpen(!open);
@@ -42,15 +40,13 @@ const AccountsColumnPreferences = ({ columns, setColumns }) => {
     const {
       target: { value },
     } = event;
-
-    // Updates the visibility based on the selected values
-    const updatedColumns = columns.map(column => ({
-      ...column,
-      visible: value.includes(column.id),
+    setUserPreferences((prevPreferences) => ({
+      ...prevPreferences,
+      visible_columns: typeof value === 'string' ? value.split(',') : value,
     }));
-
-    setColumns(updatedColumns);
   };
+
+
 
   return (
     <>
@@ -71,15 +67,15 @@ const AccountsColumnPreferences = ({ columns, setColumns }) => {
               labelId="column-checkbox-label"
               id="column-checkbox"
               multiple
-              value={visibleColumnIds}
+              value={userPreferences?.visible_columns || []}
               onChange={handleChange}
               input={<OutlinedInput label="Columns" />}
-              renderValue={(selected) => selected.map(id => columns.find(column => column.id === id)?.label || '').join(', ')}
+              renderValue={(selected) => selected.map(id => availableColumns.find(column => column.id === id)?.label || '').join(', ')}
               MenuProps={MenuProps}
             >
-              {columns.map((column) => (
+              {availableColumns.map((column) => (
                 <MenuItem key={column.id} value={column.id}>
-                  <Checkbox checked={visibleColumnIds.includes(column.id)} />
+                  <Checkbox checked={userPreferences?.visible_columns?.includes(column.id) || false} />
                   <ListItemText primary={column.label} />
                 </MenuItem>
               ))}
@@ -93,6 +89,10 @@ const AccountsColumnPreferences = ({ columns, setColumns }) => {
       </Dialog>
     </>
   );
+};
+
+AccountsColumnPreferences.defaultProps = {
+  userPreferences: { visible_columns: [] },
 };
 
 AccountsColumnPreferences.propTypes = {
