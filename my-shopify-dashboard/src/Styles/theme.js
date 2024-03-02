@@ -5,7 +5,7 @@ export const darkTheme = createTheme({
     mode: 'dark',
     background: {
       default: '#0d0f0f', // Apple dark mode background
-      paper: '#0d0f0f', // Slightly lighter for elements like cards, dialogs
+      paper: '#grey', // Slightly lighter for elements like cards, dialogs
     },
     primary: {
       main: '#0A84FF', // Apple uses vibrant blues for primary actions in dark mode
@@ -14,8 +14,8 @@ export const darkTheme = createTheme({
       main: '#30D158', // Green for secondary actions, inspired by iOS system colors
     },
     text: {
-      primary: '#FFFFFF', // White text for maximum contrast
-      secondary: '#E5E5EA', // A lighter grey for less emphasis
+      primary: 'black', // White text for maximum contrast
+      secondary: 'black', // A lighter grey for less emphasis
     },
     action: {
       active: '#E5E5EA',

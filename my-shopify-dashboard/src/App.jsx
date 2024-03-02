@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Routes, Route, useNavigate } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from 'react-query';
+import { AppProvider, Page, Button } from '@shopify/polaris';
+// import '@shopify/polaris/build/esm/styles.css';
 import Dashboard from './Pages/Dashboard';
 import Products from './Pages/Products';
 // import Tasks from './Pages/Tasks';
@@ -26,6 +28,7 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import { darkTheme } from './Styles/theme';
 import ShopidexLogo from './Styles/logo/Shopidex Logo.png'
+import LandingPage from './Pages/LandingPage';
 
 const queryClient = new QueryClient();
 
@@ -100,13 +103,20 @@ function App() {
       </Box>
   );
   
-
+  const theme = {
+    colors: {
+      surface: '#2b2e32', // Overriding surface color
+    },
+  };
 
   return (
     <QueryClientProvider client={queryClient}>
+      <AppProvider theme={theme} i18n={{}}>
       <ThemeProvider theme={darkTheme}>
         <CssBaseline />
-
+        <Page title="Example Page">
+            <Button onClick={() => alert('Clicked')}>Example Button</Button>
+          </Page>
         <Box sx={{ display: 'flex', position: 'relative', }}>
 
           <Drawer
@@ -150,6 +160,7 @@ function App() {
             }}
           >
             <Routes>
+              {/* < Route path="/" element={<LandingPage />} /> */}
               <Route path="/" element={<Dashboard />} />
               <Route path="/products" element={<Products />} />
               <Route path="/accounts" element={<Accounts />} />
@@ -161,6 +172,7 @@ function App() {
         </Box>
         
       </ThemeProvider>
+      </AppProvider>
     </QueryClientProvider>
   );
 }

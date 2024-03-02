@@ -13,6 +13,8 @@
     "@material/tooltip": "^14.0.0",
     "@mui/icons-material": "^5.15.6",
     "@mui/material": "^5.15.6",
+    "@shopify/app-bridge-react": "^4.0.0",
+    "@shopify/polaris": "^12.19.2",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
