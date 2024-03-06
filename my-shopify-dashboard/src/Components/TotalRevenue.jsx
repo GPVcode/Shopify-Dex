@@ -6,11 +6,11 @@ import { fetchTotalRevenue } from '../Services/api';
 
 function TotalRevenue() {
     const { data, isLoading, isError, error } = useQuery('Total Revenue', fetchTotalRevenue);
-    const [view, setView] = useState('total'); // 'total', 'monthly', or 'daily'
+    const [view, setView] = useState('total');
     const [selectedMonth, setSelectedMonth] = useState('');
     
     const percentageIncrease = useMemo(() => {
-        if (!data || Object.keys(data.monthlyRevenue).length < 2) return '0';
+        if (!data?.monthlyRevenue || Object.keys(data.monthlyRevenue).length < 2) return '0';
         const months = Object.keys(data.monthlyRevenue);
         const lastMonthRevenue = data.monthlyRevenue[months[months.length - 1]];
         const prevMonthRevenue = data.monthlyRevenue[months[months.length - 2]];
@@ -31,11 +31,11 @@ function TotalRevenue() {
     const revenueFigure = useMemo(() => {
         switch (view) {
             case 'total':
-                return data ? data.totalRevenue.toLocaleString() : '0';
+                return data?.totalRevenue.toLocaleString() ?? '0';
             case 'monthly':
-                return data && selectedMonth ? data.monthlyRevenue[Object.keys(data.monthlyRevenue)[formattedMonths.indexOf(selectedMonth)]].toLocaleString() : '0';
+                return data && selectedMonth ? data.monthlyRevenue[Object.keys(data.monthlyRevenue)[formattedMonths.indexOf(selectedMonth)]].toLocaleString() ?? '0' : '0';
             case 'daily':
-                return data && data.dailyRevenue && data.dailyRevenue[today] ? data.dailyRevenue[today].toLocaleString() : '0';
+                return data?.dailyRevenue?.[today]?.toLocaleString() ?? '0';
             default:
                 return '0';
         }
