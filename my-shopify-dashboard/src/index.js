@@ -3,7 +3,8 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import './index.css';
-import { AppProvider } from '@shopify/polaris';
+// import enTranslations from '@shopify/polaris/locales/en.json';
+// import {AppProvider, Page, LegacyCard, Button} from '@shopify/polaris';
 import App from './App';
 import Dashboard from './Pages/Dashboard';
 import Products from './Pages/Products';
@@ -28,8 +29,8 @@ const router = createBrowserRouter([
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <AppProvider i18n={{}}> {/* Wrap RouterProvider with AppProvider */}
+    {/* <AppProvider i18n={enTranslations}> */}
       <RouterProvider router={router} />
-    </AppProvider>
+    {/* </AppProvider> */}
   </React.StrictMode>
 );

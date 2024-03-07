@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Routes, Route, useNavigate } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from 'react-query';
-import { AppProvider, Page, Button } from '@shopify/polaris';
 // import '@shopify/polaris/build/esm/styles.css';
 import Dashboard from './Pages/Dashboard';
 import Products from './Pages/Products';
@@ -103,20 +102,11 @@ function App() {
       </Box>
   );
   
-  const theme = {
-    colors: {
-      surface: '#2b2e32', // Overriding surface color
-    },
-  };
 
   return (
     <QueryClientProvider client={queryClient}>
-      <AppProvider theme={theme} i18n={{}}>
       <ThemeProvider theme={darkTheme}>
         <CssBaseline />
-        <Page title="Example Page">
-            <Button onClick={() => alert('Clicked')}>Example Button</Button>
-          </Page>
         <Box sx={{ display: 'flex', position: 'relative', }}>
 
           <Drawer
@@ -172,7 +162,6 @@ function App() {
         </Box>
         
       </ThemeProvider>
-      </AppProvider>
     </QueryClientProvider>
   );
 }

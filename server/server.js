@@ -5,6 +5,7 @@ import qs from 'qs';
 import revenueRoutes from './routes/orderRoutes.js';
 import productRoutes from './routes/productRoutes.js';
 import customerRoutes from './routes/customerRoutes.js';
+import dotenv from 'dotenv';
 
 const app = express();
 const port = 5000;
