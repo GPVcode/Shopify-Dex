@@ -1,14 +1,13 @@
 import axios from 'axios';
-import { useQuery } from 'react-query';
 
-const API_URL = `https://shopidex.onrender.com/api`
+// const API_URL = `https://shopidex.onrender.com/api`
+const API_URL = `http://localhost:5000/api`
 
 export const fetchTotalRevenue = async () => {
     try {
 
         const response = await axios.get(`${API_URL}/total-revenue`, { timeout: 5000 });
-
-        if (response.data && typeof response.data.totalRevenue === 'number') {
+        if (response.data && typeof response.data.totalRevenue === 'string') {
             return response.data;
         } else {
             console.error("Invalid data format received:", response.data);
@@ -31,6 +30,7 @@ export const fetchRecentOrders = async (page = 1, limit = 5) => {
         });
 
         if (response.data && Array.isArray(response.data.orders)) {
+
             return {
                 orders: response.data.orders,
                 total: response.data.total,

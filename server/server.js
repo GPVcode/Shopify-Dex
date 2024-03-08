@@ -7,9 +7,10 @@ import productRoutes from './routes/productRoutes.js';
 import customerRoutes from './routes/customerRoutes.js';
 import dotenv from 'dotenv';
 
-const app = express();
-const port = 5000;
+dotenv.config();
 
+const app = express();
+const port = process.env.PORT || 8888;
 
 app.use(express.json());
 app.use(cors());
@@ -22,3 +23,4 @@ app.use('/api/customers', customerRoutes);
 app.listen(port, () => {
     console.log(`Listening on port: ${port}`)
 });
+// Hello

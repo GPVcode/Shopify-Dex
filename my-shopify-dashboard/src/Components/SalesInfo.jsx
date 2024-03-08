@@ -9,7 +9,7 @@ function SalesInfo() {
 
     const countOrdersByMonth = (orders) => {
         return orders.reduce((acc, order) => {
-            const month = order.order_date.substring(0, 7); // Get YYYY-MM
+            const month = order.created_at.substring(0, 7); // Get YYYY-MM
             acc[month] = (acc[month] || 0) + 1;
             return acc;
         }, {});

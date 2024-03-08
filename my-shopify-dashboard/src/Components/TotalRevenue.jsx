@@ -31,11 +31,11 @@ function TotalRevenue() {
     const revenueFigure = useMemo(() => {
         switch (view) {
             case 'total':
-                return data ? data.totalRevenue.toLocaleString() : '0';
+                return data ? data?.totalRevenue.toLocaleString() : '0';
             case 'monthly':
-                return data && selectedMonth ? data.monthlyRevenue[Object.keys(data.monthlyRevenue)[formattedMonths.indexOf(selectedMonth)]].toLocaleString() : '0';
+                return data && selectedMonth ? data?.monthlyRevenue[Object.keys(data.monthlyRevenue)[formattedMonths.indexOf(selectedMonth)]].toLocaleString() : '0';
             case 'daily':
-                return data && data.dailyRevenue && data.dailyRevenue[today] ? data.dailyRevenue[today].toLocaleString() : '0';
+                return data && data?.dailyRevenue && data?.dailyRevenue[today] ? data?.dailyRevenue[today].toLocaleString() : '0';
             default:
                 return '0';
         }

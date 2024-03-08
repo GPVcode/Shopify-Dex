@@ -1,7 +1,9 @@
-import express from 'express';
 import axios from 'axios';
+import dotenv from 'dotenv';
 
-const { SHOP_URL, SHOPIFY_API_KEY, SHOPIFY_API_PASSWORD } = process.env;
+dotenv.config();
+
+const { SHOP_URL, SHOPIFY_API_KEY, SHOPIFY_API_SECRET_KEY, SHOPIFY_ADMIN_API_ACCESS_TOKEN } = process.env;
 
 // Mimicking Shopify API response
 const ordersResponse = {
@@ -225,7 +227,6 @@ const ordersResponse = {
         }
     ]
 };
-
 const inventoryResponse = {
   "inventory": [
     {
@@ -338,7 +339,6 @@ const inventoryResponse = {
     ]
   }
 }
-
 const trafficDataResponse = {
     "traffic_sources": [
       {
@@ -558,7 +558,6 @@ const customersResponse = {
     }
   ]
 };
-
 const userEngagementMetricsData = {
   data: [
       {
@@ -594,18 +593,25 @@ const userEngagementMetricsData = {
   message: "User engagement metrics fetched successfully."
 };
 
-
 export const fetchTotalRevenue = async (req, res, next) => {
-  try {
-      const orders = ordersResponse.orders;
+  const url = `https://${SHOP_URL}/admin/api/2023-10/orders.json?status=any&financial_status=paid`;
 
+  try {
+      const response = await axios.get(url, {
+        headers: {
+          "X-Shopify-Access-Token": SHOPIFY_ADMIN_API_ACCESS_TOKEN,
+          "Content-Type": "application/json"
+        }
+      });
+
+      const orders = response.data.orders;
       const monthlyRevenue = {};
       const dailyRevenue = {};
 
       orders.forEach(order => {
-          if (order.financial_status === "Paid") {
-              const date = new Date(order.order_date);
-              const month = date.getMonth() + 1; // JavaScript months are 0-based.
+          if (order.financial_status === "paid") {
+              const date = new Date(order.created_at);
+              const month = date.getMonth() + 1;
               const year = date.getFullYear();
               const day = date.getDate();
               const monthYearKey = `${year}-${month.toString().padStart(2, '0')}`;
@@ -613,14 +619,12 @@ export const fetchTotalRevenue = async (req, res, next) => {
 
               // Accumulate monthly revenue
               monthlyRevenue[monthYearKey] = (monthlyRevenue[monthYearKey] || 0) + parseFloat(order.total_price);
-
               // Accumulate daily revenue
               dailyRevenue[dailyKey] = (dailyRevenue[dailyKey] || 0) + parseFloat(order.total_price);
           }
       });
-
-      const totalRevenue = Object.values(monthlyRevenue).reduce((sum, revenue) => sum + revenue, 0);
-      // Prepare and return the response with yearly (total), monthly, and daily revenue
+      const totalRevenue = Object.values(monthlyRevenue).reduce((sum, revenue) => sum + revenue, 0).toFixed(2);
+      
      return {
           totalRevenue,
           monthlyRevenue,
@@ -628,26 +632,28 @@ export const fetchTotalRevenue = async (req, res, next) => {
       };
 
   } catch (error) {
-      console.error('Error fetching revenue data:', error);
-      res.status(500).json({ message: 'Error fetching total revenue.' });
+      console.error('Error fetching revenue data from Shopify:', error);
+      res.status(500).json({ message: 'Error fetching total revenue from Shopify.' });
   }
 };
 
 export const fetchRecentOrders = async (page, limit) => {
+    const url = `https://${SHOP_URL}/admin/api/2023-10/orders.json?status=any`;
+
     try {
-        // const url = `https://${SHOP_URL}/admin/api/2024-01/orders.json?limit=10&order=created_at%20desc`
-        // const auth = {
-        //     username: SHOPIFY_API_KEY,
-        //     password: SHOPIFY_API_PASSWORD
-        // };
+        const response = await axios.get(url, {
+          headers: {
+            "X-Shopify-Access-Token": SHOPIFY_ADMIN_API_ACCESS_TOKEN,
+            "Content-Type": "application/json"
+          }
+        });
 
-        // const ordersResponse = await axios.get(url, { auth });
-        // return ordersResponse.data.orders;
-
+        const orders = response.data.orders;
+       
         const startIndex = (page - 1) * limit;
         const endIndex = startIndex + limit;
         
-        const paginatedOrders = ordersResponse.orders.slice(startIndex, endIndex)
+        const paginatedOrders = orders.slice(startIndex, endIndex)
         return paginatedOrders;
     } catch(error){
         console.error('Error fetching recent orders:', error);

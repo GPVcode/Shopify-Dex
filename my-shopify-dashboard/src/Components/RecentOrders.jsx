@@ -39,7 +39,6 @@ const RecentOrders = () => {
 
     if (isError) return <Box style={{ padding: '20px', margin: '10px' }}>Error: {error.message}</Box>;
     
-
     // const formatDate = (dateString) => {
     //     const date = new Date(dateString);
     //     return date.toLocaleDateString('en-US', { // You can adjust the locale and options
@@ -137,7 +136,7 @@ const RecentOrders = () => {
                             <TableCell style={cellStyle}>{order.customer.first_name} {order.customer.last_name}</TableCell>
                             <TableCell style={cellStyle}>${order.total_price}</TableCell>    
                             <TableCell>        
-                                {formatDistanceToNow(new Date(order.order_date), { addSuffix: true })}
+                                {formatDistanceToNow(new Date(order.created_at), { addSuffix: true })}
                             </ TableCell>
                             <TableCell style={cellStyle}>{formatItemsOrdered(order.line_items)}</TableCell>
                             <TableCell style={cellStyle}>
