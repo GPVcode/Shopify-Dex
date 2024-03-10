@@ -20,18 +20,36 @@ router.get('/total-revenue', async (req, res) => {
 router.get('/recent-orders', async (req, res) => {
     try{
         const page = parseInt(req.query.page) || 1;
-        const limit = parseInt(req.query.limit) || 5;
+        const limit = parseInt(req.query.limit) || 10;
         const orders = await fetchRecentOrders(page, limit);
-        const totalOrdersCount = await fetchAllOrdersCount(); 
+        // const totalOrdersCount = await fetchAllOrdersCount(); 
+        // const page = 1;
+        // const limit = 10;
+        // const orders = `await fetchRecentOrders(page, limit);`
+        // const totalOrdersCount = 10
+        // console.log("orders: ", orders)
+        // console.log("totalOrdersCount: ", totalOrdersCount)
         res.json({ 
-            orders: orders,
-            total: totalOrdersCount
+            orders,
+            page,
+            limit
         });
     } catch(error){
         res.status(500).json({ message: 'Error fetching recent orders.'})
     }
 });
 
+router.get('/total-orders', async (req, res) => {
+    try{
+        const totalOrdersCount = await fetchAllOrdersCount();
+
+        res.json({
+            totalOrdersCount
+        })
+    } catch(error){
+        res.status(500).json({ message: 'Error fetching total orders from Shopify.'})
+    }
+})
 router.get('/traffic-sources', async (req, res) => {
 
     try{

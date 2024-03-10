@@ -637,9 +637,26 @@ export const fetchTotalRevenue = async (req, res, next) => {
   }
 };
 
-export const fetchRecentOrders = async (page, limit) => {
-    const url = `https://${SHOP_URL}/admin/api/2023-10/orders.json?status=any`;
+export const fetchAllOrdersCount = async () => {
+  const url = `https://${SHOP_URL}/admin/api/2023-10/orders/count.json?status=any`;
+  try {  
 
+    const response = await axios.get(url, {
+      headers: {
+        "X-Shopify-Access-Token": SHOPIFY_ADMIN_API_ACCESS_TOKEN,
+        "Content-Type": "application/json"
+      }
+    });
+      return response.data;
+  } catch (error){
+      console.error('Error fetching total order count from Shopify:', error);
+      throw error;
+  }
+};
+
+export const fetchRecentOrders = async (page, limit) => {
+
+    const url = `https://${SHOP_URL}/admin/api/2023-10/orders.json?status=any`;
     try {
         const response = await axios.get(url, {
           headers: {
@@ -649,27 +666,36 @@ export const fetchRecentOrders = async (page, limit) => {
         });
 
         const orders = response.data.orders;
-       
+
         const startIndex = (page - 1) * limit;
         const endIndex = startIndex + limit;
         
         const paginatedOrders = orders.slice(startIndex, endIndex)
+
         return paginatedOrders;
     } catch(error){
-        console.error('Error fetching recent orders:', error);
+        console.error('Error fetching recent orders from Shopify:', error);
         throw error;
     }
 };
 
-export const fetchAllOrdersCount = async () => {
+export const fetchAccountTotal = async () => {
+  const url = `https://${SHOP_URL}/admin/api/2023-07/customers.json?`;
 
-    try {
-        return ordersResponse.orders.length;
-    } catch (error){
-        console.error('Error fetching total order count:', error);
-        throw error;
-    }
-};
+  try {
+    const response = await axios.get(url, {
+      headers: {
+        "X-Shopify-Access-Token": SHOPIFY_ADMIN_API_ACCESS_TOKEN,
+        "Content-Type": "application/json"
+      }
+    });
+
+    return response.data.customers.length;
+  }
+  catch(error){
+    console.error('Error fetching account total from Shopify: ', error)
+  }
+}
 
 export const fetchInventoryAlerts = async (page = 1, limit = 5) => {
 

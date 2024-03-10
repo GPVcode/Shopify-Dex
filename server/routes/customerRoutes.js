@@ -2,9 +2,20 @@ import express from 'express';
 const router = express.Router();
 import { 
     fetchCustomerInsights,
-    fetchUserEngagementMetrics 
+    fetchUserEngagementMetrics,
+    fetchAccountTotal
 } from '../utils/shopifyAPI.js';
 
+router.get('/account-total', async (req, res) => {
+    try {
+        const AccountTotal = await fetchAccountTotal();
+        
+        res.json(AccountTotal);
+    } catch (error) {
+        console.error('Error fetching customer insights:', error.message);
+        res.status(500).json({ message: 'Failed to fetch customer insights', error: error.message });
+    }
+})
 router.get('/customer-insights', async (req, res) => {
     try {
 

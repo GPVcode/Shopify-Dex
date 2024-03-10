@@ -19,7 +19,33 @@ export const fetchTotalRevenue = async () => {
     }
 };
 
-export const fetchRecentOrders = async (page = 1, limit = 5) => {
+export const fetchOrderCount = async () => {
+    try{
+        const response = await axios.get(`${API_URL}/total-orders`)
+        return {
+            count: response.data.totalOrdersCount
+        }
+    } catch (error) {
+        console.error(`Error fetching total orders count from Shopify:`, error)
+    }
+}
+
+export const fetchAccountTotal = async () => {
+    try{
+        const response = await axios.get(`${API_URL}/customers/account-total`)
+        // console.log("HEY: ", response.data)
+        // console.log("typeof: ", typeof response.data)
+        if(typeof response.data === 'number'){
+            return response;
+        } else {
+            console.error("Invalid data format received:", response.data);
+            return { error: "Invalid data format" };
+        }
+    } catch (error) {
+        console.error(`Error fetching account total from Shopify:`, error)
+    }
+}
+export const fetchRecentOrders = async (page = 1, limit = 10) => {
     try {
         const response = await axios.get(`${API_URL}/recent-orders`, { 
             params: {
@@ -28,12 +54,14 @@ export const fetchRecentOrders = async (page = 1, limit = 5) => {
             },
             timeout: 5000
         });
+        
 
         if (response.data && Array.isArray(response.data.orders)) {
 
+            let ordersArray = response.data;
+            
             return {
-                orders: response.data.orders,
-                total: response.data.total,
+                ordersArray,
                 page,
                 limit
             };
@@ -42,11 +70,13 @@ export const fetchRecentOrders = async (page = 1, limit = 5) => {
             return { error: "Invalid data format" };
         }
     } catch (error) {
-        console.error('Error fetching recent orders:', error);
+        console.error('Error fetching recent orders from Shopify:', error);
         return { error: "Failed to fetch data" };
     }
 };
 
+
+        
 // Function to fetch inventory alerts
 export const fetchInventoryAlerts = async (page = 1, limit = 5) => {
     try {

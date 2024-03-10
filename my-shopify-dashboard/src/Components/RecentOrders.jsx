@@ -27,33 +27,26 @@ import { formatDistanceToNow } from 'date-fns';
 const RecentOrders = () => {
 
     const [page, setPage] = useState(0); // Zero-based page index
-    const [rowsPerPage, setRowsPerPage] = useState(5);
+    const [rowsPerPage, setRowsPerPage] = useState(10);
 
     const { data, isLoading, isError, error } = useQuery(['Recent Orders', page, rowsPerPage], () => fetchRecentOrders(page + 1, rowsPerPage), {
         keepPreviousData: true,
     });
-
+    // console.log("HEY: ", data.ordersArray.orders.length)
+    
     if (isLoading){
         return <Box style={{ padding: '20px', margin: '10px' }}>< CircularProgress /></Box>;
     } 
 
     if (isError) return <Box style={{ padding: '20px', margin: '10px' }}>Error: {error.message}</Box>;
     
-    // const formatDate = (dateString) => {
-    //     const date = new Date(dateString);
-    //     return date.toLocaleDateString('en-US', { // You can adjust the locale and options
-    //         month: 'short', // "Jan", "Feb", etc.
-    //         day: '2-digit', // "01", "02", etc.
-    //         year: 'numeric', // "2024"
-    //     });
-    // };
-
     const handleChangePage = (event, newPage) => {
+        console.log('24')
         setPage(newPage);
     };
 
     const handleChangeRowsPerPage = event => {
-        setRowsPerPage(parseInt(event.target.value, 5));
+        setRowsPerPage(parseInt(event.target.value, 10));
         setPage(0);
     };
     
@@ -68,17 +61,17 @@ const RecentOrders = () => {
 
     const getStatusIcon = (status) => {
         switch (status) {
-            case 'Paid':
+            case 'paid':
                 return <CheckCircle style={{ color: 'green' }} />;
-            case 'Refunded':
+            case 'refunded':
                 return <HighlightOff style={{ color: 'red' }} />;
-            case 'Pending':
+            case 'pending':
                 return <Schedule style={{ color: 'orange' }} />;
             default:
                 return <Info />;
         }
     };
-
+console.log("8: ", data)
     const cellStyle = {
         textAlign: 'center',
         alignItems: 'center',
@@ -115,14 +108,14 @@ const RecentOrders = () => {
                     alignItems: 'center', 
                     marginBottom: '2rem' 
                 }}>
-                <Typography variant="h5">Recent Activity</Typography>
+                <Typography variant="h5">Recent Orders</Typography>
                     <History />
                 </Box>
                 <Table>
                     <TableHead>
                         <TableRow>
                         <TableCell style={cellStyle}>Order ID</TableCell>
-                        <TableCell style={cellStyle}>Customer</TableCell>
+                        <TableCell style={cellStyle}>Customer ID</TableCell>
                         <TableCell style={cellStyle}>Total Price</TableCell>
                         <TableCell style={cellStyle}>Order Date</TableCell>
                         <TableCell style={cellStyle}>Items Ordered</TableCell>
@@ -130,10 +123,10 @@ const RecentOrders = () => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                    {data.orders && data.orders.map(order => (
+                    {data.ordersArray.orders && data.ordersArray.orders.map(order => (
                         <TableRow key={order.id}>
                             <TableCell style={cellStyle}>{order.id}</TableCell>
-                            <TableCell style={cellStyle}>{order.customer.first_name} {order.customer.last_name}</TableCell>
+                            <TableCell style={cellStyle}>{order.customer.id}</TableCell>
                             <TableCell style={cellStyle}>${order.total_price}</TableCell>    
                             <TableCell>        
                                 {formatDistanceToNow(new Date(order.created_at), { addSuffix: true })}
@@ -151,7 +144,7 @@ const RecentOrders = () => {
                         <TableRow>
                         <TablePagination
                             rowsPerPageOptions={[5, 10, 25]}
-                            count={data.total}
+                            count={data.ordersArray.orders.length}
                             page={page}
                             rowsPerPage={rowsPerPage}
                             onPageChange={handleChangePage}

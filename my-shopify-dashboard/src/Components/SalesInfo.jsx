@@ -2,10 +2,10 @@ import React from 'react';
 import { useQuery } from 'react-query';
 import { CircularProgress, Box, Typography } from '@mui/material';
 import CreditCardIcon from '@mui/icons-material/CreditCard';
-import { fetchRecentOrders } from '../Services/api';
+import { fetchOrderCount } from '../Services/api';
 
 function SalesInfo() {
-    const { data, isLoading, isError, error } = useQuery('recentOrders', fetchRecentOrders);
+    const { data, isLoading, isError, error } = useQuery('OrdersCount', fetchOrderCount);
 
     const countOrdersByMonth = (orders) => {
         return orders.reduce((acc, order) => {
@@ -39,7 +39,7 @@ function SalesInfo() {
         return <Typography color="error">Error: {error.message}</Typography>;
     }
 
-    const totalOrders = data?.total || 0;
+    const totalOrders = data?.count.count || 0;
 
     return (
         <Box sx={{ 
