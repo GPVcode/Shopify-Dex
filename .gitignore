@@ -1,0 +1,16 @@
+server/utils/shopidex-e6e25de62d98.json
+
+# dependencies
+/node_modules
+
+# Google Cloud Service Account Key
+shopidex-e6e25de62d98.json
+
+# misc
+.DS_Store
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
