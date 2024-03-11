@@ -1,5 +1,6 @@
 import axios from 'axios';
 import dotenv from 'dotenv';
+import { prepareOrdersForBigQuery, insertPaidOrdersIntoBigQuery, insertOrdersIntoStagingTable, mergeStagingToFinalTable } from '../database/bigQueryHelper.js';
 
 dotenv.config();
 
@@ -595,58 +596,67 @@ const userEngagementMetricsData = {
 
 export const fetchTotalRevenue = async (req, res, next) => {
   const url = `https://${SHOP_URL}/admin/api/2023-10/orders.json?status=any&financial_status=paid`;
+  let forAnalysis = true;
 
   try {
       const response = await axios.get(url, {
         headers: {
           "X-Shopify-Access-Token": SHOPIFY_ADMIN_API_ACCESS_TOKEN,
-          "Content-Type": "application/json"
+          "Content-Type": "apinsertOrdersIntoBigQueryplication/json"
         }
       });
 
-      const orders = response.data.orders;
-      const monthlyRevenue = {};
-      const dailyRevenue = {};
+      let orders = response.data.orders;
+      let totalRevenue = orders.reduce((sum, order) => sum + parseFloat(order.total_price || 0), 0).toFixed(2);
+      
+      if(forAnalysis){
+        orders = prepareOrdersForBigQuery(orders);
+        await insertPaidOrdersIntoBigQuery(orders);
+        await insertOrdersIntoStagingTable(orders);
+        await mergeStagingToFinalTable(); // Then merge into the final table
+        // res.json({ message: `Successfully inserted ${orders.length} orders into BigQuery.` });
+      }
+
+      let monthlyRevenue = {};
+      let dailyRevenue = {};
 
       orders.forEach(order => {
-          if (order.financial_status === "paid") {
-              const date = new Date(order.created_at);
-              const month = date.getMonth() + 1;
-              const year = date.getFullYear();
-              const day = date.getDate();
-              const monthYearKey = `${year}-${month.toString().padStart(2, '0')}`;
-              const dailyKey = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+        if (order.financial_status === "paid") {
+            const date = new Date(order.created_at);
+            const month = date.getMonth() + 1;
+            const year = date.getFullYear();
+            const day = date.getDate();
+            const monthYearKey = `${year}-${month.toString().padStart(2, '0')}`;
+            const dailyKey = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
 
-              // Accumulate monthly revenue
-              monthlyRevenue[monthYearKey] = (monthlyRevenue[monthYearKey] || 0) + parseFloat(order.total_price);
-              // Accumulate daily revenue
-              dailyRevenue[dailyKey] = (dailyRevenue[dailyKey] || 0) + parseFloat(order.total_price);
-          }
+            monthlyRevenue[monthYearKey] = (monthlyRevenue[monthYearKey] || 0) + parseFloat(order.total_price);
+            dailyRevenue[dailyKey] = (dailyRevenue[dailyKey] || 0) + parseFloat(order.total_price);
+        }
       });
-      const totalRevenue = Object.values(monthlyRevenue).reduce((sum, revenue) => sum + revenue, 0).toFixed(2);
-      
-     return {
+
+      return {
           totalRevenue,
           monthlyRevenue,
           dailyRevenue
-      };
-
+      }
   } catch (error) {
       console.error('Error fetching revenue data from Shopify:', error);
       res.status(500).json({ message: 'Error fetching total revenue from Shopify.' });
+
   }
 };
 
 export const fetchAllOrdersCount = async () => {
   const url = `https://${SHOP_URL}/admin/api/2023-10/orders/count.json?status=any`;
-  try {  
 
+  try {  
     const response = await axios.get(url, {
       headers: {
         "X-Shopify-Access-Token": SHOPIFY_ADMIN_API_ACCESS_TOKEN,
         "Content-Type": "application/json"
       }
     });
+
       return response.data;
   } catch (error){
       console.error('Error fetching total order count from Shopify:', error);

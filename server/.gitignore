@@ -1,6 +1,9 @@
 # dependencies
 /node_modules
 
+# Google Cloud Service Account Key
+server/utils/shopidex-e6e25de62d98.json
+
 # misc
 .DS_Store
 .env
@@ -8,3 +11,4 @@
 .env.development.local
 .env.test.local
 .env.production.local
+

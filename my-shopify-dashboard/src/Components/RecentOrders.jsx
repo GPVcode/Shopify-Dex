@@ -71,7 +71,7 @@ const RecentOrders = () => {
                 return <Info />;
         }
     };
-console.log("8: ", data)
+
     const cellStyle = {
         textAlign: 'center',
         alignItems: 'center',

@@ -1,0 +1,14 @@
+{
+  "type": "service_account",
+  "project_id": "shopidex",
+  "private_key_id": "e6e25de62d9834cb4fe958e6e201e48c34662c66",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCBh/fecyRCwIyf\n52ufk5yeP5pgoihFa2rVTM8nLgQCAxhPEwuzE3mIMjgqUXBHAZviR6e2evl3zaDN\ncG6PyeoeioLogJnzciS3m+OGNUsgI1i5yTKki1QkC1HYlx88ZTtFeDSxjcUaeflx\nGuhA4XPgZd5xVVpJRvOa1Qyef39myv21an1h6D9zCZORkzvWbFhY09yKnh4l/t1w\nFxd0DjMwk31tcNKC4gn2EwNQxV6ZTSC29/3qSCuqFMDyHd1mZz7OxadZf5iUY8bL\nmlvHXRsi9xDJmUlketh3px8vSMvZ8PF9SEJaRgsd/6sWI3MZinu4VOOkaU2NwZeV\noWMz4+EHAgMBAAECggEAOqGyOBYEZtbDkKnvFFd7wEHn/i/IbMvXmt9esUxp8gM2\noKxtUkzRaS3aMIWWff2jcwSeTMJTY8BHNlbbJOjvuY1W/ikgBos3RYkhryE2dUCq\nq8X/z21l077v+EtHj03/S03DBE+41Wg62dClKqEik4No8gIBkUO1hvNC+AecQomg\n/PUp4GF6lOhfr47WtJ+JvBHlpKPKWs4Tc5dIQCOUonDljNjqAoD1RBo3pzW6PioE\nV4EgJ+MmHUevtkWbGzcuWbTLg0bg5gkEk7nPXcKs5QKGB+MFRBwXkGp2ezVYSIMP\niSVWJOVB2y2Bi1gyqrkOg3yjXbbxdTBZy2hexjVS0QKBgQC2c0u7za08OjxkC67Z\nh9RH3M7sh50y6GVREn8th8auYPuagwJMLRN5QaOVgY/26FrGNlo51SWqa+leI4ZM\nQIjFR9YXctr0LGxosuU8RFnpXKY9sc/P0OyWkI0wU6H4Ou/tSstuOAS4t2H2oUe9\npW7482evkUFvWzvsTrvSvJT3GQKBgQC1v3ThyftaBBvkWa16xt9k9sVzinxxx/b0\nNaqFUHaG1rVOG4E8M9UBR1oJvFl0vYArbENu5hDXAEdshj8eMXk3s2LYKCOgb+xv\n5KZbXMhVkJMx+0YnzNzIKMF891HqMGKyDtbk8UUAEdxTC7UkgE25mQAGq8K59cm5\nFiefguE9HwKBgDwFggyuhScjIWroTQVTIgriIVC+7IAq4+nf4+benAYR8bPLFZ5p\n1dY2OdKdZPcdSX+bseMEs/d0uLk3hp7fPB9qmovsRQu+8YsgDzncYpfa2vXA4VTE\nrpB5zXjwioBXI0c1K+d+lk8ORTQVqrxBCFjt+lZPuu8fXH9JB5E0aO1BAoGBAI4q\ndQMpO7PuAuNcQpcHeTdA0LLQYQefo0zjrb8acZyH1sqCOVUeNkAJ0CRNcKwgj2Fo\nDldxHzsOvM/nMvgrOuaXK3pp63RUGF5uPLK6oPpNXNZ79ySq2wi22KMn0qudrZYa\nhX4QPCkRz4YmYktrEWFcjOiq8mcEHAbrjZL4jbeBAoGACuaunsU4anwRW4xm+hwo\n9xgGR2wm9+UlZVtJI+UC5HaSzDbu1yOjpwQOoHMfJ2cBwKKDbyja86sSwICD4+RJ\n9LfiuIc53vKzVzRUkDdn/NHf6Tj3+0wY0z7EbGKQvGGvIkxu8YSLW2PKG2ZxTCS7\nY3qtpLJ4j0cWI6XMCAtFOvM=\n-----END PRIVATE KEY-----\n",
+  "client_email": "shopidex-bigquery-integration@shopidex.iam.gserviceaccount.com",
+  "client_id": "104893139917261743311",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/shopidex-bigquery-integration%40shopidex.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
+  

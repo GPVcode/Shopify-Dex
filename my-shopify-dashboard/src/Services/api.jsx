@@ -7,6 +7,7 @@ export const fetchTotalRevenue = async () => {
     try {
 
         const response = await axios.get(`${API_URL}/total-revenue`, { timeout: 5000 });
+
         if (response.data && typeof response.data.totalRevenue === 'string') {
             return response.data;
         } else {
@@ -33,8 +34,7 @@ export const fetchOrderCount = async () => {
 export const fetchAccountTotal = async () => {
     try{
         const response = await axios.get(`${API_URL}/customers/account-total`)
-        // console.log("HEY: ", response.data)
-        // console.log("typeof: ", typeof response.data)
+
         if(typeof response.data === 'number'){
             return response;
         } else {
