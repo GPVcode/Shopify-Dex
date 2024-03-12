@@ -1,6 +1,10 @@
 import express from 'express';
 const router = express.Router();
-import { fetchInventoryAlerts, fetchProductsOverview, fetchProductsList } from '../utils/shopifyAPI.js';
+import { 
+    fetchInventoryAlerts, 
+    fetchProductsOverview, 
+    fetchProductsList 
+} from '../utils/shopifyAPI.js';
 
 // Route for fetching inventory alerts
 router.get('/inventory-alerts', async (req, res) => {

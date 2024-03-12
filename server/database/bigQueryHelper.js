@@ -51,7 +51,7 @@ export const insertPaidOrdersIntoBigQuery = async (orders) => {
             .dataset(datasetId)
             .table(tableId)
             .insert(orders);
-        console.log(`Inserted ${orders.length} rows into BigQuery`);
+        console.log(`Inserted ${orders.length} rows into PaidOrders BigQuery`);
     } catch (error) {
         if (error && error.name === 'PartialFailureError') {
             // When some rows are inserted successfully, but others fail (e.g., due to schema mismatches)
@@ -79,20 +79,22 @@ export const insertOrdersIntoStagingTable = async (orders) => {
 /**
  * Merges data from the staging table to the final PaidOrders table.
  */
-export const mergeStagingToFinalTable = async () => {
-    const datasetId = 'paid_orders';
-    const mergeQuery = `
-        MERGE ${datasetId}.PaidOrders AS final
-        USING ${datasetId}.Staging_PaidOrders AS staging
-        ON final.orderId = staging.orderId
-        WHEN NOT MATCHED THEN
-            INSERT ROW
+export const mergeStagingToPaidOrders = async () => {
+    const query = `
+    MERGE INTO \`paid_orders.PaidOrders\` AS target
+    USING \`paid_orders.Staging_PaidOrders\` AS source
+    ON target.orderId = source.orderId
+    WHEN MATCHED THEN
+        UPDATE SET source.*
+    WHEN NOT MATCHED THEN
+        INSERT ROW
     `;
 
     try {
-        await bigQueryClient.query(mergeQuery);
-        console.log('Merge operation completed successfully');
+        await bigQueryClient.query(query);
+        console.log("Merge operation completed successfully.");
     } catch (error) {
-        console.error('Error during merge operation:', error);
+        console.error("Error during merge operation:", error);
     }
 };
+
