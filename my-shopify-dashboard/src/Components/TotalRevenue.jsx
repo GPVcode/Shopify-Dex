@@ -9,13 +9,13 @@ function TotalRevenue() {
     const [view, setView] = useState('total'); // 'total', 'monthly', or 'daily'
     const [selectedMonth, setSelectedMonth] = useState('');
     
-    const percentageIncrease = useMemo(() => {
-        if (!data || Object.keys(data.monthlyRevenue).length < 2) return '0';
-        const months = Object.keys(data.monthlyRevenue);
-        const lastMonthRevenue = data.monthlyRevenue[months[months.length - 1]];
-        const prevMonthRevenue = data.monthlyRevenue[months[months.length - 2]];
-        return (((lastMonthRevenue - prevMonthRevenue) / prevMonthRevenue) * 100).toFixed(2);
-    }, [data]);
+    // const percentageIncrease = useMemo(() => {
+    //     if (!data || Object.keys(data.monthlyRevenue).length < 2) return '0';
+    //     const months = Object.keys(data.monthlyRevenue);
+    //     const lastMonthRevenue = data.monthlyRevenue[months[months.length - 1]];
+    //     const prevMonthRevenue = data.monthlyRevenue[months[months.length - 2]];
+    //     return (((lastMonthRevenue - prevMonthRevenue) / prevMonthRevenue) * 100).toFixed(2);
+    // }, [data]);
 
     const today = new Date().toISOString().split('T')[0]; // Get today's date in YYYY-MM-DD format
 
@@ -48,7 +48,7 @@ function TotalRevenue() {
         return <Box style={{ padding: '20px', margin: '10px' }}>Error: {error.message}</Box>;
     }
 
-    const percentageColor = parseFloat(percentageIncrease) >= 0 ? 'green' : 'indianred';
+    // const percentageColor = parseFloat(percentageIncrease) >= 0 ? 'green' : 'indianred';
 
     return (
         <Box sx={{
@@ -84,9 +84,9 @@ function TotalRevenue() {
             <Typography variant="h4" sx={{ fontWeight: 'bold' }}>
                 ${revenueFigure}
             </Typography>
-            <Typography variant="body2" sx={{ color: percentageColor }}>
+            {/* <Typography variant="body2" sx={{ color: percentageColor }}>
                 {percentageIncrease}% from last month
-            </Typography>
+            </Typography> */}
         </Box>        
     );
 }

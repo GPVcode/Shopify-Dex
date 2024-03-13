@@ -10,12 +10,12 @@ dotenv.config();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 // Path to service account key file
+
 const keyFilename = path.join(__dirname, process.env.GOOGLE_APPLICATION_CREDENTIALS);
 
 // Create a BigQuery client with credentials
 const bigQueryClient = new BigQuery({
-    keyFilename,
-    projectId: 'shopidex',
+    keyFilename
 });
 
 export default bigQueryClient;

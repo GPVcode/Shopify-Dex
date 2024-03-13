@@ -1,6 +1,11 @@
 import axios from 'axios';
 import dotenv from 'dotenv';
-import { prepareOrdersForBigQuery, insertPaidOrdersIntoBigQuery, insertOrdersIntoStagingTable, mergeStagingToFinalTable } from '../database/bigQueryHelper.js';
+import { 
+  prepareOrdersForBigQuery, 
+  insertPaidOrdersIntoBigQuery, 
+  insertOrdersIntoStagingTable, 
+  mergeStagingToPaidOrders 
+} from '../database/bigQueryHelper.js';
 
 dotenv.config();
 
@@ -608,12 +613,11 @@ export const fetchTotalRevenue = async (req, res, next) => {
 
       let orders = response.data.orders;
       let totalRevenue = orders.reduce((sum, order) => sum + parseFloat(order.total_price || 0), 0).toFixed(2);
-      
       if(forAnalysis){
         orders = prepareOrdersForBigQuery(orders);
         await insertPaidOrdersIntoBigQuery(orders);
         await insertOrdersIntoStagingTable(orders);
-        await mergeStagingToFinalTable(); // Then merge into the final table
+        await mergeStagingToPaidOrders();
         // res.json({ message: `Successfully inserted ${orders.length} orders into BigQuery.` });
       }
 
