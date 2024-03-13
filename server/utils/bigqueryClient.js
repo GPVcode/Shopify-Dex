@@ -15,8 +15,7 @@ const keyFilename = path.join(__dirname, process.env.GOOGLE_APPLICATION_CREDENTI
 
 // Create a BigQuery client with credentials
 const bigQueryClient = new BigQuery({
-    keyFilename,
-    projectId: 'shopidex',
+    keyFilename
 });
 
 export default bigQueryClient;
