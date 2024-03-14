@@ -12,6 +12,7 @@ export const prepareOrdersForBigQuery = (orders) => {
         const billingAddress = order.billing_address || {};
         const customer = order.customer || {};
         const source = 'Shopify';
+        const customerTagsArray = customer.tags ? customer.tags.split(',').map(tag => tag.trim()) : []; // Convert customerTags string into an array
 
         return {
             source,
@@ -19,12 +20,8 @@ export const prepareOrdersForBigQuery = (orders) => {
             date: date.toISOString().split('T')[0], // Format date as 'YYYY-MM-DD'
             totalRevenue: parseFloat(order.total_price),
             financialStatus: order.financial_status,
-            createdAt: order.created_at,
-            totalRevenue: parseFloat(order.total_price),
-            currency: order.currency,
-            financialStatus: order.financial_status,
             country: billingAddress.country_code || 'Unknown',
-            customerTags: customer.tags,
+            customerTags: customerTagsArray,
             customerEmailVerified: customer.verified_email || false,
             acceptsMarketing: customer.accepts_marketing || false,
             orderNumber: order.order_number,
@@ -43,7 +40,7 @@ export const prepareOrdersForBigQuery = (orders) => {
  */
 export const insertPaidOrdersIntoBigQuery = async (orders) => {
     const datasetId = 'paid_orders';
-    const tableId = 'PaidOrders';
+    const tableId = 'PaidOrders_copy';
 
     try {
         // Specify the dataset and table where data will be inserted
@@ -66,7 +63,7 @@ export const insertPaidOrdersIntoBigQuery = async (orders) => {
 
 export const insertOrdersIntoStagingTable = async (orders) => {
     const datasetId = 'paid_orders';
-    const tableId = 'Staging_PaidOrders';
+    const tableId = 'StagingPaidOrders_copy';
 
     try {
         await bigQueryClient.dataset(datasetId).table(tableId).insert(orders);
@@ -79,22 +76,41 @@ export const insertOrdersIntoStagingTable = async (orders) => {
 /**
  * Merges data from the staging table to the final PaidOrders table.
  */
-export const mergeStagingToPaidOrders = async () => {
-    const query = `
-    MERGE INTO \`paid_orders.PaidOrders\` AS target
-    USING \`paid_orders.Staging_PaidOrders\` AS source
-    ON target.orderId = source.orderId
-    WHEN MATCHED THEN
-        UPDATE SET source.*
-    WHEN NOT MATCHED THEN
-        INSERT ROW
+
+export const mergeStagingToFinalTable = async () => {
+    const datasetId = 'paid_orders';
+    // Ensure the mergeQuery is designed to match rows uniquely and update all necessary fields.
+    const mergeQuery = `
+        MERGE ${datasetId}.PaidOrders_copy AS final
+        USING ${datasetId}.StagingPaidOrders_copy AS staging
+        ON final.orderId = staging.orderId
+        WHEN MATCHED THEN
+            UPDATE SET 
+                final.totalRevenue = staging.totalRevenue, 
+                final.customerEmailVerified = staging.customerEmailVerified,
+                final.financialStatus = staging.financialStatus,
+                final.country = staging.country,
+                final.customerTags = staging.customerTags,
+                final.acceptsMarketing = staging.acceptsMarketing,
+                final.orderNumber = staging.orderNumber,
+                final.totalWeight = staging.totalWeight,
+                final.subtotalPrice = staging.subtotalPrice,
+                final.totalDiscounts = staging.totalDiscounts,
+                final.numberOfLineItems = staging.numberOfLineItems,
+                final.shippingCountry = staging.shippingCountry
+        WHEN NOT MATCHED THEN
+            INSERT (orderId, date, totalRevenue, financialStatus, country, customerTags, customerEmailVerified, acceptsMarketing, orderNumber, totalWeight, subtotalPrice, totalDiscounts, numberOfLineItems, shippingCountry)
+            VALUES (staging.orderId, staging.date, staging.totalRevenue, staging.financialStatus, staging.country, staging.customerTags, staging.customerEmailVerified, staging.acceptsMarketing, staging.orderNumber, staging.totalWeight, staging.subtotalPrice, staging.totalDiscounts, staging.numberOfLineItems, staging.shippingCountry);    
     `;
 
     try {
-        await bigQueryClient.query(query);
-        console.log("Merge operation completed successfully.");
+        await bigQueryClient.query(mergeQuery);
+        console.log('Merge operation completed successfully');
     } catch (error) {
-        console.error("Error during merge operation:", error);
+        console.error('Error during merge operation:', error);
     }
 };
+
+
+
 

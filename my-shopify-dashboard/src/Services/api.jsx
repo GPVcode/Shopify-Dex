@@ -4,10 +4,11 @@ import axios from 'axios';
 const API_URL = `http://localhost:5000/api`
 
 export const fetchTotalRevenue = async () => {
+    console.log("FRONENTD RUNN")
     try {
 
         const response = await axios.get(`${API_URL}/total-revenue`, { timeout: 5000 });
-
+        console.log("RESPONSE IS CALLED IN FRONTEND")
         if (response.data && typeof response.data.totalRevenue === 'string') {
             return response.data;
         } else {

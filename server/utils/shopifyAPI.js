@@ -4,7 +4,7 @@ import {
   prepareOrdersForBigQuery, 
   insertPaidOrdersIntoBigQuery, 
   insertOrdersIntoStagingTable, 
-  mergeStagingToPaidOrders 
+  mergeStagingToFinalTable 
 } from '../database/bigQueryHelper.js';
 
 dotenv.config();
@@ -617,8 +617,7 @@ export const fetchTotalRevenue = async (req, res, next) => {
         orders = prepareOrdersForBigQuery(orders);
         await insertPaidOrdersIntoBigQuery(orders);
         await insertOrdersIntoStagingTable(orders);
-        await mergeStagingToPaidOrders();
-        // res.json({ message: `Successfully inserted ${orders.length} orders into BigQuery.` });
+        await mergeStagingToFinalTable();
       }
 
       let monthlyRevenue = {};

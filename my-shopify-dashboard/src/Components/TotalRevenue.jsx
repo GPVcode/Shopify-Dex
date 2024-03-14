@@ -1,94 +1,53 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useQuery } from 'react-query';
 import { CircularProgress, Box, Typography } from '@mui/material';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import { fetchTotalRevenue } from '../Services/api';
 
 function TotalRevenue() {
-    const { data, isLoading, isError, error } = useQuery('Total Revenue', fetchTotalRevenue);
-    const [view, setView] = useState('total'); // 'total', 'monthly', or 'daily'
-    const [selectedMonth, setSelectedMonth] = useState('');
-    
-    // const percentageIncrease = useMemo(() => {
-    //     if (!data || Object.keys(data.monthlyRevenue).length < 2) return '0';
-    //     const months = Object.keys(data.monthlyRevenue);
-    //     const lastMonthRevenue = data.monthlyRevenue[months[months.length - 1]];
-    //     const prevMonthRevenue = data.monthlyRevenue[months[months.length - 2]];
-    //     return (((lastMonthRevenue - prevMonthRevenue) / prevMonthRevenue) * 100).toFixed(2);
-    // }, [data]);
+  const [view, setView] = useState('total'); // 'total', 'monthly', or 'daily'
+  const [selectedMonth, setSelectedMonth] = useState('');
 
-    const today = new Date().toISOString().split('T')[0]; // Get today's date in YYYY-MM-DD format
+  // Using useQuery to fetch total revenue data
+  const { data, isLoading, isError, error } = useQuery('Total Revenue', fetchTotalRevenue, {
+    // This option can be enabled if you want to refetch data on window focus
+    // refetchOnWindowFocus: true,
+  });
 
-    const months = data ? Object.keys(data.monthlyRevenue || {}) : [];
-
-    const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-
-    const formattedMonths = useMemo(() => months.map(month => {
-        const [year, monthIndex] = month.split('-');
-        return `${monthNames[parseInt(monthIndex, 10) - 1]} ${year}`;
-    }), [months]);
-
-    const revenueFigure = useMemo(() => {
-        switch (view) {
-            case 'total':
-                return data ? data?.totalRevenue.toLocaleString() : '0';
-            case 'monthly':
-                return data && selectedMonth ? data?.monthlyRevenue[Object.keys(data.monthlyRevenue)[formattedMonths.indexOf(selectedMonth)]].toLocaleString() : '0';
-            case 'daily':
-                return data && data?.dailyRevenue && data?.dailyRevenue[today] ? data?.dailyRevenue[today].toLocaleString() : '0';
-            default:
-                return '0';
+  // useMemo to calculate revenue figure based on the current view
+  const revenueFigure = React.useMemo(() => {
+    if (!data) return '0';
+    switch (view) {
+      case 'total':
+        return data.totalRevenue.toLocaleString();
+      case 'monthly':
+        if (selectedMonth && data.monthlyRevenue[selectedMonth]) {
+          return data.monthlyRevenue[selectedMonth].toLocaleString();
         }
-    }, [data, view, selectedMonth, today, formattedMonths]);
-
-    if (isLoading) {
-        return <Box style={{ padding: '20px', margin: '10px' }}><CircularProgress /></Box>;
-    } 
-    if (isError) {
-        return <Box style={{ padding: '20px', margin: '10px' }}>Error: {error.message}</Box>;
+        return '0';
+      case 'daily':
+        const today = new Date().toISOString().split('T')[0]; // Get today's date in YYYY-MM-DD format
+        if (data.dailyRevenue && data.dailyRevenue[today]) {
+          return data.dailyRevenue[today].toLocaleString();
+        }
+        return '0';
+      default:
+        return '0';
     }
+  }, [data, view, selectedMonth]);
 
-    // const percentageColor = parseFloat(percentageIncrease) >= 0 ? 'green' : 'indianred';
+  if (isLoading) return <Box style={{ padding: '20px', margin: '10px' }}><CircularProgress /></Box>;
+  if (isError) return <Box style={{ padding: '20px', margin: '10px' }}>Error: {error.message}</Box>;
 
-    return (
-        <Box sx={{
-            padding: '20px',
-            margin: '10px',
-            overflowY: 'auto',
-            maxHeight: '500px',
-            '&::-webkit-scrollbar': {
-                width: '10px',
-            },
-            '&::-webkit-scrollbar-track': {
-                boxShadow: 'inset 0 0 5px grey',
-                borderRadius: '10px',
-            },
-            '&::-webkit-scrollbar-thumb': {
-                background: 'darkgrey',
-                borderRadius: '10px',
-            },
-            '&::-webkit-scrollbar-thumb:hover': {
-                background: '#3f9068',
-            },
-        }}>
-            <Box sx={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                marginBottom: '2rem',
-            }}>
-                <Typography variant="h6">Total Revenue</Typography>
-                <AttachMoneyIcon/> 
-            </Box>
-            
-            <Typography variant="h4" sx={{ fontWeight: 'bold' }}>
-                ${revenueFigure}
-            </Typography>
-            {/* <Typography variant="body2" sx={{ color: percentageColor }}>
-                {percentageIncrease}% from last month
-            </Typography> */}
-        </Box>        
-    );
+  return (
+    <Box sx={{ padding: '20px', margin: '10px', overflowY: 'auto', maxHeight: '500px', '&::-webkit-scrollbar': { width: '10px' } }}>
+      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '2rem' }}>
+        <Typography variant="h6">Total Revenue</Typography>
+        <AttachMoneyIcon />
+      </Box>
+      <Typography variant="h4" sx={{ fontWeight: 'bold' }}>${revenueFigure}</Typography>
+    </Box>
+  );
 }
 
 export default TotalRevenue;
