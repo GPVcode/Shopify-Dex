@@ -4,8 +4,9 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 // import '@shopify/polaris/build/esm/styles.css';
 import Dashboard from './Pages/Dashboard';
 import Products from './Pages/Products';
-// import Tasks from './Pages/Tasks';
+import DexAnalysis from './Pages/DexAnalysis';
 import Accounts from './Pages/Accounts';
+
 import {
   ThemeProvider,
   CssBaseline,
@@ -22,7 +23,7 @@ import {
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import StorefrontIcon from '@mui/icons-material/Storefront';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import ListAltIcon from '@mui/icons-material/ListAlt';
+import InsightsIcon from '@mui/icons-material/Insights';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import { darkTheme } from './Styles/theme';
@@ -75,7 +76,7 @@ function App() {
           {isSidebarExpanded && <Typography variant="h6" noWrap sx={{ marginLeft: 1 }}>Shopidex</Typography>}
         </Box>
         <List sx={{ width: '100%', mt: 2 }}>
-          {['Dashboard', 'Products', 'Accounts', 'Tasks'].map((text, index) => (
+          {['Dashboard', 'DexAnalysis', 'Products', 'Accounts'].map((text, index) => (
             <Tooltip 
               title={isSidebarExpanded ? '' : text} 
               key={text}
@@ -88,10 +89,10 @@ function App() {
                   justifyContent: isSidebarExpanded ? 'initial' : 'center',
                   my: 0.5,
                 }}
-                onClick={() => navigate(index === 0 ? '/' : index === 1 ? '/products' : index === 2 ? '/accounts' : '/tasks')}
+                onClick={() => navigate(index === 0 ? '/' : index === 1 ? '/DexAnalysis' : index === 2 ? '/products' : '/accounts')}
               >
                 <ListItemIcon sx={{ minWidth: 'auto', justifyContent: 'center' }}>
-                  {index === 0 ? <DashboardIcon /> : index === 1 ? <StorefrontIcon /> : index === 2 ? <AccountCircleIcon /> : <ListAltIcon />}
+                  {index === 0 ? <DashboardIcon /> : index === 1 ? <InsightsIcon /> : index === 2 ? <StorefrontIcon /> : <AccountCircleIcon />}
                 </ListItemIcon>
                 {isSidebarExpanded && <ListItemText primary={text} sx={{marginLeft: 1}}/>}
               </ListItemButton>
@@ -150,12 +151,10 @@ function App() {
             }}
           >
             <Routes>
-              {/* < Route path="/" element={<LandingPage />} /> */}
               <Route path="/" element={<Dashboard />} />
+              <Route path="/dexanalysis" element={<DexAnalysis />} />
               <Route path="/products" element={<Products />} />
               <Route path="/accounts" element={<Accounts />} />
-              {/* <Route path="/tasks" element={<Tasks />} /> */}
-              {/* Define more routes as needed */}
             </Routes>
 
           </Box>

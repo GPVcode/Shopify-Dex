@@ -4,11 +4,9 @@ import axios from 'axios';
 const API_URL = `http://localhost:5000/api`
 
 export const fetchTotalRevenue = async () => {
-    console.log("FRONENTD RUNN")
     try {
 
         const response = await axios.get(`${API_URL}/total-revenue`, { timeout: 5000 });
-        console.log("RESPONSE IS CALLED IN FRONTEND")
         if (response.data && typeof response.data.totalRevenue === 'string') {
             return response.data;
         } else {
@@ -72,7 +70,6 @@ export const fetchRecentOrders = async (page = 1, limit = 10) => {
         }
     } catch (error) {
         console.error('Error fetching recent orders from Shopify:', error);
-        return { error: "Failed to fetch data" };
     }
 };
 
@@ -95,8 +92,7 @@ export const fetchInventoryAlerts = async (page = 1, limit = 5) => {
         };
     } catch (error) {
       console.error('Error fetching inventory alerts:', error);
-      return { error: "Failed to fetch data" };
-      }
+    }
 }
 
 export const fetchProductsOverview = async (page = 1, limit = 5) => {

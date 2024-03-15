@@ -11,3 +11,4 @@ shopidex-417122-20b8afc35be0.json
 .env.test.local
 .env.production.local
 
+/venv

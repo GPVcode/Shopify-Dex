@@ -14,8 +14,8 @@ export const darkTheme = createTheme({
       main: '#30D158', // Green for secondary actions, inspired by iOS system colors
     },
     text: {
-      primary: 'FFFFFF', // White text for maximum contrast
-      secondary: 'black', // A lighter grey for less emphasis
+      primary: '#FFFFFF', 
+      secondary: 'black', 
     },
     action: {
       active: '#E5E5EA',
