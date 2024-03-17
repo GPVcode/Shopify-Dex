@@ -5,12 +5,11 @@ import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import { fetchTotalRevenue } from '../Services/api';
 
 function TotalRevenue() {
-  const [view, setView] = useState('total'); // 'total', 'monthly', or 'daily'
+  const [view, setView] = useState('total');
   const [selectedMonth, setSelectedMonth] = useState('');
 
   // Using useQuery to fetch total revenue data
   const { data, isLoading, isError, error } = useQuery('Total Revenue', fetchTotalRevenue, {
-    // This option can be enabled if you want to refetch data on window focus
     // refetchOnWindowFocus: true,
   });
 

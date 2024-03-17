@@ -2,6 +2,8 @@
 import express from 'express';
 const router = express.Router();
 
+import LinearRegression from sklearn.linear_model 
+
 // You may need to adjust the path to your Python script accordingly
 const PYTHON_SCRIPT_PATH = '../path/to/your/python/script.py';
 
@@ -28,5 +30,10 @@ router.post('/dexanalysis', async (req, res) => {
         console.log(`child process exited with code ${code}`);
     });
 });
+
+
+model = LinearRegression()
+
+
 
 export default router;

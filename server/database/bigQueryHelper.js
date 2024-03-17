@@ -102,7 +102,7 @@ export const mergeStagingToFinalTable = async () => {
             INSERT (orderId, date, totalRevenue, financialStatus, country, customerTags, customerEmailVerified, acceptsMarketing, orderNumber, totalWeight, subtotalPrice, totalDiscounts, numberOfLineItems, shippingCountry)
             VALUES (staging.orderId, staging.date, staging.totalRevenue, staging.financialStatus, staging.country, staging.customerTags, staging.customerEmailVerified, staging.acceptsMarketing, staging.orderNumber, staging.totalWeight, staging.subtotalPrice, staging.totalDiscounts, staging.numberOfLineItems, staging.shippingCountry);    
     `;
-
+// interesting
     try {
         await bigQueryClient.query(mergeQuery);
         console.log('Merge operation completed successfully');

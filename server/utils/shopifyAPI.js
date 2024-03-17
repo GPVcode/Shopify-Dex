@@ -16,7 +16,7 @@ const { SHOP_URL, SHOPIFY_API_KEY, SHOPIFY_API_SECRET_KEY, SHOPIFY_ADMIN_API_ACC
 
 export const fetchTotalRevenue = async (req, res, next) => {
   const url = `https://${SHOP_URL}/admin/api/2023-10/orders.json?status=any&financial_status=paid`;
-  let forAnalysis = false;
+  let forAnalysis = true;
 
   try {
       const response = await axios.get(url, {
@@ -892,3 +892,25 @@ export const fetchProductsList = async ({ page = 1, limit = 10 }) => {
   }
 };
 
+
+
+
+
+
+  // {
+  //   source: 'Shopify',
+  //   orderId: 5256025505903,
+  //   date: '2024-03-12',
+  //   totalRevenue: 0.1,
+  //   financialStatus: 'paid',
+  //   country: 'BW',
+  //   customerTags: [ 'egnition-sample-data', 'VIP' ],
+  //   customerEmailVerified: true,
+  //   acceptsMarketing: false,
+  //   orderNumber: 1008,
+  //   totalWeight: 0,
+  //   subtotalPrice: 0.1,
+  //   totalDiscounts: 0,
+  //   numberOfLineItems: 1,
+  //   shippingCountry: 'BW'
+  // },
