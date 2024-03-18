@@ -12,7 +12,8 @@ router.post('/dexanalysis', async (req, res) => {
     const { selectedReports } = req.body;
     
     // Logic to call Python script with selectedReports as input
-    // and fetch the analysis result to send back to frontend
+    // and fetch the analysis result to send back to frontend|
+    // let's figure out what happens in each step.
     const { spawn } = require('child_process');
     const pythonProcess = spawn('python', [PYTHON_SCRIPT_PATH, JSON.stringify(selectedReports)]);
 
