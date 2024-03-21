@@ -2,7 +2,7 @@
 import express from 'express';
 const router = express.Router();
 
-import LinearRegression from sklearn.linear_model 
+// import LinearRegression from sklearn.linear_model 
 
 // You may need to adjust the path to your Python script accordingly
 const PYTHON_SCRIPT_PATH = '../path/to/your/python/script.py';
@@ -13,8 +13,7 @@ router.post('/dexanalysis', async (req, res) => {
     
     // Logic to call Python script with selectedReports as input
     // and fetch the analysis result to send back to frontend|
-    // let's figure out what happens in each step.
-    // Looking up costs for testing LLMs
+
     const { spawn } = require('child_process');
     const pythonProcess = spawn('python', [PYTHON_SCRIPT_PATH, JSON.stringify(selectedReports)]);
 
