@@ -17,6 +17,7 @@ router.post('/dexanalysis', async (req, res) => {
     // Got my first client on my own!
     // Let's work on Math
     // Spent the time tday at Tmecula
+    // Worked on soag BBQ SHopify Site today.
     const { spawn } = require('child_process');
     const pythonProcess = spawn('python', [PYTHON_SCRIPT_PATH, JSON.stringify(selectedReports)]);
 
