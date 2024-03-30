@@ -14,10 +14,7 @@ router.post('/dexanalysis', async (req, res) => {
     // Logic to call Python script with selectedReports as input
     // and fetch the analysis result to send back to frontend|
     // Need to set up instagram API first
-    // Got my first client on my own!
-    // Let's work on Math
-    // Spent the time tday at Tmecula
-    // Worked on soag BBQ SHopify Site today. j
+    // SOAG BBQ for Shopify
     const { spawn } = require('child_process');
     const pythonProcess = spawn('python', [PYTHON_SCRIPT_PATH, JSON.stringify(selectedReports)]);
 
